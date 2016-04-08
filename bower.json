@@ -1,0 +1,11 @@
+{
+	"name": "Building-angular",
+	"version": "0.0.1",
+	"appPath": "public",
+	"dependencies": {
+		"bootstrap": "latest",
+		"angular": "latest",
+		"angular-ui": "latest",
+		"angular-ui-router": "latest"
+	}
+}

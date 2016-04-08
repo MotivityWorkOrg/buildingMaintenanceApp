@@ -1,0 +1,13 @@
+{
+  "name"         : "building-app",
+  "version"      : "0.0.1",
+  "description"  : "Buiding Maintance Appliaction.",
+  "main"         : "server.js",
+  "dependencies" : {
+    "express"         : "*",
+    "mongoose"        : "*",
+    "morgan"          : "*",
+    "body-parser"     : "*",
+    "method-override" : "*"
+  }
+}
