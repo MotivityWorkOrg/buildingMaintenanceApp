@@ -16,6 +16,7 @@ app.use(express.static(__dirname + '/public')); // set the static files location
 // set the static file info outer public folders images, assets info
 //app.use('/components', express.static(__dirname + '/components'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
+app.use('/favicon.ico', express.static('favicon.ico'));
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser.urlencoded({'extended': 'true'})); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json

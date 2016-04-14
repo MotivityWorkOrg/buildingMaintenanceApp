@@ -1,0 +1,72 @@
+<!--<form>
+    <div class="form-group">
+        <label for="id">ID</label>
+        <input type="text" id="id" placeholder="Enter id" ng-model="month.id">
+    </div>
+    <div class="form-group">
+        <label for="fullName">Month Full Name</label>
+        <input type="text" id="fullName" placeholder="Month Full Name" ng-model="month.fullName">
+    </div>
+    <div class="form-group">
+        <label for="shortName">Month Short Name</label>
+        <input type="text" id="shortName" placeholder="Month Short Name"ng-model="month.shortName">
+    </div>
+
+    <button type="submit" class="btn btn-default" ng-click="addMonth()">Submit</button>
+</form>-->
+
+<!-------------------->
+<div>
+    <form name="myForm">
+        <div class="form-group">
+            <label for="id">Period</label>
+            <select name="repeatSelect" id="selectedMonth" ng-model="maintenance.fullMonth">
+                <option ng-repeat="option in months" value="{{option.fullName}}">{{option.fullName}}</option>
+            </select>
+            <input width="50" type="text" id="year" placeholder="year" ng-model="maintenance.year">
+        </div>
+
+        <div class="form-group">
+            <label for="id">Payment Date</label>
+            <div class='input-group date' id='datetimepicker1'>
+                <input type='text' class="form-control" name="date" ng-model="maintenance.selectedDate"/>
+                <span class="input-group-addon add-on">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+
+            <script type="text/javascript">
+                (function() {
+                    $('#datetimepicker1').datetimepicker({
+                        format: 'DD/MM/YYYY'
+                    });
+                })();
+            </script>
+        </div>
+        <div class="form-group">
+            <label for="id">Type</label>
+            <select name="repeatSelect" id="maintenanceType" ng-model="maintenance.type" ng-change="loadTypeCategories()">
+                <option ng-repeat="option in maintenanceType" value="{{option.type}}">{{option.type}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="id">Category</label>
+            <select name="repeatSelect" id="typeOfMaintenance" ng-model="maintenance.typeOf">
+                <option ng-repeat="option in typeOfMaintanances" value="{{option.type}}">{{option.type}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="id">Amount</label>
+            <input type="text" id="amount" placeholder="Enter Amount" ng-model="maintenance.amount">
+        </div>
+        <div class="form-group">
+            <label for="id">Comments</label>
+            <input type="text" id="id" placeholder="Enter Comments" ng-model="maintenance.comments">
+        </div>
+        <div class="form-group">
+            <input type="button"  placeholder="Enter Amount" ng-model="maintenance.amount">
+            <button ng-click="addMonthExpenses()">Add Expenses</button>
+        </div>
+    </form>
+</div>
+
