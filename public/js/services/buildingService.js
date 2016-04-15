@@ -33,9 +33,23 @@ angular.module('buildingService', [])
 			addExpense: function (expense) {
 				return $http.post('/api/addExpense', expense);
 			},
+
+			addIncome: function (income) {
+				return $http.post('/api/addIncome', income);
+			},
+
+			getIncomes: function () {
+				return $http.get('/api/incomes');
+			},
+
+			getExpenses:function(){
+				return $http.get('/api/expenses');
+			},
+
 			getExpensesTypes: function () {
 				return $http.get('/api/expensesTypes');
 			},
+
 			getIncomeTypes: function () {
 				return $http.get('/api/incomeTypes');
 			},

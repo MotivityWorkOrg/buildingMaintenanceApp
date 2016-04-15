@@ -4,31 +4,6 @@
 
 var mongoose = require('mongoose'), Schema = mongoose.Schema;
 mongoose.set('debug', true);
-//var myConnection = mongoose.createConnection('localhost', 'building');
-
-var SampleSchema = new mongoose.Schema({
-    name: String,
-    completed: Boolean,
-    note: String
-});
-
-module.exports = mongoose.model('sample', SampleSchema);
-
-/*var MaintenanceSchema = new mongoose.Schema({
-    id:String,
-    name:String,
-    description:String,
-    amount:String,
-    flats:[{ type: Schema.Types.ObjectId, ref: 'Flat' }],
-    tenant:[{ type: Schema.Types.ObjectId, ref: 'Tenant' }],
-    miscellaneousExpenditure:[{ type: Schema.Types.ObjectId, ref: 'Miscellaneous' }],
-    period:String,
-    paymentDate: Date,
-    createdBy:String,
-    updatedBy:String,
-    createdDate:Date,
-    updatedDate:Date
-});*/
 
 var UserSchema = new mongoose.Schema({
     userName: String,
@@ -44,24 +19,23 @@ var MonthsSchema = new mongoose.Schema({
 });
 
 var ExpensesSchema = new mongoose.Schema({
-    _id: String,
+    period:String,
     paymentDate: Date,
     amount: String,
     description: String,
     category:String,
-    createUpdate:{ type: Schema.Types.ObjectId, ref: 'CreateUpdate' }
+    createdBy:String,
+    updatedBy:String,
+    createdDate:Date,
+    updatedDate:Date
 });
 
 var IncomeSchema = new mongoose.Schema({
-    _id: String,
+    period: String,
     paymentDate: Date,
     amount: String,
     description: String,
     category:String,
-    createUpdate:{ type: Schema.Types.ObjectId, ref: 'CreateUpdate' }
-});
-
-var CreateUpdateSchema = new mongoose.Schema({
     createdBy:String,
     updatedBy:String,
     createdDate:Date,
@@ -104,7 +78,6 @@ var incomeTypesSchema = new mongoose.Schema({
 //module.exports = mongoose.model('Maintenance', MaintenanceSchema);
 var FlatModel = mongoose.model('Flat', flatSchema);
 var TenantModel = mongoose.model('Tenant', TenantSchema);
-var CreateUpdateModel = mongoose.model('CreateUpdate', CreateUpdateSchema);
 var ExpensesModel = mongoose.model('Expenses', ExpensesSchema);
 var IncomeModel = mongoose.model('Income', IncomeSchema);
 var UsersModel = mongoose.model('Users', UserSchema);
@@ -116,7 +89,6 @@ var IncomeTypesModel = mongoose.model('IncomeTypes', incomeTypesSchema);
 module.exports = {
     Flat: FlatModel,
     Tenant: TenantModel,
-    CreateUpdate: CreateUpdateModel,
     Expenses: ExpensesModel,
     Income: IncomeModel,
     Users: UsersModel,

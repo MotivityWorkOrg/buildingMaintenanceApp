@@ -29,7 +29,7 @@
         <div class="form-group">
             <label for="id">Payment Date</label>
             <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" name="date" ng-model="maintenance.selectedDate"/>
+                <input type='text' class="form-control" name="date" ng-model="maintenance.selectedDate" ng-change="dateChanged()"/>
                 <span class="input-group-addon add-on">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -41,6 +41,7 @@
                         format: 'DD/MM/YYYY'
                     });
                 })();
+
             </script>
         </div>
         <div class="form-group">
@@ -51,7 +52,7 @@
         </div>
         <div class="form-group">
             <label for="id">Category</label>
-            <select name="repeatSelect" id="typeOfMaintenance" ng-model="maintenance.typeOf">
+            <select name="repeatSelect" id="typeOfMaintenance" ng-model="maintenance.category">
                 <option ng-repeat="option in typeOfMaintanances" value="{{option.type}}">{{option.type}}</option>
             </select>
         </div>
@@ -64,9 +65,33 @@
             <input type="text" id="id" placeholder="Enter Comments" ng-model="maintenance.comments">
         </div>
         <div class="form-group">
-            <input type="button"  placeholder="Enter Amount" ng-model="maintenance.amount">
-            <button ng-click="addMonthExpenses()">Add Expenses</button>
+            <button ng-click="addMonthlyIncomeOrExpenses()">Add Expenses</button>
         </div>
     </form>
-</div>
 
+    <div class="table-responsive">
+        <label>Expenses</label>
+        <table class="table">
+            <tr ng-repeat="expenses in expensesArr | orderBy : 'period'">
+                <td>{{ expenses.period }}</td>
+                <td>{{ expenses.paymentDate }}</td>
+                <td>{{ expenses.amount }}</td>
+                <td>{{ expenses.description }}</td>
+                <td>{{ expenses.category }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="table-responsive">
+        <label>Incomes</label>
+        <table class="table">
+            <tr ng-repeat="income in allIncomes | orderBy : 'period'">
+                <td>{{ income.period }}</td>
+                <td>{{ income.paymentDate }}</td>
+                <td>{{ income.amount }}</td>
+                <td>{{ income.description }}</td>
+                <td>{{ income.category }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
