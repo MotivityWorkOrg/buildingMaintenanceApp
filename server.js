@@ -10,8 +10,8 @@ var methodOverride = require('method-override');
 
 
 // configuration ===============================================================
-mongoose.connect(database.localUrl);// Connect to local MongoDB instance. A remoteUrl is also available (modulus.io)
-
+mongoose.connect(database.remoteUrl);// A remoteUrl is also available (modulus.io)
+//mongoose.connect(database.localUrl);// Connect to local MongoDB instance.
 app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
 // set the static file info outer public folders images, assets info
 //app.use('/components', express.static(__dirname + '/components'));

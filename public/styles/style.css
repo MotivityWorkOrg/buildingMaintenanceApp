@@ -13,7 +13,7 @@ NAV
 }
 
 .navbar-nav{
-     float: right !important;
+     float: left !important;
 }
 
 .slider{
@@ -85,4 +85,8 @@ NAV
 .dots .dot a.active {
     border-color: #FFF;
     background-color: transparent;
+}
+
+.admin-form{
+    padding-left: 20px;
 }

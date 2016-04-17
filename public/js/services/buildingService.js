@@ -60,6 +60,18 @@ angular.module('buildingService', [])
 
 			addIncomeTypes: function(type){
 				return $http.post('/api/addIncomeType', type);
+			},
+
+			getFlats: function(){
+				return $http.get('/api/flats');
+			},
+
+			addFlat: function(flat){
+				return $http.post('/api/addFlat', flat);
+			},
+
+			getTenants: function(){
+				return $http.get('/api/tenant');
 			}
 		}
 	}]);

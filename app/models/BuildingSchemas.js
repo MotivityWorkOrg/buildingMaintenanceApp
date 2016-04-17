@@ -43,11 +43,13 @@ var IncomeSchema = new mongoose.Schema({
 });
 
 var flatSchema = new mongoose.Schema({
-    flatId:String,
+    _id:String,
     ownerName:String,
-    phoneNumber:String,
+    phoneNumber:Number,
+    altNumber:Number,
     emailId:String,
     isOccupied:Boolean,
+    tenant: {type: mongoose.Schema.Types.String, ref: 'TenantModel'},
     createdBy:String,
     updatedBy:String,
     createdDate:Date,
@@ -55,9 +57,10 @@ var flatSchema = new mongoose.Schema({
 });
 
 var TenantSchema = new mongoose.Schema({
-    flatId:String,
-    name:String,
+    _id:String,
+    tenantName:String,
     phoneNumber:String,
+    altNumber:Number,
     emailId:String,
     createdBy:String,
     updatedBy:String,

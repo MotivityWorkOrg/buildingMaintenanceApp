@@ -72,6 +72,28 @@ function getSavedExpenses(res){
     });
 }
 
+function getAllFlatsInfo(res){
+    BuildingInfo.Flat.find(function (err, flats){
+        if(err){
+            res.send(err);
+            console.log("The 'Flats' collection doesn't exist. Creating it with sample data...");
+        }
+        //console.log("flats .. ", expenses);
+        res.json(flats);
+    });
+}
+
+function getTenantInfo(){
+    BuildingInfo.Tenant.find(function (err, tenant){
+        if(err){
+            res.send(err);
+            console.log("The 'Tenant' collection doesn't exist. Creating it with sample data...");
+        }
+        //console.log("tenant .. ", expenses);
+        res.json(tenant);
+    });
+}
+
 module.exports = function (app) {
 
     // api ---------------------------------------------------------------------
@@ -179,6 +201,51 @@ module.exports = function (app) {
             getPopulateIncomeTypes(res);
         });
     });
+
+    app.post('/api/addFlat', function(req, res){
+        console.log("Getting Flat Req Body..  ", req.body);
+        BuildingInfo.Flat.create({
+            _id: req.body.flatNumber,
+            ownerName: req.body.ownerName,
+            phoneNumber: req.body.phoneNumber,
+            altNumber: req.body.altNumber,
+            emailId:req.body.emailId,
+            isOccupied: req.body.isOccupied,
+            tenant: req.body.tenant.flatNumber,
+            createdBy: req.body.createdBy,
+            createdDate: req.body.createdDate
+        }, function(err, flat){
+            if (err){
+                res.send(err);
+            }
+            //getAllFlatsInfo(res);
+        });
+        if(!req.body.isOccupied){
+            //console.log("In Tenant Info +++ ", req.body.tenant);
+            BuildingInfo.Tenant.create({
+                _id: req.body.tenant.flatNumber,
+                tenantName: req.body.tenant.ownerName,
+                phoneNumber: req.body.tenant.phoneNumber,
+                altNumber: req.body.tenant.altNumber,
+                emailId: req.body.tenant.emailId,
+                createdBy: req.body.tenant.createdBy,
+                createdDate: req.body.tenant.createdDate
+            }, function(err, tenant){
+                if (err){
+                    res.send(err);
+                }
+            });
+        }
+    });
+
+    app.get('/api/flats', function(req, res){
+        getAllFlatsInfo(res);
+    });
+
+    app.get('/api/tenant', function (req, res) {
+        getTenantInfo();
+    });
+
     /*app.create('/api/buildingMaintenance', function (req, res) {
         
     });
