@@ -1,0 +1,49 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="buildingMaintenanceApp">
+    <head>
+        <!-- META -->
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link rel="stylesheet" href="styles/style.css">-->
+        <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/moment/min/moment.min.js"></script>
+        <script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <link rel="stylesheet" href="styles/bootstrap.min.css">
+        <link rel="stylesheet" href="styles/bootstrap-responsive.css">
+        <link rel="stylesheet" href="lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+        <link href="styles/font-awesome.css" rel="stylesheet">
+        <link href="styles/style.css" rel="stylesheet">
+        <link href="styles/dashboard.css" rel="stylesheet">
+        <link href="styles/sign-in.css" rel="stylesheet">
+        <title>Sreeven Nest</title>
+    </head>
+    <!-- SET THE CONTROLLER -->
+    <body>
+        <div ng-include="'views/common/loginHeader.html'" ng-show="!userInfo"></div> <!-- loginHeader -->
+        <div ng-include="'views/common/userHeader.html'" ng-show="userInfo"></div> <!-- userHeader -->
+
+        <div class="container">
+            <div ui-view></div>
+        </div>
+        <!-- SPELLS -->
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+
+        <!--angular UI-bootstrap-->
+        <script src="lib/angular-bootstrap/ui-bootstrap.js"></script>
+        <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+        <script src="js/controllers/main.js"></script> <!-- load up our controller -->
+        <script src="views/maintenance/maintenance.js"></script>
+        <script src="views/flats/flats.js"></script>
+        <script src="views/login/users.js"></script>
+        <script src="views/login/userController.js"></script>
+        <script src="js/services/buildingService.js"></script> <!-- load our service -->
+        <script src="js/services/authService.js"></script> <!-- load Authentication Service -->
+        <script src="js/core.js"></script> <!-- load our main application -->
+    </body>
+</html>

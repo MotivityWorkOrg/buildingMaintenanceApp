@@ -1,13 +1,25 @@
 {
-  "name"         : "building-app",
-  "version"      : "0.0.1",
+  "name": "building-application",
+  "version": "0.0.1",
+  "private": true,
   "description"  : "Buiding Maintance Appliaction.",
-  "main"         : "server.js",
-  "dependencies" : {
-    "express"         : "*",
-    "mongoose"        : "*",
-    "morgan"          : "*",
-    "body-parser"     : "*",
-    "method-override" : "*"
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "*",
+    "morgan": "*",
+    "cookie-parser": "*",
+    "body-parser": "*",
+    "express-session": "*",
+    "debug": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "mongoose": "*",
+    "bcrypt-nodejs" : "*",
+    "connect-flash" : "*",
+    "ejs": "*"
   }
 }
+

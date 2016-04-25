@@ -1,0 +1,48 @@
+<div class="table-responsive">
+    <label>Expenses</label>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Period</th>
+            <th>Payment Date</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Category</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="expenses in expensesArr | orderBy : 'period'">
+            <td>{{ expenses.period }}</td>
+            <td>{{ expenses.paymentDate }}</td>
+            <td>{{ expenses.amount }}</td>
+            <td>{{ expenses.description }}</td>
+            <td>{{ expenses.category }}</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<div class="table-responsive">
+    <label>Incomes</label>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Period</th>
+            <th>Payment Date</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Category</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="income in allIncomes | orderBy : 'period'">
+            <td>{{ income.period }}</td>
+            <td>{{ income.paymentDate }}</td>
+            <td>{{ income.amount }}</td>
+            <td>{{ income.description }}</td>
+            <td>{{ income.category }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
