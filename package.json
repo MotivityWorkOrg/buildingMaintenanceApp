@@ -2,7 +2,7 @@
   "name": "building-application",
   "version": "0.0.1",
   "private": true,
-  "description"  : "Buiding Maintance Appliaction.",
+  "description": "Buiding Maintance Appliaction.",
   "scripts": {
     "start": "node server/server.js"
   },
@@ -17,9 +17,15 @@
     "passport": "*",
     "passport-local": "*",
     "mongoose": "*",
-    "bcrypt-nodejs" : "*",
-    "connect-flash" : "*",
+    "bcrypt-nodejs": "*",
+    "connect-flash": "*",
     "ejs": "*"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.0.6",
+    "gulp-watch": "^4.3.5"
   }
 }
-
