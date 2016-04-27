@@ -19,7 +19,8 @@
     "mongoose": "*",
     "bcrypt-nodejs": "*",
     "connect-flash": "*",
-    "ejs": "*"
+    "ejs": "*",
+    "method-override": "*"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

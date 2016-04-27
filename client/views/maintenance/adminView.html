@@ -1,20 +1,3 @@
-<!--<form>
-    <div class="form-group">
-        <label for="id">ID</label>
-        <input type="text" id="id" placeholder="Enter id" ng-model="month.id">
-    </div>
-    <div class="form-group">
-        <label for="fullName">Month Full Name</label>
-        <input type="text" id="fullName" placeholder="Month Full Name" ng-model="month.fullName">
-    </div>
-    <div class="form-group">
-        <label for="shortName">Month Short Name</label>
-        <input type="text" id="shortName" placeholder="Month Short Name"ng-model="month.shortName">
-    </div>
-
-    <button type="submit" class="btn btn-default" ng-click="addMonth()">Submit</button>
-</form>-->
-
 <!-------------------->
 <div class="admin-form">
     <form class="form-horizontal" role="form" autocomplete="off">
@@ -28,25 +11,23 @@
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Payment Date</label>
-            <div class='input-group col-sm-2 date' id='datetimepicker1'>
-                <input type='text' class="form-control" name="date" ng-model="maintenance.selectedDate" ng-change="dateChanged()"/>
-                <span class="input-group-addon add-on">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+            <div class="col-md-3">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}"
+                           ng-model="maintenance.paymentDate"
+                           is-open="datePicker.opened"
+                           close-text="Close"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="datePickerOpen()"><i
+                                class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
             </div>
-
-            <script type="text/javascript">
-                (function() {
-                    $('#datetimepicker1').datetimepicker({
-                        format: 'DD/MM/YYYY'
-                    });
-                })();
-
-            </script>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Type</label>
-            <select name="repeatSelect" id="maintenanceType" ng-model="maintenance.type" ng-change="loadTypeCategories()">
+            <select name="repeatSelect" id="maintenanceType" ng-model="maintenance.type"
+                    ng-change="loadTypeCategories()">
                 <option ng-repeat="option in maintenanceType" value="{{option.type}}">{{option.type}}</option>
             </select>
         </div>
@@ -85,7 +66,7 @@
             <tbody>
             <tr ng-repeat="expenses in expensesArr | orderBy : 'period'">
                 <td>{{ expenses.period }}</td>
-                <td>{{ expenses.paymentDate }}</td>
+                <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
                 <td>{{ expenses.amount }}</td>
                 <td>{{ expenses.description }}</td>
                 <td>{{ expenses.category }}</td>
@@ -110,7 +91,7 @@
             <tbody>
             <tr ng-repeat="income in allIncomes | orderBy : 'period'">
                 <td>{{ income.period }}</td>
-                <td>{{ income.paymentDate }}</td>
+                <td>{{ dateFilter(income.paymentDate, format) }}</td>
                 <td>{{ income.amount }}</td>
                 <td>{{ income.description }}</td>
                 <td>{{ income.category }}</td>

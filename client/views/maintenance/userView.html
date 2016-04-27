@@ -13,7 +13,7 @@
         <tbody>
         <tr ng-repeat="expenses in expensesArr | orderBy : 'period'">
             <td>{{ expenses.period }}</td>
-            <td>{{ expenses.paymentDate }}</td>
+            <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
             <td>{{ expenses.amount }}</td>
             <td>{{ expenses.description }}</td>
             <td>{{ expenses.category }}</td>
@@ -38,7 +38,7 @@
         <tbody>
         <tr ng-repeat="income in allIncomes | orderBy : 'period'">
             <td>{{ income.period }}</td>
-            <td>{{ income.paymentDate }}</td>
+            <td>{{ dateFilter(income.paymentDate, format) }}</td>
             <td>{{ income.amount }}</td>
             <td>{{ income.description }}</td>
             <td>{{ income.category }}</td>

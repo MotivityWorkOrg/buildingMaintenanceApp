@@ -7,7 +7,6 @@
     "angular": "latest",
     "angular-ui": "latest",
     "angular-ui-router": "latest",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.37",
     "angular-bootstrap": "latest"
   }
 }

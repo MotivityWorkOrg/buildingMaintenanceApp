@@ -3,7 +3,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var methodOverride = require('method-override');
 var database = require('./config/database');
 var mongoose = require('mongoose');
 // Connect to Local DB
@@ -13,11 +13,8 @@ mongoose.connect(database.remoteUrl);
 var app = express();
 app.set('port', process.env.PORT || 3001);
 
-// building routes ======================================================================
-require('./routes/routes.js')(app);
 
 // view engine setup
-
 app.engine('.html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, '../client')));
@@ -27,6 +24,8 @@ app.set('/views', express.static('views'));
 app.use('/favicon.ico', express.static('favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse application/vnd.api+json as json
+app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(require('express-session')({
@@ -51,6 +50,9 @@ initPassport(passport);
 
 var routes = require('./routes/index')(passport);
 app.use('/user/', routes);
+
+// building routes ======================================================================
+require('./routes/routes.js')(app);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

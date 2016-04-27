@@ -12,8 +12,8 @@ maintenanceModule.config(['$urlRouterProvider', '$stateProvider',
         });
     }
 ]);
-var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building',
-    function ($rootScope, $scope, $http, Building) {
+var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filter',
+    function ($rootScope, $scope, $http, Building, $filter) {
         $scope.data = {};
         $scope.loading = true;
         $scope.month = {};
@@ -22,6 +22,12 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building',
         $scope.maintenance.year = '2016';
         $scope.maintenanceType = [{id: 0, type: 'Expenses'}, {id: 0, type: 'Income'}];
         $scope.typeOfMaintanances = [];
+        $scope.format = 'dd/MM/yyyy';
+        $scope.dateFilter = $filter('date');
+        $scope.paymentDate = new Date();
+        $scope.datePicker = {
+            opened: false
+        };
         //$scope.isAdminLogged =
         //console.log($rootScope.user, $scope.isAdminLogged);
         Building.getExpensesTypes().success(function (data) {
@@ -82,9 +88,8 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building',
             var isValid = $scope.maintenance;
             if (isValid.fullMonth && isValid.year && isValid.type) {
                 isValid.period = isValid.fullMonth + '/' + isValid.year;
-                isValid.createdBy = 'Ravi';
+                isValid.createdBy = $rootScope.user.username;
                 isValid.createdDate = new Date();
-                isValid.paymentDate = new Date();
                 if (isValid.type == "Expenses") {
                     Building.addExpense(isValid);
                     Building.getExpenses().success(function (data) {
@@ -105,14 +110,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building',
             $scope.maintenance.year = new Date().getFullYear();
         };
 
-        $scope.dateChanged = function () {
-            maintenance.date = $('#datetimepicker1').data('date');
-            alert(maintenance.date);
-        };
-
         $scope.isAdminView = function () {
-            //alert(" Is Coming Here    "+ $rootScope.user);
-            //console.log(" << >> ",$rootScope.userInfo, $rootScope.userInfo.roles, window.sessionStorage["userInfo"]);
             return $rootScope.user !== undefined && $rootScope.user.roles !== undefined &&
                 $rootScope.user.roles.toUpperCase() == "ADMIN";
         };
@@ -120,7 +118,12 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building',
         $scope.isUserView = function () {
             return $rootScope.user !== undefined && $rootScope.user.roles !== undefined &&
                 $rootScope.userInfo.roles.toUpperCase() == "USER";
-        }
+        };
+
+        $scope.datePickerOpen = function() {
+            $scope.datePicker.opened = true;
+        };
+
     }];
 
 function addMonthsInfo() {
