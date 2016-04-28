@@ -5,44 +5,57 @@
         <tr>
             <th>Period</th>
             <th>Payment Date</th>
-            <th>Amount</th>
             <th>Description</th>
             <th>Category</th>
+            <th>Amount</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="expenses in expensesArr | orderBy : 'period'">
             <td>{{ expenses.period }}</td>
             <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
-            <td>{{ expenses.amount }}</td>
             <td>{{ expenses.description }}</td>
             <td>{{ expenses.category }}</td>
+            <td>{{ expenses.amount }}</td>
         </tr>
         </tbody>
-
+        <tfoot>
+        <tr>
+            <td text-align="right" colspan="4">Grand Total</td>
+            <td>{{ totalExpenses }}</td>
+        </tr>
+        </tfoot>
     </table>
 </div>
 
 <div class="table-responsive">
     <label>Incomes</label>
-    <table class="table table-hover table-bordered">
-        <thead>
-        <tr>
-            <th>Period</th>
-            <th>Payment Date</th>
-            <th>Amount</th>
-            <th>Description</th>
-            <th>Category</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="income in allIncomes | orderBy : 'period'">
-            <td>{{ income.period }}</td>
-            <td>{{ dateFilter(income.paymentDate, format) }}</td>
-            <td>{{ income.amount }}</td>
-            <td>{{ income.description }}</td>
-            <td>{{ income.category }}</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <label>Incomes</label>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>Period</th>
+                <th>Payment Date</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="income in allIncomes | orderBy : 'period'">
+                <td>{{ income.period }}</td>
+                <td>{{ dateFilter(income.paymentDate, format) }}</td>
+                <td>{{ income.description }}</td>
+                <td>{{ income.category }}</td>
+                <td>{{ income.amount }}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td text-align="right" colspan="4">Grand Total</td>
+                <td>{{ totalIncome }}</td>
+            </tr>
+            </tfoot>
+        </table>
 </div>

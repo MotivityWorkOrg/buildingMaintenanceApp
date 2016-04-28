@@ -25,7 +25,13 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         $scope.format = 'dd/MM/yyyy';
         $scope.dateFilter = $filter('date');
         $scope.paymentDate = new Date();
+        $scope.periodFormat = 'MMMM/yyyy';
+        $scope.maintenance.period = $scope.dateFilter(new Date(), 'MMMM/yyyy');
         $scope.datePicker = {
+            opened: false
+        };
+
+        $scope.periodPicker = {
             opened: false
         };
         //$scope.isAdminLogged =
@@ -53,21 +59,13 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         Building.getExpenses().success(function (data) {
             $scope.expensesArr = {};
             $scope.expensesArr = data;
+            $scope.totalExpenses = calculateTotal(data);
         });
 
         Building.getIncomes().success(function (data) {
             $scope.allIncomes = {};
             $scope.allIncomes = data;
-        });
-
-        Building.getMonthInfo().success(function (data) {
-            $scope.months = data;
-            if (data.length == 0) {
-                var monthArr = addMonthsInfo();
-                monthArr.forEach(function (entry) {
-                    Building.addMonth(entry)
-                });
-            }
+            $scope.totalIncome = calculateTotal(data);
         });
 
         $scope.loadTypeCategories = function () {
@@ -86,8 +84,8 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
 
         $scope.addMonthlyIncomeOrExpenses = function () {
             var isValid = $scope.maintenance;
-            if (isValid.fullMonth && isValid.year && isValid.type) {
-                isValid.period = isValid.fullMonth + '/' + isValid.year;
+            if (isValid.type) {
+                isValid.period = $scope.dateFilter($scope.maintenance.period, 'MMMM/yyyy');
                 isValid.createdBy = $rootScope.user.username;
                 isValid.createdDate = new Date();
                 if (isValid.type == "Expenses") {
@@ -95,6 +93,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                     Building.getExpenses().success(function (data) {
                         $scope.expensesArr = {};
                         $scope.expensesArr = data;
+                        $scope.totalExpenses = calculateTotal(data);
                     });
                 }
                 else {
@@ -102,6 +101,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                     Building.getIncomes().success(function (data) {
                         $scope.allIncomes = {};
                         $scope.allIncomes = data;
+                        $scope.totalIncome = calculateTotal(data);
                     });
                 }
                 console.log(isValid);
@@ -124,71 +124,19 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
             $scope.datePicker.opened = true;
         };
 
+        $scope.periodDatePickerOpen = function () {
+            $scope.periodPicker.opened = true;
+        }
+
     }];
 
-function addMonthsInfo() {
-    return [
-        {
-            id: '1',
-            fullName: 'January',
-            shortName: 'jan'
-        },
-        {
-            id: '2',
-            fullName: 'February',
-            shortName: 'feb'
-        },
-        {
-            id: '3',
-            fullName: 'March',
-            shortName: 'mar'
-        },
-        {
-            id: '4',
-            fullName: 'April',
-            shortName: 'apr'
-        },
-        {
-            id: '5',
-            fullName: 'May',
-            shortName: 'may'
-        },
-        {
-            id: '6',
-            fullName: 'June',
-            shortName: 'jun'
-        },
-        {
-            id: '7',
-            fullName: 'July',
-            shortName: 'jul'
-        },
-        {
-            id: '8',
-            fullName: 'August',
-            shortName: 'aug'
-        },
-        {
-            id: '9',
-            fullName: 'September',
-            shortName: 'sep'
-        },
-        {
-            id: '10',
-            fullName: 'October',
-            shortName: 'oct'
-        },
-        {
-            id: '11',
-            fullName: 'November',
-            shortName: 'nov'
-        },
-        {
-            id: '12',
-            fullName: 'December',
-            shortName: 'dec'
-        }
-    ]
+function calculateTotal(data)
+{
+    var total = 0.0;
+    data.forEach(function (entry) {
+        total += Number(entry.amount);
+    });
+    return total;
 }
 
 function addExpenses() {

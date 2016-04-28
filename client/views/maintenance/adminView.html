@@ -3,26 +3,31 @@
     <form class="form-horizontal" role="form" autocomplete="off">
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Period</label>
-            <select name="repeatSelect" id="selectedMonth" ng-model="maintenance.fullMonth">
-                <option ng-repeat="option in months" value="{{option.fullName}}">{{option.fullName}}</option>
-            </select>
-            <input width="50" type="text" id="year" placeholder="year" ng-model="maintenance.year">
+            <!--<input width="50" type="text" id="year" placeholder="year" ng-model="maintenance.period">-->
+            <p class="input-group col-md-3">
+                <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
+                       ng-model="maintenance.period"
+                       is-open="periodPicker.opened"
+                       close-text="Close"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="periodDatePickerOpen()"><i
+                                class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+            </p>
         </div>
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Payment Date</label>
-            <div class="col-md-3">
-                <p class="input-group">
-                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}"
-                           ng-model="maintenance.paymentDate"
-                           is-open="datePicker.opened"
-                           close-text="Close"/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="datePickerOpen()"><i
-                                class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </p>
-            </div>
+            <p class="input-group col-md-3">
+                <input type="text" class="form-control" uib-datepicker-popup="{{format}}"
+                       ng-model="maintenance.paymentDate"
+                       is-open="datePicker.opened"
+                       close-text="Close"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="datePickerOpen()"><i
+                            class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Type</label>
@@ -47,7 +52,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
-                <button class="btn btn-default" ng-click="addMonthlyIncomeOrExpenses()">Add Expenses</button>
+                <button class="btn btn-default" ng-click="addMonthlyIncomeOrExpenses()">Add</button>
             </div>
         </div>
     </form>
@@ -58,21 +63,26 @@
             <tr>
                 <th>Period</th>
                 <th>Payment Date</th>
-                <th>Amount</th>
                 <th>Description</th>
                 <th>Category</th>
+                <th>Amount</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="expenses in expensesArr | orderBy : 'period'">
                 <td>{{ expenses.period }}</td>
                 <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
-                <td>{{ expenses.amount }}</td>
                 <td>{{ expenses.description }}</td>
                 <td>{{ expenses.category }}</td>
+                <td>{{ expenses.amount }}</td>
             </tr>
             </tbody>
-
+            <tfoot>
+                <tr>
+                    <td text-align="right" colspan="4">Grand Total</td>
+                    <td>{{ totalExpenses }}</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
@@ -83,20 +93,26 @@
             <tr>
                 <th>Period</th>
                 <th>Payment Date</th>
-                <th>Amount</th>
                 <th>Description</th>
                 <th>Category</th>
+                <th>Amount</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="income in allIncomes | orderBy : 'period'">
                 <td>{{ income.period }}</td>
                 <td>{{ dateFilter(income.paymentDate, format) }}</td>
-                <td>{{ income.amount }}</td>
                 <td>{{ income.description }}</td>
                 <td>{{ income.category }}</td>
+                <td>{{ income.amount }}</td>
             </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td text-align="right" colspan="4">Grand Total</td>
+                    <td>{{ totalIncome }}</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>
