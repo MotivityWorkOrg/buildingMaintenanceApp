@@ -57,31 +57,29 @@
         </div>
     </form>
     <div class="table-responsive">
-        <label>Expenses</label>
+        <label>Expenses of {{ expenses.period }</label>
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th>Period</th>
                 <th>Payment Date</th>
-                <th>Description</th>
                 <th>Category</th>
                 <th>Amount</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="expenses in expensesArr | orderBy : 'period'">
-                <td>{{ expenses.period }}</td>
+            <tr ng-repeat="expenses in expensesArr">
                 <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
-                <td>{{ expenses.description }}</td>
-                <td>{{ expenses.category }}</td>
+                <td data-toggle="tooltip" data-original-title="{{expenses.description}}" tooltip-loader>{{
+                    expenses.category }}
+                </td>
                 <td>{{ expenses.amount }}</td>
             </tr>
             </tbody>
             <tfoot>
-                <tr>
-                    <td text-align="right" colspan="4">Grand Total</td>
-                    <td>{{ totalExpenses }}</td>
-                </tr>
+            <tr>
+                <td text-align="right" colspan="2">Grand Total</td>
+                <td>{{ totalExpenses }}</td>
+            </tr>
             </tfoot>
         </table>
     </div>
@@ -108,10 +106,10 @@
             </tr>
             </tbody>
             <tfoot>
-                <tr>
-                    <td text-align="right" colspan="4">Grand Total</td>
-                    <td>{{ totalIncome }}</td>
-                </tr>
+            <tr>
+                <td text-align="right" colspan="4">Grand Total</td>
+                <td>{{ totalIncome }}</td>
+            </tr>
             </tfoot>
         </table>
     </div>

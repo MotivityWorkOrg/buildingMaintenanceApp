@@ -12,6 +12,17 @@ maintenanceModule.config(['$urlRouterProvider', '$stateProvider',
         });
     }
 ]);
+
+maintenanceModule.directive('tooltipLoader', function () {
+    return function (scope, element, attrs) {
+        element.tooltip({
+            trigger: "hover",
+            placement: "top",
+            delay: {show: 1000, hide: 0}
+        });
+    };
+});
+
 var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filter',
     function ($rootScope, $scope, $http, Building, $filter) {
         $scope.data = {};
@@ -120,7 +131,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                 $rootScope.userInfo.roles.toUpperCase() == "USER";
         };
 
-        $scope.datePickerOpen = function() {
+        $scope.datePickerOpen = function () {
             $scope.datePicker.opened = true;
         };
 
@@ -130,8 +141,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
 
     }];
 
-function calculateTotal(data)
-{
+function calculateTotal(data) {
     var total = 0.0;
     data.forEach(function (entry) {
         total += Number(entry.amount);
