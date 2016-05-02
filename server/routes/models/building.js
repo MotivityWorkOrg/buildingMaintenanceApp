@@ -36,6 +36,7 @@ var IncomeSchema = new mongoose.Schema({
     amount: String,
     description: String,
     category:String,
+    flatNo:String,
     createdBy:String,
     updatedBy:String,
     createdDate:Date,

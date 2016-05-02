@@ -1,6 +1,4 @@
-/**
- * Created by gharsha on 4/26/2016.
- */
+
 (function() {
     'use strict';
     var gulp = require('gulp'),
@@ -26,7 +24,7 @@
             })
             .pipe(watch({
                 emit: 'all'
-            }))
+            }));
         watch(_paths, livereload.changed);
     });
 //lint js files

@@ -31,15 +31,30 @@
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Type</label>
-            <select name="repeatSelect" id="maintenanceType" ng-model="maintenance.type"
-                    ng-change="loadTypeCategories()">
-                <option ng-repeat="option in maintenanceType" value="{{option.type}}">{{option.type}}</option>
+            <select name="repeatSelect" id="maintenanceType" ng-model="maintenance.maintenanceType"
+                    ng-options="value.id as value.type for value in maintenanceType">
+                <option value="">- - Select Type - -</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-show="maintenance.maintenanceType === 1">
             <label class="control-label col-sm-2" for="id">Category</label>
-            <select name="repeatSelect" id="typeOfMaintenance" ng-model="maintenance.category">
-                <option ng-repeat="option in typeOfMaintanances" value="{{option.type}}">{{option.type}}</option>
+            <select name="repeatSelect" id="listOfExpenses" ng-model="maintenance.category"
+                    ng-options="value._id as value.type for value in listOfExpenses ">
+                <option value="">-- Select Category --</option>
+            </select>
+        </div>
+        <div class="form-group" ng-show="maintenance.maintenanceType === 2">
+            <label class="control-label col-sm-2" for="id">Category</label>
+            <select name="repeatSelect" id="listOfIncomes" ng-model="maintenance.category"
+                    ng-options="value._id as value.type for value in listOfIncomes ">
+                <option value="">-- Select Category --</option>
+            </select>
+        </div>
+        <div class="form-group" ng-show="maintenance.maintenanceType === 2">
+            <label class="control-label col-sm-2" for="flat">Flat Number</label>
+            <select name="repeatSelect" id="flat" ng-model="maintenance.flat"
+                    ng-options="value.id as value.flatNo for value in allFlats">
+                <option value="">-- Select Flat --</option>
             </select>
         </div>
         <div class="form-group">
@@ -48,17 +63,18 @@
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Comments</label>
-            <input type="text" id="id" placeholder="Enter Comments" ng-model="maintenance.comments">
+            <input type="text" id="id" placeholder="Enter Comments" ng-model="maintenance.description">
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
                 <button class="btn btn-default" ng-click="addMonthlyIncomeOrExpenses()">Add</button>
+                <button class="btn btn-danger" ng-click="refreshForm()">Cancel</button>
             </div>
         </div>
     </form>
     <div class="table-responsive">
-        <label>Expenses of {{ expenses.period }</label>
-        <table class="table table-hover table-bordered">
+        <label>Expenses of {{ dateFilter(maintenance.period, periodFormat) }}</label>
+        <table id="expenses" class="table table-hover table-bordered">
             <thead>
             <tr>
                 <th>Payment Date</th>
@@ -67,7 +83,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="expenses in expensesArr">
+            <tr ng-repeat="expenses in expensesArr" ng-dblclick="modifyData(expenses, 'Expenses')">
                 <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
                 <td data-toggle="tooltip" data-original-title="{{expenses.description}}" tooltip-loader>{{
                     expenses.category }}
@@ -85,29 +101,26 @@
     </div>
 
     <div class="table-responsive">
-        <label>Incomes</label>
+        <label>Incomes of {{ dateFilter(maintenance.period, periodFormat) }}</label>
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th>Period</th>
                 <th>Payment Date</th>
-                <th>Description</th>
                 <th>Category</th>
                 <th>Amount</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="income in allIncomes | orderBy : 'period'">
-                <td>{{ income.period }}</td>
+            <tr ng-repeat="income in allIncomes" ng-dblclick="modifyData(income, 'Incomes')">
                 <td>{{ dateFilter(income.paymentDate, format) }}</td>
-                <td>{{ income.description }}</td>
-                <td>{{ income.category }}</td>
+                <td data-toggle="tooltip" data-original-title="{{income.description}}" tooltip-loader>{{
+                    income.category }}
                 <td>{{ income.amount }}</td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td text-align="right" colspan="4">Grand Total</td>
+                <td text-align="right" colspan="2">Grand Total</td>
                 <td>{{ totalIncome }}</td>
             </tr>
             </tfoot>
