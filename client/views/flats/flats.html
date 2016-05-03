@@ -50,20 +50,20 @@
     <label>Flats Details</label>
     <table class="table table-hover table-bordered">
         <thead>
-            <tr>
-                <th>Flat No</th>
-                <th>Owner Name</th>
-                <th>Phone Number</th>
-                <th>E-Mail Id</th>
-            </tr>
+        <tr>
+            <th>Flat No</th>
+            <th>Owner Name</th>
+            <th>Phone Number</th>
+            <th>E-Mail Id</th>
+        </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="flat in flats">
-                <td>{{ flat._id }}</td>
-                <td>{{ flat.ownerName }}</td>
-                <td>{{ flat.phoneNumber }}</td>
-                <td>{{ flat.emailId }}</td>
-            </tr>
+        <tr ng-repeat="flat in flats | orderBy : '_id'">
+            <td>{{ flat._id }}</td>
+            <td>{{ flat.ownerName === undefined ? flat.tenantName : flat.ownerName }}</td>
+            <td>{{ flat.phoneNumber }}</td>
+            <td>{{ flat.emailId }}</td>
+        </tr>
         </tbody>
     </table>
 </div>

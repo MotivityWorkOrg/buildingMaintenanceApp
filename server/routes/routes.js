@@ -1,4 +1,5 @@
 var BuildingInfo = require('./models/building');
+var mongoose = require('mongoose');
 
 function getPopulateExpenses(res) {
     BuildingInfo.Expenses.find(function (err, expenses) {
@@ -73,6 +74,7 @@ function getSavedExpenses(res) {
 }
 
 function getAllFlatsInfo(res) {
+    //console.log('Find Mongoose Collection ... ',mongoose.connection.db.collection);
     BuildingInfo.Flat.find(function (err, flats) {
         if (err) {
             res.send(err);
@@ -83,7 +85,7 @@ function getAllFlatsInfo(res) {
     });
 }
 
-function getTenantInfo() {
+function getTenantInfo(res) {
     BuildingInfo.Tenant.find(function (err, tenant) {
         if (err) {
             res.send(err);
@@ -262,7 +264,7 @@ module.exports = function (app) {
     });
 
     app.get('/api/tenant', function (req, res) {
-        getTenantInfo();
+        getTenantInfo(res);
     });
 
     /*app.create('/api/buildingMaintenance', function (req, res) {

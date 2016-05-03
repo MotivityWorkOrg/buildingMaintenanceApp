@@ -15,7 +15,7 @@ flatModule.config(['$urlRouterProvider', '$stateProvider',
 
 var FlatsController = ['$scope', 'Building', function ($scope, Building) {
     $scope.flat = {};
-    $scope.flats = {};
+    $scope.flats = [];
     $scope.addFlat = function () {
         var flatDetail = $scope.flat;
         flatDetail.ownerName = $scope.flat.firstName + " " + $scope.flat.lastName;
@@ -40,7 +40,15 @@ var FlatsController = ['$scope', 'Building', function ($scope, Building) {
     };
 
     Building.getFlats().success(function (data) {
-        $scope.flats = data;
-        console.log(" Saved Flats :::  ", data)
+        data.forEach(function (entry) {
+            if(entry.isOccupied)
+                $scope.flats.push(entry);
+        });
     });
+
+    Building.getTenants().success(function(data){
+        data.forEach(function (entry) {
+            $scope.flats.push(entry);
+        });
+    })
 }];
