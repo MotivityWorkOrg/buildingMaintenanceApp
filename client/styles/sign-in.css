@@ -6,23 +6,17 @@ Bootstrap Admin Template by EGrappler.com
 
 
 /** Base Body Styles **/
-body{ background: url(../img/body-bg.png); color:#838383; font: 13px/1.7em 'Open Sans';}
 
 
 .account-container {
 	width: 380px; 
 	display: block;
-	margin: 60px auto 0 auto;
-	
+	margin: 60px auto 0px auto;
 	background: #f9f9f9;
-	
 	border: 1px solid #d5d5d5;
-	
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-
-	box-shadow:  1px 1px 2px #dadada, inset 1px -3px 1px #e6e6e6;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 }
 
 .content {
@@ -42,15 +36,14 @@ body{ background: url(../img/body-bg.png); color:#838383; font: 13px/1.7em 'Open
 }
 
 .login-fields input {
-	font-family: 'Open Sans';
 	font-size: 13px;
 	color: #8e8d8d;
-	padding: 11px 15px 10px 50px;
+	padding: 8px 15px 8px 50px;
 	background-color: #fdfdfd;
-	width: 255px;
-	display: block;
+	border:1px solid #d4d4d4;
 	margin: 0;
 	box-shadow: inset 2px 2px 4px #f1f1f1;
+	width: 100%;
 }
 
 .username-field { background: url(../img/signin/user.png) no-repeat; }
@@ -125,7 +118,7 @@ span.login-checkbox > input[type='checkbox']:checked + label {
 
 .account-container h1 {
 	margin-bottom: .4em;
-	
+	margin-top:0px;
 	color: #525252;
 }
 
@@ -222,12 +215,20 @@ span.login-checkbox > input[type='checkbox']:checked + label {
 @media (max-width: 480px) {
 	
 	.account-container {
-		width: 280px;	
-		margin-top: 35px;
+		width: 100%;
+		margin-top: 10%;
 	}
-	
+	.span.login-checkbox {
+		margin-bottom: 15px;
+	}
+	span.login-checkbox {
+		margin-top: 15px;
+	}
+	.login-actions {
+		margin-bottom: 0px;
+	}
 	.login-fields input {
-		width: 160px;
+		width: 100%;
 	}
 	
 	.login-social {

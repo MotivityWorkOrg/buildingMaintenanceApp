@@ -1,0 +1,55 @@
+
+.navbar h1 {
+    float:left;
+    margin:0px;
+}
+.navbar .nav-collapse {
+    float:right;
+}
+.navbar h1 .brand {
+    color: #ffffff;
+}
+.navbar h1 .brand:hover {
+    text-decoration: none;
+}
+.navbar h1 .brand:active, .navbar h1 .brand:focus, .navbar .nav-collapse a:active, .navbar .nav-collapse a:focus {
+     outline: none;
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    background: none;
+}
+.navbar-inner {
+    padding:15px 0px 20px;
+}
+.btn-success {
+    background-color: #00ba8b;
+    border-color: #00ba8b;
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size:24px;
+        margin-top: 0px;
+    }
+    .navbar .nav-collapse {
+        clear: none;
+        overflow: hidden;
+        height: auto;
+    }
+    .navbar .nav-collapse a {
+        color: #ffffff;
+    }
+    .navbar .nav {
+        margin-bottom: 0px;
+    }
+
+}
+@media (max-width: 979px) {
+    .navbar .nav-collapse {
+        clear: none;
+        height: auto;
+    }
+    .navbar .nav > li > a:hover {
+        background: none;
+    }
+}
