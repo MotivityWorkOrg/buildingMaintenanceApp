@@ -1,6 +1,7 @@
 var BuildingInfo = require('./models/building');
+var mongoose = require('mongoose');
 
-function getPopulateExpenses(res){
+function getPopulateExpenses(res) {
     BuildingInfo.Expenses.find(function (err, expenses) {
         // if there is an error retrieving, send the error. nothing after res.send(err) will execute
         if (err) {
@@ -13,10 +14,10 @@ function getPopulateExpenses(res){
     });
 }
 
-function getPopulateMonths(res){
+function getPopulateMonths(res) {
     //var monthsModel = mongoose.model('months');
-    BuildingInfo.Months.find(function(err, months){
-        if(err){
+    BuildingInfo.Months.find(function (err, months) {
+        if (err) {
             res.send(err);
             console.log("The 'months' collection doesn't exist. Creating it with sample data...");
             //populateMonths();
@@ -27,9 +28,9 @@ function getPopulateMonths(res){
 }
 
 
-function getPopulateExpensesTypes(res){
-    BuildingInfo.ExpensesTypes.find(function(err, expensesTypes){
-        if(err){
+function getPopulateExpensesTypes(res) {
+    BuildingInfo.ExpensesTypes.find(function (err, expensesTypes) {
+        if (err) {
             res.send(err);
             console.log("The 'ExpensesTypes' collection doesn't exist. Creating it with sample data...");
         }
@@ -39,9 +40,9 @@ function getPopulateExpensesTypes(res){
 }
 
 
-function getPopulateIncomeTypes(res){
-    BuildingInfo.IncomeTypes.find(function(err, incomeTypes){
-        if(err){
+function getPopulateIncomeTypes(res) {
+    BuildingInfo.IncomeTypes.find(function (err, incomeTypes) {
+        if (err) {
             res.send(err);
             console.log("The 'IncomeTypes' collection doesn't exist. Creating it with sample data...");
         }
@@ -50,9 +51,9 @@ function getPopulateIncomeTypes(res){
     });
 }
 
-function getSavedIncomes(res){
-    BuildingInfo.Income.find(function(err, incomes){
-        if(err){
+function getSavedIncomes(res) {
+    BuildingInfo.Income.find(function (err, incomes) {
+        if (err) {
             res.send(err);
             console.log("The 'incomes' collection doesn't exist. Creating it with sample data...");
         }
@@ -61,9 +62,9 @@ function getSavedIncomes(res){
     });
 }
 
-function getSavedExpenses(res){
-    BuildingInfo.Expenses.find(function(err, expenses){
-        if(err){
+function getSavedExpenses(res) {
+    BuildingInfo.Expenses.find(function (err, expenses) {
+        if (err) {
             res.send(err);
             console.log("The 'expenses' collection doesn't exist. Creating it with sample data...");
         }
@@ -72,9 +73,10 @@ function getSavedExpenses(res){
     });
 }
 
-function getAllFlatsInfo(res){
-    BuildingInfo.Flat.find(function (err, flats){
-        if(err){
+function getAllFlatsInfo(res) {
+    //console.log('Find Mongoose Collection ... ',mongoose.connection.db.collection);
+    BuildingInfo.Flat.find(function (err, flats) {
+        if (err) {
             res.send(err);
             console.log("The 'Flats' collection doesn't exist. Creating it with sample data...");
         }
@@ -83,9 +85,9 @@ function getAllFlatsInfo(res){
     });
 }
 
-function getTenantInfo(){
-    BuildingInfo.Tenant.find(function (err, tenant){
-        if(err){
+function getTenantInfo(res) {
+    BuildingInfo.Tenant.find(function (err, tenant) {
+        if (err) {
             res.send(err);
             console.log("The 'Tenant' collection doesn't exist. Creating it with sample data...");
         }
@@ -98,20 +100,16 @@ module.exports = function (app) {
 
     // api ---------------------------------------------------------------------
     // get all maintenance
-    /*app.get('/api/expensesInfo', function (req, res) {
-        // use mongoose to get all buildingInformation in the database
-        getPopulateExpenses(res);
-    });*/
 
     app.get('/api/expensesInfo', function (req, res) {
         getPopulateExpenses(res);
     });
 
-    app.get('/api/months', function(req, res){
-       getPopulateMonths(res);
+    app.get('/api/months', function (req, res) {
+        getPopulateMonths(res);
     });
 
-    app.post('/api/addMonth', function(req, res){
+    app.post('/api/addMonth', function (req, res) {
         // create a information comes from AJAX request from Angular
         BuildingInfo.Months.create({
             _id: req.body.id,
@@ -120,53 +118,75 @@ module.exports = function (app) {
         }, function (err, month) {
             if (err)
                 res.send(err);
-            console.log("Inserted Month is+++ ", month);
             // get and return all the Months after you create another
-            getPopulateMonths(res);
+            res.send(month)
         });
     });
 
     app.post('/api/addExpense', function (req, res) {
-        console.log("Expenses Request ++ ",req.body);
         BuildingInfo.Expenses.create({
             paymentDate: req.body.paymentDate,
             amount: req.body.amount,
-            description:req.body.comments,
-            category:req.body.category,
-            period:req.body.period,
-            createdDate:req.body.createdDate,
-            createdBy:req.body.createdBy
+            description: req.body.description,
+            category: req.body.category,
+            period: req.body.period,
+            createdDate: req.body.createdDate,
+            createdBy: req.body.createdBy
         }, function (err, expense) {
             if (err)
                 res.send(err);
             //console.log("Inserted Expense is+++ ",expense);
-           getPopulateExpenses(res);
+            res.send(expense);
         });
     });
 
-    app.post('/api/addIncome', function(req, res){
-        console.log("Expenses Request ++ ",req.body);
+    app.post('/api/updateExpenses', function (req, res) {
+        BuildingInfo.Expenses.findOneAndUpdate(
+            {_id: req.body.objectId},
+            req.body,
+            function (err, expense) {
+                if (err)
+                    res.send(err);
+                //console.log("Inserted Expense is+++ ",expense);
+                res.send(expense);
+            });
+    });
+
+    app.post('/api/addIncome', function (req, res) {
         BuildingInfo.Income.create({
             paymentDate: req.body.paymentDate,
             amount: req.body.amount,
-            description:req.body.comments,
-            category:req.body.category,
-            period:req.body.period,
-            createdDate:req.body.createdDate,
-            createdBy:req.body.createdBy
+            description: req.body.description,
+            category: req.body.category,
+            period: req.body.period,
+            createdDate: req.body.createdDate,
+            flatNo: req.body.flat,
+            createdBy: req.body.createdBy
         }, function (err, income) {
             if (err)
                 res.send(err);
             //console.log("Inserted Expense is+++ ",income);
-            getPopulateIncomeTypes(res);
+            res.send(income);
         });
     });
 
-    app.get('/api/incomes', function(req, res){
+    app.post('/api/updateIncome', function (req, res) {
+        BuildingInfo.Income.findOneAndUpdate(
+            {_id: req.body.objectId},
+            req.body,
+            function (err, income) {
+                if (err)
+                    res.send(err);
+                //console.log("Inserted Expense is+++ ",income);
+                res.send(income);
+            });
+    });
+
+    app.get('/api/incomes', function (req, res) {
         getSavedIncomes(res);
     });
 
-    app.get('/api/expenses', function(req, res){
+    app.get('/api/expenses', function (req, res) {
         getSavedExpenses(res);
     });
 
@@ -183,80 +203,104 @@ module.exports = function (app) {
             _id: req.body.id,
             type: req.body.type
         }, function (err, expense) {
-            if (err){
+            if (err) {
                 res.send(err);
             }
-            getPopulateExpensesTypes(res);
+            res.send(expense);
         });
     });
 
-    app.post('/api/addIncomeType', function (req, res){
+    app.post('/api/addIncomeType', function (req, res) {
         BuildingInfo.IncomeTypes.create({
             _id: req.body.id,
             type: req.body.type
-        }, function (err, expense) {
-            if (err){
+        }, function (err, incomeType) {
+            if (err) {
                 res.send(err);
             }
-            getPopulateIncomeTypes(res);
+            res.send(incomeType);
         });
     });
 
-    app.post('/api/addFlat', function(req, res){
-        console.log("Getting Flat Req Body..  ", req.body);
+    app.post('/api/addFlat', function (req, res) {
+        //console.log("Getting Flat Req Body..  ", req.body);
         BuildingInfo.Flat.create({
-            _id: req.body.flatNumber,
-            ownerName: req.body.ownerName,
-            phoneNumber: req.body.phoneNumber,
-            altNumber: req.body.altNumber,
-            emailId:req.body.emailId,
-            isOccupied: req.body.isOccupied,
-            tenant: req.body.tenant.flatNumber,
-            createdBy: req.body.createdBy,
-            createdDate: req.body.createdDate
-        }, function(err, flat){
-            if (err){
+            _id: req.body.flat.flatNumber,
+            ownerName: req.body.flat.ownerName,
+            phoneNumber: req.body.flat.phoneNumber,
+            altNumber: req.body.flat.altNumber,
+            emailId: req.body.flat.emailId,
+            isOccupied: req.body.flat.isOccupied,
+            tenant: req.body.flat.flatNumber,
+            createdBy: req.body.flat.createdBy,
+            createdDate: req.body.flat.createdDate
+        }, function (err, flat) {
+            if (err) {
                 res.send(err);
             }
-            //getAllFlatsInfo(res);
+            res.send(flat);
         });
-        if(!req.body.isOccupied){
+        if (!req.body.isOccupied) {
             //console.log("In Tenant Info +++ ", req.body.tenant);
             BuildingInfo.Tenant.create({
                 _id: req.body.tenant.flatNumber,
-                tenantName: req.body.tenant.ownerName,
+                tenantName: req.body.tenant.tenantName,
                 phoneNumber: req.body.tenant.phoneNumber,
                 altNumber: req.body.tenant.altNumber,
                 emailId: req.body.tenant.emailId,
                 createdBy: req.body.tenant.createdBy,
                 createdDate: req.body.tenant.createdDate
-            }, function(err, tenant){
-                if (err){
+            }, function (err, tenant) {
+                if (err) {
                     res.send(err);
                 }
+                res.send(tenant);
             });
         }
     });
 
-    app.get('/api/flats', function(req, res){
+    app.post('/api/updateFlat', function (req, res) {
+        console.log("Getting Flat Req Body..  ", req.body);
+        BuildingInfo.Flat.findOneAndUpdate({_id: req.body.flat.flatNumber},
+            req.body.flat,
+            function (err, flat) {
+                if (err)
+                    res.send(err);
+                res.send(flat);
+            }
+        );
+        if (!req.body.isOccupied) {
+            console.log("In Tenant Info +++ ", req.body.tenant);
+            BuildingInfo.Tenant.findOneAndUpdate({_id: req.body.tenant.flatNumber},
+                req.body.tenant,
+                function (err, tenant) {
+                    if (err)
+                        res.send(err);
+                    res.send(tenant);
+                }
+            )
+        }
+    });
+
+    app.get('/api/flats', function (req, res) {
         getAllFlatsInfo(res);
     });
 
     app.get('/api/tenant', function (req, res) {
-        getTenantInfo();
+        getTenantInfo(res);
     });
 
     /*app.create('/api/buildingMaintenance', function (req, res) {
-        
-    });
 
-    app.update('/api/buildingMaintenance', function (req, res) {
-        
-    });
-    
-    app.delete('/api/buildingMaintenance/:flatId', function (req, res) {
+     });
 
-    })*/
+     app.update('/api/buildingMaintenance', function (req, res) {
+
+     });
+
+     app.delete('/api/buildingMaintenance/:flatId', function (req, res) {
+
+     })*/
 };
 
 /**
@@ -264,4 +308,4 @@ module.exports = function (app) {
  * Populate database with sample data -- Only used once: the first time the application is started.
  * You'd typically not find this code in a real-life app, since the database would already exist.
  *
-**/
+ **/

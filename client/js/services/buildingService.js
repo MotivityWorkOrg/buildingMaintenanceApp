@@ -62,6 +62,14 @@ angular.module('buildingService', [])
 				return $http.post('/api/addIncomeType', type);
 			},
 
+			updateIncome:function(type){
+				return $http.post('/api/updateIncome', type);
+			},
+
+			updateExpenses:function(type){
+				return $http.post('/api/updateExpenses', type);
+			},
+
 			getFlats: function(){
 				return $http.get('/api/flats');
 			},
@@ -80,7 +88,10 @@ angular.module('buildingService', [])
 
 			getUser: function(){
 				return $http.get('api/loginUser');
-			}
+			},
 
+			updateFlat: function(flat){
+				return $http.post('/api/updateFlat', flat);
+			}
 		}
 	}]);

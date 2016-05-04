@@ -14,7 +14,6 @@ angular.module('authService', [])
                 });
 
                 function isLoggedIn() {
-                    console.log("Logged User is ...  ", user);
                     return user;
                 }
 
@@ -43,7 +42,6 @@ angular.module('authService', [])
                                 $rootScope.user = data.user;
                                 window.sessionStorage["userInfo"] = JSON.stringify(data.user);
                                 $rootScope.userInfo = JSON.parse(window.sessionStorage["userInfo"]);
-                                console.log("Logged User is ++ ", $rootScope.user, $rootScope.userInfo);
                                 deferred.resolve();
                             } else {
                                 user = false;
