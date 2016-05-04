@@ -88,6 +88,10 @@ angular.module('buildingService', [])
 
 			getUser: function(){
 				return $http.get('api/loginUser');
+			},
+
+			updateFlat: function(flat){
+				return $http.post('/api/updateFlat', flat);
 			}
 		}
 	}]);

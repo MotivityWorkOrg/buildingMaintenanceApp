@@ -223,17 +223,17 @@ module.exports = function (app) {
     });
 
     app.post('/api/addFlat', function (req, res) {
-        console.log("Getting Flat Req Body..  ", req.body);
+        //console.log("Getting Flat Req Body..  ", req.body);
         BuildingInfo.Flat.create({
-            _id: req.body.flatNumber,
-            ownerName: req.body.ownerName,
-            phoneNumber: req.body.phoneNumber,
-            altNumber: req.body.altNumber,
-            emailId: req.body.emailId,
-            isOccupied: req.body.isOccupied,
-            tenant: req.body.tenant.flatNumber,
-            createdBy: req.body.createdBy,
-            createdDate: req.body.createdDate
+            _id: req.body.flat.flatNumber,
+            ownerName: req.body.flat.ownerName,
+            phoneNumber: req.body.flat.phoneNumber,
+            altNumber: req.body.flat.altNumber,
+            emailId: req.body.flat.emailId,
+            isOccupied: req.body.flat.isOccupied,
+            tenant: req.body.flat.flatNumber,
+            createdBy: req.body.flat.createdBy,
+            createdDate: req.body.flat.createdDate
         }, function (err, flat) {
             if (err) {
                 res.send(err);
@@ -244,7 +244,7 @@ module.exports = function (app) {
             //console.log("In Tenant Info +++ ", req.body.tenant);
             BuildingInfo.Tenant.create({
                 _id: req.body.tenant.flatNumber,
-                tenantName: req.body.tenant.ownerName,
+                tenantName: req.body.tenant.tenantName,
                 phoneNumber: req.body.tenant.phoneNumber,
                 altNumber: req.body.tenant.altNumber,
                 emailId: req.body.tenant.emailId,
@@ -256,6 +256,29 @@ module.exports = function (app) {
                 }
                 res.send(tenant);
             });
+        }
+    });
+
+    app.post('/api/updateFlat', function (req, res) {
+        console.log("Getting Flat Req Body..  ", req.body);
+        BuildingInfo.Flat.findOneAndUpdate({_id: req.body.flat.flatNumber},
+            req.body.flat,
+            function (err, flat) {
+                if (err)
+                    res.send(err);
+                res.send(flat);
+            }
+        );
+        if (!req.body.isOccupied) {
+            console.log("In Tenant Info +++ ", req.body.tenant);
+            BuildingInfo.Tenant.findOneAndUpdate({_id: req.body.tenant.flatNumber},
+                req.body.tenant,
+                function (err, tenant) {
+                    if (err)
+                        res.send(err);
+                    res.send(tenant);
+                }
+            )
         }
     });
 
