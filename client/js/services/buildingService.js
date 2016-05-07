@@ -1,97 +1,88 @@
 angular.module('buildingService', [])
 
-	// super simple service
-	// each function returns a promise object 
-	.factory('Building', ['$http',function($http) {
-		return {
-			/*get : function() {
-				return $http.get('/api/buildingInfo');
-			},*/
-			create : function(maintenanceData) {
-				return $http.post('/api/buildingMaintenance', maintenanceData);
-			},
-			delete : function(id) {
-				return $http.delete('/api/buildingMaintenance/' + id);
-			},
-			
-			update: function (maintenanceData) {
-				return $http.post('/api/buildingMaintenance', maintenanceData);
-			},
+    // super simple service
+    // each function returns a promise object
+    .factory('Building', ['$http', function ($http) {
+        return {
+            /*get : function() {
+             return $http.get('/api/buildingInfo');
+             },*/
+            create: function (maintenanceData) {
+                return $http.post('/api/buildingMaintenance', maintenanceData);
+            },
+            delete: function (id) {
+                return $http.delete('/api/buildingMaintenance/' + id);
+            },
 
-			expenses: function(){
-				return $http.get('/api/expensesInfo');
-			},
+            update: function (maintenanceData) {
+                return $http.post('/api/buildingMaintenance', maintenanceData);
+            },
 
-			getMonthInfo: function () {
-				return $http.get('/api/months');
-			},
+            expenses: function () {
+                return $http.get('/api/expensesInfo');
+            },
 
-			addMonth:function(monthData){
-				return $http.post('/api/addMonth', monthData);
-			},
+            addExpense: function (expense) {
+                return $http.post('/api/addExpense', expense);
+            },
 
-			addExpense: function (expense) {
-				return $http.post('/api/addExpense', expense);
-			},
+            addIncome: function (income) {
+                return $http.post('/api/addIncome', income);
+            },
 
-			addIncome: function (income) {
-				return $http.post('/api/addIncome', income);
-			},
+            getIncomes: function (selectedPeriod) {
+                return $http.get('/api/incomes', {params: {period: selectedPeriod}});
+            },
 
-			getIncomes: function () {
-				return $http.get('/api/incomes');
-			},
+            getExpenses: function (selectedPeriod) {
+                return $http.get('/api/expenses', {params: {period: selectedPeriod}});
+            },
 
-			getExpenses:function(){
-				return $http.get('/api/expenses');
-			},
+            getExpensesTypes: function () {
+                return $http.get('/api/expensesTypes');
+            },
 
-			getExpensesTypes: function () {
-				return $http.get('/api/expensesTypes');
-			},
+            getIncomeTypes: function () {
+                return $http.get('/api/incomeTypes');
+            },
 
-			getIncomeTypes: function () {
-				return $http.get('/api/incomeTypes');
-			},
+            addExpensesTypes: function (type) {
+                return $http.post('/api/addExpensesType', type);
+            },
 
-			addExpensesTypes: function(type){
-				return $http.post('/api/addExpensesType', type);
-			},
+            addIncomeTypes: function (type) {
+                return $http.post('/api/addIncomeType', type);
+            },
 
-			addIncomeTypes: function(type){
-				return $http.post('/api/addIncomeType', type);
-			},
+            updateIncome: function (type) {
+                return $http.post('/api/updateIncome', type);
+            },
 
-			updateIncome:function(type){
-				return $http.post('/api/updateIncome', type);
-			},
+            updateExpenses: function (type) {
+                return $http.post('/api/updateExpenses', type);
+            },
 
-			updateExpenses:function(type){
-				return $http.post('/api/updateExpenses', type);
-			},
+            getFlats: function () {
+                return $http.get('/api/flats');
+            },
 
-			getFlats: function(){
-				return $http.get('/api/flats');
-			},
+            addFlat: function (flat) {
+                return $http.post('/api/addFlat', flat);
+            },
 
-			addFlat: function(flat){
-				return $http.post('/api/addFlat', flat);
-			},
+            getTenants: function () {
+                return $http.get('/api/tenant');
+            },
 
-			getTenants: function(){
-				return $http.get('/api/tenant');
-			},
+            updateFlat: function (flat) {
+                return $http.post('/api/updateFlat', flat);
+            },
+            deleteExpense: function (id) {
+                return $http.delete('/api/deleteExpense', {params: {itemId: id}});
+            },
 
-			addUser: function(registerForm){
-				return $http.post('/api/registerUser', registerForm);
-			},
-
-			getUser: function(){
-				return $http.get('api/loginUser');
-			},
-
-			updateFlat: function(flat){
-				return $http.post('/api/updateFlat', flat);
-			}
-		}
-	}]);
+            deleteIncome: function (id) {
+                return $http.delete('/api/deleteIncome', {params: {itemId: id}});
+            }
+        }
+    }]);

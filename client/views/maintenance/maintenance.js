@@ -1,5 +1,7 @@
 var maintenanceModule = angular.module('main', []);
-var savedDataId = {};
+var itemId = '';
+var currentCategory = '';
+var selectedPeriod = '';
 maintenanceModule.config(['$urlRouterProvider', '$stateProvider',
     function ($urlRouterProvider, $stateProvider) {
         $stateProvider.state('main', {
@@ -23,8 +25,8 @@ maintenanceModule.directive('tooltipLoader', function () {
     };
 });
 
-var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filter',
-    function ($rootScope, $scope, $http, Building, $filter) {
+var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filter', '$uibModal',
+    function ($rootScope, $scope, $http, Building, $filter, $uibModal) {
         $scope.data = {};
         $scope.loading = true;
         $scope.month = {};
@@ -39,7 +41,8 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         $scope.periodFormat = 'MMMM/yyyy';
         $scope.maintenance.period = new Date();
         $scope.allFlats = getFlats();
-
+        $scope.animationsEnabled = true;
+        selectedPeriod = $scope.dateFilter(new Date(), 'MMMM/yyyy');
         $scope.datePicker = {
             opened: false
         };
@@ -69,16 +72,18 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
             }
         });
 
-        Building.getExpenses().success(function (data) {
+        Building.getExpenses(selectedPeriod).success(function (data) {
             $scope.expensesArr = {};
             $scope.expensesArr = data;
             $scope.totalExpenses = calculateTotal(data);
+            $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
         });
 
-        Building.getIncomes().success(function (data) {
+        Building.getIncomes(selectedPeriod).success(function (data) {
             $scope.allIncomes = {};
             $scope.allIncomes = data;
             $scope.totalIncome = calculateTotal(data);
+            $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
         });
 
         $scope.loadTypeCategories = function () {
@@ -97,12 +102,16 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
 
         $scope.addMonthlyIncomeOrExpenses = function () {
             var maintenanceInfo = $scope.maintenance;
-            if (isValidForm(maintenanceInfo)) {
+            if (isMaintenanceFormValid(maintenanceInfo)) {
+                if ($scope.savedItemCandelete) {
+                    var selectedItemId = itemId;
+                    itemId = '';
+                }
                 maintenanceInfo.period = $scope.dateFilter($scope.maintenance.period, 'MMMM/yyyy');
                 if (maintenanceInfo.maintenanceType === 1) {
                     maintenanceInfo.category = $scope.listOfExpenses[parseInt($scope.maintenance.category) - 1].type;
-                    if (savedDataId.length !== undefined) {
-                        maintenanceInfo.objectId = savedDataId;
+                    if (itemId !== '') {
+                        maintenanceInfo.objectId = itemId;
                         maintenanceInfo.updatedBy = $rootScope.user.username;
                         maintenanceInfo.updatedDate = new Date();
                         Building.updateExpenses(maintenanceInfo);
@@ -112,17 +121,12 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                         maintenanceInfo.createdDate = new Date();
                         Building.addExpense(maintenanceInfo);
                     }
-                    Building.getExpenses().success(function (data) {
-                        $scope.expensesArr = {};
-                        $scope.expensesArr = data;
-                        $scope.totalExpenses = calculateTotal(data);
-                    });
                 }
                 else {
-                    maintenanceInfo.category = $scope.listOfIncomes[$scope.maintenance.category].type;
-                    maintenanceInfo.flatNo = $scope.allFlats[$scope.maintenance.flat].flatNo;
-                    if (savedDataId.length !== undefined) {
-                        maintenanceInfo.objectId = savedDataId;
+                    maintenanceInfo.category = $scope.listOfIncomes[parseInt($scope.maintenance.category) - 1].type;
+                    maintenanceInfo.flatNo = $scope.allFlats[parseInt($scope.maintenance.flat) - 1].flatNo;
+                    if (itemId !== '') {
+                        maintenanceInfo.objectId = itemId;
                         maintenanceInfo.updatedBy = $rootScope.user.username;
                         maintenanceInfo.updatedDate = new Date();
                         Building.updateIncome(maintenanceInfo);
@@ -132,14 +136,35 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                         maintenanceInfo.createdDate = new Date();
                         Building.addIncome(maintenanceInfo);
                     }
-                    Building.getIncomes().success(function (data) {
-                        $scope.allIncomes = {};
-                        $scope.allIncomes = data;
-                        $scope.totalIncome = calculateTotal(data);
-                    });
                 }
+                if ($scope.savedItemCandelete) {
+                    if (currentCategory === 'Expenses') {
+                        Building.deleteExpense(selectedItemId).success(function (data) {
+                            console.log("Selected Expenses item has been deleted", data)
+                        })
+                    }
+                    else {
+                        Building.deleteIncome(selectedItemId).success(function (data) {
+                            console.log("Selected Income item has been deleted", data)
+                        })
+                    }
+                }
+                Building.getIncomes(selectedPeriod).success(function (data) {
+                    $scope.allIncomes = {};
+                    $scope.allIncomes = data;
+                    $scope.totalIncome = calculateTotal(data);
+                    $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
+                });
+
+                Building.getExpenses(selectedPeriod).success(function (data) {
+                    $scope.expensesArr = {};
+                    $scope.expensesArr = data;
+                    $scope.totalExpenses = calculateTotal(data);
+                    $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
+                });
             }
-            savedDataId = {};
+            itemId = '';
+            currentCategory = '';
             $scope.maintenance = {};
             $scope.maintenance.period = new Date();
             $scope.maintenance.paymentDate = new Date();
@@ -164,11 +189,11 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         };
 
         $scope.modifyData = function (data, currentId) {
-            console.log("Table Id  ", currentId);
-            savedDataId = data._id;
+            currentCategory = currentId;
+            itemId = data._id;
             $scope.maintenance = {};
             $scope.maintenance.amount = data.amount;
-            $scope.maintenance.comments = data.description;
+            $scope.maintenance.description = data.description;
             $scope.maintenance.paymentDate = new Date(data.paymentDate);
             $scope.maintenance.period = new Date(data.period);
             //$scope.maintenance.type = currentId;
@@ -185,11 +210,54 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
 
         $scope.refreshForm = function () {
             $scope.maintenance = {};
-            savedDataId = {};
+            itemId = '';
+            currentCategory = '';
+        };
+
+        $scope.changeCategory = function () {
+            if ($scope.maintenance.maintenanceType !== null) {
+                var selectedType = parseInt($scope.maintenance.maintenanceType) - 1;
+                if (itemId !== '' && currentCategory !== $scope.maintenanceType[selectedType].type) {
+                    var modalInstance = $uibModal.open({
+                        animation: $scope.animationsEnabled,
+                        templateUrl: '../views/maintenance/Popup.html',
+                        controller: 'changeCategoryController'
+                    });
+
+                    modalInstance.result.then(function (selectedItem) {
+                        $scope.selected = selectedItem;
+                        console.log("Modal instance Selected Item is ++ ", selectedItem);
+                    }, function () {
+                        console.log('Modal dismissed at: ' + new Date());
+                    });
+                }
+                else {
+                    $scope.savedItemCandelete = false;
+                }
+            }
         }
     }];
 
-function isValidForm(form) {
+maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalInstance',
+    function ($scope, $uibModalInstance) {
+        $scope.close = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+        $scope.deleteSelected = function () {
+            $uibModalInstance.dismiss();
+            if ($scope.$$prevSibling !== undefined && $scope.$$prevSibling.maintenance !== undefined) {
+                $scope.$$prevSibling.savedItemCandelete = true;
+                $scope.$$prevSibling.maintenance.amount = '';
+                $scope.$$prevSibling.maintenance.description = '';
+                $scope.$$prevSibling.maintenance.category = null;
+                console.log("Modal selected Item is OK  ")
+            }
+        }
+    }
+]);
+
+function isMaintenanceFormValid(form) {
     if (form.paymentDate !== undefined && form.period !== undefined && form.maintenanceType !== undefined &&
         form.amount !== undefined && form.description !== undefined) {
         if (form.maintenanceType === 1) {
@@ -225,6 +293,14 @@ function calculateTotal(data) {
         total += Number(entry.amount);
     });
     return total;
+}
+
+function getActualResult(a, b) {
+    if (a !== '' && b !== '') {
+        var incomes = isNaN(a) ? 0.0 : Number(a);
+        var expenses = isNaN(b) ? 0.0 : Number(b);
+        return incomes - expenses;
+    }
 }
 
 function getFlats() {

@@ -60,7 +60,7 @@ var flatSchema = new mongoose.Schema({
 var TenantSchema = new mongoose.Schema({
     _id:String,
     tenantName:String,
-    phoneNumber:String,
+    phoneNumber:Number,
     altNumber:Number,
     emailId:String,
     createdBy:String,

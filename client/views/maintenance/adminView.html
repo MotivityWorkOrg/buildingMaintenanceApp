@@ -32,8 +32,8 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Type</label>
             <select name="repeatSelect" id="maintenanceType" ng-model="maintenance.maintenanceType"
-                    ng-options="value.id as value.type for value in maintenanceType">
-                <option value="">- - Select Type - -</option>
+                    ng-options="value.id as value.type for value in maintenanceType" ng-change="changeCategory()">
+                <option value="">-- Select Type --</option>
             </select>
         </div>
         <div class="form-group" ng-show="maintenance.maintenanceType === 1">
@@ -72,6 +72,12 @@
             </div>
         </div>
     </form>
+    <div>
+        <h1>Total Expenditure of {{ dateFilter(maintenance.period, periodFormat) }} </h1>
+        <label> {{ totalIncome }} - </label>
+        <label> {{totalExpenses }} = </label>
+        <label> {{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}} </label>
+    </div>
     <div class="table-responsive">
         <label>Expenses of {{ dateFilter(maintenance.period, periodFormat) }}</label>
         <table id="expenses" class="table table-hover table-bordered">
@@ -111,7 +117,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="income in allIncomes" ng-dblclick="modifyData(income, 'Incomes')">
+            <tr ng-repeat="income in allIncomes | orderBy : 'flatNo'" ng-dblclick="modifyData(income, 'Incomes')">
                 <td>{{ dateFilter(income.paymentDate, format) }}</td>
                 <td data-toggle="tooltip" data-original-title="{{income.description}}" tooltip-loader>{{
                     income.category }}

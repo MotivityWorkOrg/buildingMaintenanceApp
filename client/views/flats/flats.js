@@ -21,6 +21,7 @@ var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Bui
         flatDetail.flat = $scope.flat;
         if (isValidForm(flatDetail.flat)) {
             flatDetail.flat.ownerName = $scope.flat.firstName.trim() + " " + $scope.flat.lastName.trim();
+            flatDetail.flat.firstName = flatDetail.flat.lastName = {};
             flatDetail.tenant = {};
             flatDetail.tenant.flatNumber = "";
             if (flatDetail.flat.isOccupied === undefined) {
@@ -30,8 +31,8 @@ var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Bui
                 flatDetail.tenant.altNumber = flatDetail.flat.altNumber;
                 flatDetail.tenant.emailId = flatDetail.flat.emailId;
                 flatDetail.flat.tenant = flatDetail.flat.flatNumber;
-                flatDetail.isOccupied = false;
-                if(flatId !== '') {
+                flatDetail.flat.isOccupied = false;
+                if (flatId !== '') {
                     flatDetail.tenant.updatedBy = $rootScope.user.username;
                     flatDetail.tenant.updatedDate = new Date();
                 }
@@ -43,13 +44,20 @@ var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Bui
                 flatDetail.flat.altNumber = flatDetail.flat.emailId = "";
             }
 
-            if(flatId !== ''){
+            for (var prop in flatDetail.flat) {
+                if (flatDetail.flat.hasOwnProperty(prop)) {
+                    if (prop === "firstName" || prop === "lastName") {
+                        delete flatDetail.flat[prop];
+                    }
+                }
+            }
+
+            if (flatId !== '') {
                 flatDetail.flat.updatedBy = $rootScope.user.username;
                 flatDetail.flat.updatedDate = new Date();
                 Building.updateFlat(flatDetail);
             }
-            else
-            {
+            else {
                 flatDetail.flat.createdBy = $rootScope.user.username;
                 flatDetail.flat.createdDate = new Date();
                 Building.addFlat(flatDetail);
@@ -57,6 +65,21 @@ var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Bui
             $scope.flat = {};
             flatDetail = {};
             flatId = "";
+            $scope.flats = [];
+            // get Updated Info after transaction
+
+            Building.getFlats().success(function (data) {
+                data.forEach(function (entry) {
+                    if (entry.isOccupied)
+                        $scope.flats.push(entry);
+                });
+            });
+
+            Building.getTenants().success(function (data) {
+                data.forEach(function (entry) {
+                    $scope.flats.push(entry);
+                });
+            });
         }
     };
 
@@ -92,7 +115,12 @@ var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Bui
     $scope.reset = function () {
         $scope.flat = {};
         flatId = {};
-    }
+    };
+
+    $scope.isAdminView = function () {
+        return $rootScope.user !== undefined && $rootScope.user.roles !== undefined &&
+            $rootScope.user.roles.toUpperCase() === "ADMIN";
+    };
 }];
 
 function isValidForm(flat) {

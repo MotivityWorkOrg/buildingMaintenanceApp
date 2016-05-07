@@ -51,28 +51,6 @@ function getPopulateIncomeTypes(res) {
     });
 }
 
-function getSavedIncomes(res) {
-    BuildingInfo.Income.find(function (err, incomes) {
-        if (err) {
-            res.send(err);
-            console.log("The 'incomes' collection doesn't exist. Creating it with sample data...");
-        }
-        //console.log("imcomes .. ", incomes);
-        res.json(incomes);
-    });
-}
-
-function getSavedExpenses(res) {
-    BuildingInfo.Expenses.find(function (err, expenses) {
-        if (err) {
-            res.send(err);
-            console.log("The 'expenses' collection doesn't exist. Creating it with sample data...");
-        }
-        //console.log("expenses .. ", expenses);
-        res.json(expenses);
-    });
-}
-
 function getAllFlatsInfo(res) {
     //console.log('Find Mongoose Collection ... ',mongoose.connection.db.collection);
     BuildingInfo.Flat.find(function (err, flats) {
@@ -160,7 +138,7 @@ module.exports = function (app) {
             category: req.body.category,
             period: req.body.period,
             createdDate: req.body.createdDate,
-            flatNo: req.body.flat,
+            flatNo: req.body.flatNo,
             createdBy: req.body.createdBy
         }, function (err, income) {
             if (err)
@@ -183,11 +161,32 @@ module.exports = function (app) {
     });
 
     app.get('/api/incomes', function (req, res) {
-        getSavedIncomes(res);
+        var query = BuildingInfo.Income.find({'period': req.query['period']});
+        query.exec(function (err, incomes) {
+            if (err) {
+                res.send(err);
+                console.log("The 'incomes' collection doesn't exist. Creating it with sample data...");
+            }
+            //console.log("imcomes .. ", incomes);
+            res.json(incomes);
+        });
     });
 
     app.get('/api/expenses', function (req, res) {
-        getSavedExpenses(res);
+        var query = BuildingInfo.Expenses.find({'period': req.query['period']});
+        query.exec(function (err, expenses) {
+            if (err) {
+                console.log("The 'expenses' collection doesn't exist. Creating it with sample data...");
+                if (res.status == 404) {
+                    return res.status(404).send('fancy server side error message!');
+                }
+                res.send(err);
+            }
+            //console.log("expenses .. ", expenses);
+            if (expenses.length > 0) {
+                res.json(expenses);
+            }
+        });
     });
 
     app.get('/api/expensesTypes', function (req, res) {
@@ -240,7 +239,7 @@ module.exports = function (app) {
             }
             res.send(flat);
         });
-        if (!req.body.isOccupied) {
+        if (!req.body.flat.isOccupied) {
             //console.log("In Tenant Info +++ ", req.body.tenant);
             BuildingInfo.Tenant.create({
                 _id: req.body.tenant.flatNumber,
@@ -260,22 +259,28 @@ module.exports = function (app) {
     });
 
     app.post('/api/updateFlat', function (req, res) {
-        console.log("Getting Flat Req Body..  ", req.body);
+        //console.log("Getting Flat Req Body..  ", req.body.flat);
         BuildingInfo.Flat.findOneAndUpdate({_id: req.body.flat.flatNumber},
             req.body.flat,
             function (err, flat) {
-                if (err)
-                    res.send(err);
-                res.send(flat);
+                // as per stack overflow mongoose cann't handle multiple responses in one time.
+                //http://stackoverflow.com/questions/36856038/cannot-place-multiple-get-requests-on-nodejs-servers
+                if (req.body.flat.isOccupied) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.send(flat);
+                }
             }
         );
-        if (!req.body.isOccupied) {
-            console.log("In Tenant Info +++ ", req.body.tenant);
+        if (!req.body.flat.isOccupied) {
+            //console.log("In Tenant Info +++ ", req.body.tenant);
             BuildingInfo.Tenant.findOneAndUpdate({_id: req.body.tenant.flatNumber},
                 req.body.tenant,
                 function (err, tenant) {
-                    if (err)
+                    if (err) {
                         res.send(err);
+                    }
                     res.send(tenant);
                 }
             )
@@ -290,6 +295,27 @@ module.exports = function (app) {
         getTenantInfo(res);
     });
 
+    app.delete('/api/deleteExpense', function (req, res) {
+        var query = BuildingInfo.Expenses.findByIdAndRemove({_id: req.query['itemId']});
+        query.exec(function (err, expense) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send(expense);
+            }
+        )
+    });
+
+    app.delete('/api/deleteIncome', function (req, res) {
+        var query = BuildingInfo.Income.findByIdAndRemove({_id: req.query['itemId']});
+        query.exec(function (err, tenant) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send(tenant);
+            }
+        )
+    });
     /*app.create('/api/buildingMaintenance', function (req, res) {
 
      });
