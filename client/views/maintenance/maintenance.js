@@ -103,7 +103,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         $scope.addMonthlyIncomeOrExpenses = function () {
             var maintenanceInfo = $scope.maintenance;
             if (isMaintenanceFormValid(maintenanceInfo)) {
-                if ($scope.savedItemCandelete) {
+                if ($scope.savedItemCanDelete) {
                     var selectedItemId = itemId;
                     itemId = '';
                 }
@@ -137,7 +137,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                         Building.addIncome(maintenanceInfo);
                     }
                 }
-                if ($scope.savedItemCandelete) {
+                if ($scope.savedItemCanDelete) {
                     if (currentCategory === 'Expenses') {
                         Building.deleteExpense(selectedItemId).success(function (data) {
                             console.log("Selected Expenses item has been deleted", data)
@@ -212,6 +212,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
             $scope.maintenance = {};
             itemId = '';
             currentCategory = '';
+            $scope.savedItemCanDelete = false;
         };
 
         $scope.changeCategory = function () {
@@ -232,7 +233,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                     });
                 }
                 else {
-                    $scope.savedItemCandelete = false;
+                    $scope.savedItemCanDelete = false;
                 }
             }
         }
@@ -247,7 +248,7 @@ maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalIn
         $scope.deleteSelected = function () {
             $uibModalInstance.dismiss();
             if ($scope.$$prevSibling !== undefined && $scope.$$prevSibling.maintenance !== undefined) {
-                $scope.$$prevSibling.savedItemCandelete = true;
+                $scope.$$prevSibling.savedItemCanDelete = true;
                 $scope.$$prevSibling.maintenance.amount = '';
                 $scope.$$prevSibling.maintenance.description = '';
                 $scope.$$prevSibling.maintenance.category = null;

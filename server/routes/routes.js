@@ -183,9 +183,7 @@ module.exports = function (app) {
                 res.send(err);
             }
             //console.log("expenses .. ", expenses);
-            if (expenses.length > 0) {
-                res.json(expenses);
-            }
+            res.json(expenses);
         });
     });
 
