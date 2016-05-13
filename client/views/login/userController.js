@@ -1,5 +1,5 @@
-var UserController = ['$scope', '$location', 'AuthService',
-    function ($scope, $location, AuthService) {
+var UserController = ['$scope', '$location', 'AuthService', '$rootScope',
+    function ($scope, $location, AuthService, $rootScope) {
         $scope.signup = {};
         $scope.login = {};
         $scope.validRoles = ['- Select Role -', 'ADMIN', 'USER'];
@@ -18,6 +18,7 @@ var UserController = ['$scope', '$location', 'AuthService',
                     $scope.disabled = false;
                     $scope.login = {};
                     $scope.user = AuthService.user;
+                    $rootScope.dashboardClass = 'inner-home';
                 })
                 // handle error
                 .catch(function () {

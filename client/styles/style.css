@@ -60,9 +60,6 @@ textarea {
 
 .navbar-inner {
     padding: 7px 0;
-
-    background: #00ba8b !important;
-
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
     border-radius: 0;
@@ -70,14 +67,6 @@ textarea {
 
 .navbar-fixed-top {
     position: static;
-}
-
-.navbar .nav a {
-    font-size: 11px;
-}
-
-.navbar .nav > li > a {
-    color: #fff !important;
 }
 
 .navbar .brand {
@@ -113,55 +102,41 @@ textarea {
 */
 
 .subnavbar {
-    margin-bottom: 2.5em;
+    float: right;
+    margin-right: 10%;
+    width: 50%;
 }
-
 .subnavbar-inner {
-    height: 60px;
-    background: #fff;
-    border-bottom: 1px solid #d6d6d6;
+    height: 50px;
+    background: #ffac1b;
 }
-
 .subnavbar .container > ul {
     display: inline-block;
-
-    height: 80px;
-    padding: 0;
+    padding: 10px 0px;
     margin: 0;
-
 }
-
 .subnavbar .container > ul > li {
     float: left;
-
     min-width: 90px;
-    height: 60px;
     padding: 0;
     margin: 0;
-
     text-align: center;
     list-style: none;
-
     border-left: 1px solid #d9d9d9;
-
 }
-
 .subnavbar .container > ul > li > a {
     display: block;
-
-    height: 100%;
+    line-height: 30px;
     padding: 0 15px;
-
     font-size: 12px;
     font-weight: bold;
-    color: #b2afaa;
+    color: #ffffff;
 }
 
 .subnavbar .container > ul > li > a:hover {
     color: #888;
     text-decoration: none;
 }
-
 .subnavbar .container > ul > li > a > i {
     display: inline-block;
 
@@ -174,12 +149,8 @@ textarea {
 
 .subnavbar .container > ul > li > a > span {
     display: block;
-
 }
-
 .subnavbar .container > ul > li.active > a {
-
-    border-bottom: 3px solid #ff7f74;
     color: #383838;
 }
 

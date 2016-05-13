@@ -11,12 +11,13 @@ Bootstrap Admin Template by EGrappler.com
 .account-container {
 	width: 380px; 
 	display: block;
-	margin: 60px auto 0px auto;
+	margin: 15% 7% 0px;
 	background: #f9f9f9;
 	border: 1px solid #d5d5d5;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+	float: right;
 }
 
 .content {
@@ -105,16 +106,15 @@ span.login-checkbox > input[type='checkbox']:checked + label {
 
 /** Text Under Box**/
 .login-extra {
-	display: block; 
-	width: 300px; 
-	margin: 1.5em auto;
-	 
-	text-align: left;
-	line-height: 19px; 
-	
-	text-shadow: 1px 1px 1px #fff;
+	clear: both;
+	display: block;
+	float: right;
+	line-height: 19px;
+	margin: 1.5em 10% 1.5em auto;
+	text-align: center;
+	width: 300px;
 }
-
+.login-extra a { color: #ffffff; }
 
 .account-container h1 {
 	margin-bottom: .4em;

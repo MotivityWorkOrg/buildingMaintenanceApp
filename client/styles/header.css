@@ -1,7 +1,17 @@
-
+.login-page {
+     background: #00a261 url(../img/home-banner.jpg) no-repeat fixed bottom left;
+ }
+.inner-home {
+     background: url(../img/banner.jpg) no-repeat top left;
+    background-size:100% 300px;
+ }
 .navbar h1 {
     float:left;
     margin:0px;
+}
+.navbar h1 a.brand {
+    background: url(../img/house-logo.png) no-repeat top left;
+    padding:23px 0px 0px 38px;
 }
 .navbar .nav-collapse {
     float:right;
@@ -19,13 +29,33 @@
     background: none;
 }
 .navbar-inner {
-    padding:15px 0px 20px;
+    padding:30px 0px 20px;
 }
 .btn-success {
     background-color: #00ba8b;
     border-color: #00ba8b;
 }
-
+.header-nav li {
+    float: left;
+    fontp-size:14px;
+}
+.header-nav li li {
+    float: none;
+}
+.header-nav > li > a {
+    color: #fff;
+    font-size:14px;
+}
+.main-menu a {
+    font-size: 16px;
+    color: #fff;
+    margin-top: -10px;
+    padding: 5px 10px;
+}
+.main-menu a .icon-reorder {
+    font-size: 14px;
+    padding-left: 5px;
+}
 @media (max-width: 480px) {
     h1 {
         font-size:24px;

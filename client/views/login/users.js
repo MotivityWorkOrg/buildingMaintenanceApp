@@ -32,6 +32,7 @@ userModule.controller('logoutController', ['$scope', '$location', '$rootScope', 
                 $rootScope.userInfo = false;
                 $rootScope.user = {};
                 $location.path('/login');
+                $rootScope.dashboardClass = 'login-page';
             });
 
     }

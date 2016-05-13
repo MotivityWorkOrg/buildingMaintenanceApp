@@ -38,7 +38,7 @@ buildingApp.config(function($urlRouterProvider, $httpProvider) {
 //Run phase
 buildingApp.run(function($rootScope, $state) {
     $rootScope.$state = $state; //Get state info in view
-
+    $rootScope.dashboardClass = 'login-page';
     if(window.sessionStorage["userInfo"]){
         $rootScope.userInfo = window.sessionStorage["userInfo"];
     }
