@@ -4,66 +4,83 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Period</label>
             <!--<input width="50" type="text" id="year" placeholder="year" ng-model="maintenance.period">-->
-            <p class="input-group col-md-3">
-                <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
-                       ng-model="maintenance.period"
-                       is-open="periodPicker.opened"
-                       close-text="Close"/>
+            <div class="col-sm-3">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
+                           ng-model="maintenance.period"
+                           is-open="periodPicker.opened"
+                           close-text="Close"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="periodDatePickerOpen()"><i
                                 class="glyphicon glyphicon-calendar"></i></button>
                     </span>
-            </p>
+                </p>
+            </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Payment Date</label>
-            <p class="input-group col-md-3">
-                <input type="text" class="form-control" uib-datepicker-popup="{{format}}"
-                       ng-model="maintenance.paymentDate"
-                       is-open="datePicker.opened"
-                       close-text="Close"/>
+            <div class="col-sm-3">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}"
+                           ng-model="maintenance.paymentDate"
+                           is-open="datePicker.opened"
+                           close-text="Close"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="datePickerOpen()"><i
                             class="glyphicon glyphicon-calendar"></i></button>
                 </span>
-            </p>
+                </p>
+            </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Type</label>
-            <select name="repeatSelect" id="maintenanceType" ng-model="maintenance.maintenanceType"
-                    ng-options="value.id as value.type for value in maintenanceType" ng-change="changeCategory()">
-                <option value="">-- Select Type --</option>
-            </select>
+            <div class="col-sm-3">
+                <select class="form-control" name="repeatSelect" id="maintenanceType"
+                        ng-model="maintenance.maintenanceType"
+                        ng-options="value.id as value.type for value in maintenanceType" ng-change="changeCategory()">
+                    <option value="">-- Select Type --</option>
+                </select>
+            </div>
         </div>
         <div class="form-group" ng-show="maintenance.maintenanceType === 1">
             <label class="control-label col-sm-2" for="id">Category</label>
-            <select name="repeatSelect" id="listOfExpenses" ng-model="maintenance.category"
-                    ng-options="value._id as value.type for value in listOfExpenses ">
-                <option value="">-- Select Category --</option>
-            </select>
+            <div class="col-sm-3">
+                <select class="form-control" name="repeatSelect" id="listOfExpenses" ng-model="maintenance.category"
+                        ng-options="value._id as value.type for value in listOfExpenses ">
+                    <option value="">-- Select Category --</option>
+                </select>
+            </div>
         </div>
         <div class="form-group" ng-show="maintenance.maintenanceType === 2">
             <label class="control-label col-sm-2" for="id">Category</label>
-            <select name="repeatSelect" id="listOfIncomes" ng-model="maintenance.category"
-                    ng-options="value._id as value.type for value in listOfIncomes ">
-                <option value="">-- Select Category --</option>
-            </select>
+            <div class="col-sm-3">
+                <select class="form-control" name="repeatSelect" id="listOfIncomes" ng-model="maintenance.category"
+                        ng-options="value._id as value.type for value in listOfIncomes ">
+                    <option value="">-- Select Category --</option>
+                </select>
+            </div>
         </div>
         <div class="form-group" ng-show="maintenance.maintenanceType === 2">
             <label class="control-label col-sm-2" for="flat">Flat Number</label>
-            <select name="repeatSelect" id="flat" ng-model="maintenance.flat"
-                    ng-options="value.id as value.flatNo for value in allFlats">
-                <option value="">-- Select Flat --</option>
-            </select>
+            <div class="col-sm-3">
+                <select class="form-control" name="repeatSelect" id="flat" ng-model="maintenance.flat"
+                        ng-options="value.id as value.flatNo for value in allFlats">
+                    <option value="">-- Select Flat --</option>
+                </select>
+            </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Amount</label>
-            <input type="text" id="amount" placeholder="Enter Amount" ng-model="maintenance.amount">
+            <div class="col-sm-3">
+                <input type="text" id="amount" placeholder="Enter Amount" ng-model="maintenance.amount">
+            </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Comments</label>
-            <input type="text" id="id" placeholder="Enter Comments" ng-model="maintenance.description">
+            <div class="col-sm-3">
+                <input type="text" id="id" placeholder="Enter Comments" ng-model="maintenance.description">
+            </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
