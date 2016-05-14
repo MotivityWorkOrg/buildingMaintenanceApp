@@ -52,7 +52,11 @@ Bootstrap Admin Template by EGrappler.com
 .password-field { background: url(../img/signin/password.png) no-repeat; }
 
 
-
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 
 .login-actions {
 	float: left;

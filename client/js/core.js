@@ -1,6 +1,6 @@
 buildingApp = angular.module('buildingMaintenanceApp',
     ['buildingService', 'ui.bootstrap', 'ui.bootstrap.tpls',
-        'authService', 'ui.router', 'users', 'main', 'flats']);
+        'authService', 'ui.router', 'users', 'main', 'flats', 'ngOnlyNumberApp']);
 
 buildingApp.directive('phoneMaxlength', function () {
     return {

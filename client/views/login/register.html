@@ -26,10 +26,10 @@
                 </div> <!-- /field -->
                 <div class="field">
                     <label for="phoneNumber">Phone Number:</label>
-                    <input type="number" id="phoneNumber" name="phoneNumber" ng-model="signup.phoneNumber"
+                    <input type="text" id="phoneNumber" name="phoneNumber" ng-model="signup.phoneNumber"
                            value="" validator="required,Phone Number" required-error-message="Phone Number is required"
                            phoneNumber-error-message="Invalid Phone Number" valid-method="watch"
-                           placeholder="Phone Number" class="login" phone-maxlength="10"/>
+                           placeholder="Phone Number" class="login" data-max-length="10" ng-only-number/>
                 </div> <!-- /field -->
                 <div class="field">
                     <label for="roles">Enter Role:</label>
