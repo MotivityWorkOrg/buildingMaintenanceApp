@@ -1,6 +1,7 @@
 <!-------------------->
 <div class="admin-form">
     <form class="form-horizontal" role="form" autocomplete="off">
+        <h3>Monthly Entery's</h3>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Period</label>
             <!--<input width="50" type="text" id="year" placeholder="year" ng-model="maintenance.period">-->
@@ -74,7 +75,7 @@
             <label class="control-label col-sm-2" for="id">Amount</label>
             <div class="col-sm-3">
                 <input type="text" id="amount" placeholder="Enter Amount" ng-model="maintenance.amount"
-                       data-max-length="5" ng-only-number>
+                       data-max-length="4" ng-only-number>
             </div>
         </div>
         <div class="form-group">
@@ -90,42 +91,15 @@
             </div>
         </div>
     </form>
+    <div>&nbsp;</div>
     <div>
-        <h1>Total Expenditure of {{ dateFilter(maintenance.period, periodFormat) }} </h1>
-        <label> {{ totalIncome }} - </label>
-        <label> {{totalExpenses }} = </label>
-        <label> {{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}} </label>
+        <h2>
+            Total Expenditure of {{ dateFilter(maintenance.period, periodFormat) }}
+            <label class="pull-right ng-value">By Hand: <span>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</span></label>
+        </h2>
     </div>
-    <div class="table-responsive">
-        <label>Expenses of {{ dateFilter(maintenance.period, periodFormat) }}</label>
-        <table id="expenses" class="table table-hover table-bordered">
-            <thead>
-            <tr>
-                <th>Payment Date</th>
-                <th>Category</th>
-                <th>Amount</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="expenses in expensesArr" ng-dblclick="modifyData(expenses, 'Expenses')">
-                <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
-                <td data-toggle="tooltip" data-original-title="{{expenses.description}}" tooltip-loader>{{
-                    expenses.category }}
-                </td>
-                <td>{{ expenses.amount }}</td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td text-align="right" colspan="2">Grand Total</td>
-                <td>{{ totalExpenses }}</td>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
-
-    <div class="table-responsive">
-        <label>Incomes of {{ dateFilter(maintenance.period, periodFormat) }}</label>
+    <div class="table-responsive income">
+        <h3>Income</h3>
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
@@ -137,16 +111,56 @@
             <tbody>
             <tr ng-repeat="income in allIncomes | orderBy : 'flatNo'" ng-dblclick="modifyData(income, 'Incomes')">
                 <td>{{ dateFilter(income.paymentDate, format) }}</td>
-                <td data-toggle="tooltip" data-original-title="{{income.description}}" tooltip-loader>{{
-                    income.category }}
-                <td>{{ income.amount }}</td>
+                <td>
+                    <div data-toggle="tooltip" data-original-title="{{income.description}}" tooltip-loader>
+                        {{ income.category }}
+                    </div>
+                <td>{{ income.amount }}.00</td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td text-align="right" colspan="2">Grand Total</td>
-                <td>{{ totalIncome }}</td>
+                <td text-align="right" colspan="2">Total Income</td>
+                <td>{{ totalIncome }}.00</td>
             </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="table-responsive expenses">
+        <h3>Expenses</h3>
+        <table id="expenses" class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>Payment Date</th>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="expenses in expensesArr" ng-dblclick="modifyData(expenses, 'Expenses')">
+                <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
+                <td>
+                    <div data-toggle="tooltip" data-original-title="{{expenses.description}}" tooltip-loader>
+                        {{ expenses.category }}
+                    </div>
+
+                </td>
+                <td>{{ expenses.amount }}.00</td>
+            </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td text-align="right" colspan="2">Total Expenses</td>
+                    <td>{{ totalExpenses }}.00</td>
+                </tr>
+                <tr>
+                    <td text-align="right" colspan="2">Total Income</td>
+                    <td>{{ totalIncome }}.00</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Grand Total</td>
+                    <td>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</td>
+                </tr>
             </tfoot>
         </table>
     </div>

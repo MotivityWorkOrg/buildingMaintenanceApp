@@ -2,7 +2,7 @@
      background: #00a261 url(../img/home-banner.jpg) no-repeat fixed bottom left;
  }
 .inner-home {
-     background: url(../img/banner.jpg) no-repeat top left;
+     background: url(../img/banner.jpg) no-repeat top left #e8eaee;
     background-size:100% 300px;
  }
 .navbar h1 {
@@ -83,3 +83,5 @@
         background: none;
     }
 }
+
+

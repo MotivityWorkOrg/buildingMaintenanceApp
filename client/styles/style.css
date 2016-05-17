@@ -44,8 +44,8 @@ textarea {
     background: linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9')";
-
-    font-size: 10px;
+    text-align: center;
+    font-size: 14px;
     color: #444;
     text-transform: uppercase;
 }
@@ -53,7 +53,7 @@ textarea {
 /*------------------------------------------------------------------
 [2. Navbar / .navbar]
 */
-
+.container { clear: both; padding-bottom: 20px; }
 .navbar .container {
     position: relative;
 }
@@ -106,16 +106,12 @@ textarea {
     margin-right: 10%;
     width: 50%;
 }
-.subnavbar-inner {
-    height: 50px;
-    background: #ffac1b;
-}
-.subnavbar .container > ul {
+.subnavbar ul {
     display: inline-block;
     padding: 10px 0px;
     margin: 0;
 }
-.subnavbar .container > ul > li {
+.subnavbar  ul > li {
     float: left;
     min-width: 90px;
     padding: 0;
@@ -124,7 +120,7 @@ textarea {
     list-style: none;
     border-left: 1px solid #d9d9d9;
 }
-.subnavbar .container > ul > li > a {
+.subnavbar  ul > li > a {
     display: block;
     line-height: 30px;
     padding: 0 15px;
@@ -133,11 +129,11 @@ textarea {
     color: #ffffff;
 }
 
-.subnavbar .container > ul > li > a:hover {
+.subnavbar  ul > li > a:hover {
     color: #888;
     text-decoration: none;
 }
-.subnavbar .container > ul > li > a > i {
+.subnavbar  ul > li > a > i {
     display: inline-block;
 
     width: 24px;
@@ -147,10 +143,10 @@ textarea {
     font-size: 20px;
 }
 
-.subnavbar .container > ul > li > a > span {
+.subnavbar  ul > li > a > span {
     display: block;
 }
-.subnavbar .container > ul > li.active > a {
+.subnavbar ul > li.active > a {
     color: #383838;
 }
 
@@ -1367,4 +1363,174 @@ table + div[ng-include] {
 /**angular bootstrap ****/
 .nav, .pagination, .carousel, .panel-title a {
     cursor: pointer
+}
+
+tr:nth-child(odd)		{ background-color:#ffffff; }
+tr:nth-child(even)		{ background-color:#f7f7f7; }
+
+.table-hover > tbody > tr:hover {
+    background-color: #fffacd;
+}
+ul.ct-socials {
+    margin: 0;
+    padding: 0 13px;
+    min-height: 51px;
+    background: #28282e;
+    display: inline-block;
+}
+ul.ct-socials > li > a {
+    padding: 5px;
+    font-size: 16px;
+    line-height: 50px;
+    color: #fff;
+}
+.income { margin-right: 2%; }
+.clr {
+    clear: both; }
+.expenses, .income {
+    float:left;
+    width: 49%;
+}
+.expenses td:first-child,
+.income td:first-child {
+    width: 25%;
+}
+.expenses td:last-child,
+.income td:last-child {
+    width: 20%;
+    text-align: right;
+}
+.expenses table,
+.income table {
+    margin-bottom: 0px;
+}
+.expenses h3, .income h3 {
+    border-bottom: thin solid rgba(0, 0, 0, 0.1);
+    margin: -10px -10px 15px;
+    padding: 15px 10px;
+}
+tfoot td {
+    text-align: right;
+    font-weight: bold;
+}
+.grand-total {
+    width: 100%;
+}
+.grand-total td {
+    background: #fff; padding: 8px;
+}
+.innernav {
+    margin-top: 40px;
+    padding-bottom: 40px;
+}
+.form-horizontal, .expenses, .income {
+    background: #fff;
+    padding:10px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.07);
+}
+.income th {
+    background: #0b56a2;
+    color: #fff;
+}
+.expenses th {
+    background: #0b56a2;
+    color: #fff;
+}
+.expenses th {
+    background: #27ae60;
+    color: #fff;
+}
+
+
+.ct-contact::before {
+    background: rgba(255, 255, 255, 0.3) none repeat scroll 0 0;
+    content: "";
+    height: 4px;
+    left: 0;
+    position: absolute;
+    top: -4px;
+    width: 100%;
+}
+.ct-contact::after {
+    background: rgba(255, 255, 255, 0.3) none repeat scroll 0 0;
+    content: "";
+    height: 55px;
+    position: absolute;
+    right: 100%;
+    top: -4px;
+    width: 4px;
+}
+.ct-contact .ct-contact-right::after {
+    border-style: solid;
+    border-width: 51px 51px 0px 0px;
+    content: "";
+    height: 0;
+    left: 100%;
+    position: absolute;
+    top: 0;
+    width: 0;
+}
+.ct-contact .ct-contact-right {
+    background-color: #ffac1b;
+}
+.ct-contact .ct-contact-right {
+    color: #fff;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 50px;
+    min-height: 51px;
+    padding: 0 20px;
+    position: relative;
+}
+.country .ct-contact .ct-contact-right {
+    background-color: #ffac1b;
+}
+.ct-contact .ct-contact-right::after {
+    border-color: #ffac1b transparent transparent;
+}
+.country .ct-contact .ct-contact-right::after {
+    border-color: #ffac1b transparent transparent;
+}
+
+
+.subnavbar-inner {
+    height: 50px;
+    background: transparent;
+    clear: both;
+}
+.subnavbar-inner {
+    border-color: transparent transparent #00a261;
+    border-image: none;
+    border-style: solid;
+    border-width: 0px 0px 64px 64px;
+    margin-bottom: 54px;
+
+}
+.subnavbar-inner ul {
+    margin: 0px;
+    padding: 0px 20px;
+    list-style: none;
+}
+.subnavbar-inner ul li {
+    float: left;
+    line-height: 63px;
+}
+.subnavbar-inner ul li a {
+    color: #fff;
+    font-size: 16px;
+    border-right: 1px solid #32b480;
+    padding: 0px 20px;
+}
+.subnavbar-inner ul li:last-child a {
+    border: none;
+}
+.subnavbar-inner ul li a:hover, .subnavbar-inner ul li a:active, .subnavbar-inner ul li a:focus {
+    text-decoration: none;
+    outline: none;
+}
+.ng-value {
+    padding-right: 10px;
+}
+.ng-value span {
+    color: #ff0000;
 }
