@@ -1528,9 +1528,15 @@ tfoot td {
     text-decoration: none;
     outline: none;
 }
-.ng-value {
+.ng-value-red {
     padding-right: 10px;
 }
-.ng-value span {
+.ng-value-red span {
     color: #ff0000;
+}
+.ng-value-green {
+    padding-right: 10px;
+}
+.ng-value-green span {
+    color: #098908;
 }

@@ -77,6 +77,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
             $scope.expensesArr = data;
             $scope.totalExpenses = calculateTotal(data);
             $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
+            $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
         });
 
         Building.getIncomes(selectedPeriod).success(function (data) {
@@ -84,6 +85,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
             $scope.allIncomes = data;
             $scope.totalIncome = calculateTotal(data);
             $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
+            $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
         });
 
         $scope.loadTypeCategories = function () {
@@ -154,6 +156,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                     $scope.allIncomes = data;
                     $scope.totalIncome = calculateTotal(data);
                     $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
+                    $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
                 });
 
                 Building.getExpenses(selectedPeriod).success(function (data) {
@@ -161,6 +164,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                     $scope.expensesArr = data;
                     $scope.totalExpenses = calculateTotal(data);
                     $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
+                    $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
                 });
             }
             itemId = '';
@@ -222,7 +226,9 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                     var modalInstance = $uibModal.open({
                         animation: $scope.animationsEnabled,
                         templateUrl: '../views/maintenance/Popup.html',
-                        controller: 'changeCategoryController'
+                        controller: 'changeCategoryController',
+                        backdrop: 'static',
+                        keyboard: false
                     });
 
                     modalInstance.result.then(function (selectedItem) {
@@ -243,6 +249,9 @@ maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalIn
     function ($scope, $uibModalInstance) {
         $scope.close = function () {
             $uibModalInstance.dismiss('cancel');
+            $scope.$$prevSibling.maintenance = {};
+            $scope.$$prevSibling.maintenance.period = new Date();
+            $scope.$$prevSibling.maintenance.paymentDate = new Date();
         };
 
         $scope.deleteSelected = function () {

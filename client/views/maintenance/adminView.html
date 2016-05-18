@@ -95,7 +95,7 @@
     <div>
         <h2>
             Total Expenditure of {{ dateFilter(maintenance.period, periodFormat) }}
-            <label class="pull-right ng-value">By Hand: <span>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</span></label>
+            <label class="pull-right {{spanColor}}" >By Hand: <span>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</span></label>
         </h2>
     </div>
     <div class="table-responsive income">
@@ -149,18 +149,18 @@
             </tr>
             </tbody>
             <tfoot>
-                <tr>
-                    <td text-align="right" colspan="2">Total Expenses</td>
-                    <td>{{ totalExpenses }}.00</td>
-                </tr>
-                <tr>
-                    <td text-align="right" colspan="2">Total Income</td>
-                    <td>{{ totalIncome }}.00</td>
-                </tr>
-                <tr>
-                    <td colspan="2">Grand Total</td>
-                    <td>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</td>
-                </tr>
+            <tr>
+                <td text-align="right" colspan="2">Total Expenses</td>
+                <td>{{ totalExpenses }}.00</td>
+            </tr>
+            <tr>
+                <td text-align="right" colspan="2">Total Income</td>
+                <td>{{ totalIncome }}.00</td>
+            </tr>
+            <tr>
+                <td colspan="2">Grand Total</td>
+                <td>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</td>
+            </tr>
             </tfoot>
         </table>
     </div>
