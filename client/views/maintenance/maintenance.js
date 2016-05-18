@@ -269,7 +269,7 @@ maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalIn
 
 function isMaintenanceFormValid(form) {
     if (form.paymentDate !== undefined && form.period !== undefined && form.maintenanceType !== undefined &&
-        form.amount !== undefined && form.description !== undefined) {
+        form.amount !== undefined) {
         if (form.maintenanceType === 1) {
             if (form.category !== undefined)
                 return true;
