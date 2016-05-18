@@ -4,6 +4,7 @@
   "private": true,
   "description": "Buiding Maintance Appliaction.",
   "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install",
     "start": "node server/server.js"
   },
   "license": "MIT",
@@ -20,7 +21,8 @@
     "bcrypt-nodejs": "*",
     "connect-flash": "*",
     "ejs": "*",
-    "method-override": "*"
+    "method-override": "*",
+    "bower": "*"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
