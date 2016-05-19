@@ -2,6 +2,7 @@ var maintenanceModule = angular.module('main', []);
 var itemId = '';
 var currentCategory = '';
 var selectedPeriod = '';
+var errorMessageString = '';
 maintenanceModule.config(['$urlRouterProvider', '$stateProvider',
     function ($urlRouterProvider, $stateProvider) {
         $stateProvider.state('main', {
@@ -27,6 +28,7 @@ maintenanceModule.directive('tooltipLoader', function () {
 
 var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filter', '$uibModal',
     function ($rootScope, $scope, $http, Building, $filter, $uibModal) {
+        $scope.appData = this;
         $scope.data = {};
         $scope.loading = true;
         $scope.month = {};
@@ -43,6 +45,8 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         $scope.allFlats = getFlats();
         $scope.animationsEnabled = true;
         selectedPeriod = $scope.dateFilter(new Date(), 'MMMM/yyyy');
+        $scope.errorMessage = '';
+
         $scope.datePicker = {
             opened: false
         };
@@ -105,6 +109,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         $scope.addMonthlyIncomeOrExpenses = function () {
             var maintenanceInfo = $scope.maintenance;
             if (isMaintenanceFormValid(maintenanceInfo)) {
+                $scope.errorMessage = "";
                 if ($scope.savedItemCanDelete) {
                     var selectedItemId = itemId;
                     itemId = '';
@@ -166,12 +171,15 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                     $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
                     $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
                 });
+                itemId = '';
+                currentCategory = '';
+                $scope.maintenance = {};
+                $scope.maintenance.period = new Date();
+                $scope.maintenance.paymentDate = new Date();
             }
-            itemId = '';
-            currentCategory = '';
-            $scope.maintenance = {};
-            $scope.maintenance.period = new Date();
-            $scope.maintenance.paymentDate = new Date();
+            else {
+                $scope.errorMessage = errorMessageString;
+            }
         };
 
         $scope.isAdminView = function () {
@@ -193,6 +201,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         };
 
         $scope.modifyData = function (data, currentId) {
+            $scope.errorMessage = "";
             currentCategory = currentId;
             itemId = data._id;
             $scope.maintenance = {};
@@ -252,6 +261,7 @@ maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalIn
             $scope.$$prevSibling.maintenance = {};
             $scope.$$prevSibling.maintenance.period = new Date();
             $scope.$$prevSibling.maintenance.paymentDate = new Date();
+            itemId = currentCategory = '';
         };
 
         $scope.deleteSelected = function () {
@@ -268,15 +278,34 @@ maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalIn
 ]);
 
 function isMaintenanceFormValid(form) {
-    if (form.paymentDate !== undefined && form.period !== undefined && form.maintenanceType !== undefined &&
-        form.amount !== undefined && form.description !== undefined) {
-        if (form.maintenanceType === 1) {
-            if (form.category !== undefined)
-                return true;
+    if (form.period === undefined) {
+        errorMessageString = "Select Maintenance period";
+        return false;
+    }
+    else if (form.paymentDate === undefined) {
+        errorMessageString = "Select payment date";
+        return false;
+    }
+    else if (form.maintenanceType === undefined || form.maintenanceType === null) {
+        errorMessageString = "Select maintenance type";
+        return false;
+    }
+    else if (form.maintenanceType === 1 || form.maintenanceType === 2) {
+        if (form.category === undefined || form.category === null) {
+            errorMessageString = "Select Category type";
+            return false;
         }
-        else if (form.maintenanceType === 2) {
-            if (form.category !== undefined && form.flat !== undefined)
-                return true;
+        else if (form.maintenanceType === 2 && (form.flat === undefined || form.flat === null)) {
+            errorMessageString = "Select flat no";
+            return false;
+        }
+        else if (form.amount === undefined) {
+            errorMessageString = "Enter Amount";
+            return false;
+        }
+        else {
+            errorMessageString = "";
+            return true;
         }
     }
 }

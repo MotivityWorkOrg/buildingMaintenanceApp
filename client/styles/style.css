@@ -1540,3 +1540,7 @@ tfoot td {
 .ng-value-green span {
     color: #098908;
 }
+
+.error-message{
+    color: #ff0000;
+}

@@ -1,7 +1,9 @@
 <!-------------------->
 <div class="admin-form">
+
     <form class="form-horizontal" role="form" autocomplete="off">
         <h3>Monthly Entries</h3>
+        <h4 class="error-message" ng-model="errorMessage" ng-show="errorMessage.length"> {{errorMessage}} </h4>
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Period</label>
             <!--<input width="50" type="text" id="year" placeholder="year" ng-model="maintenance.period">-->
@@ -95,7 +97,7 @@
     <div>
         <h2>
             Total Expenditure of {{ dateFilter(maintenance.period, periodFormat) }}
-            <label class="pull-right {{spanColor}}" >By Hand: <span>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</span></label>
+            <label class="pull-right {{spanColor}}">By Hand: <span>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</span></label>
         </h2>
     </div>
     <div class="table-responsive income">
@@ -104,6 +106,7 @@
             <thead>
             <tr>
                 <th>Payment Date</th>
+                <th>Flat</th>
                 <th>Category</th>
                 <th>Amount</th>
             </tr>
@@ -111,6 +114,7 @@
             <tbody>
             <tr ng-repeat="income in allIncomes | orderBy : 'flatNo'" ng-dblclick="modifyData(income, 'Incomes')">
                 <td>{{ dateFilter(income.paymentDate, format) }}</td>
+                <td>{{income.flatNo}}</td>
                 <td>
                     <div data-toggle="tooltip" data-original-title="{{income.description}}" tooltip-loader>
                         {{ income.category }}
@@ -120,7 +124,7 @@
             </tbody>
             <tfoot>
             <tr>
-                <td text-align="right" colspan="2">Total Income</td>
+                <td text-align="right" colspan="3">Total Income</td>
                 <td>{{ totalIncome }}.00</td>
             </tr>
             </tfoot>
