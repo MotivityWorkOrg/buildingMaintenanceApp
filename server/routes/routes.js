@@ -220,7 +220,7 @@ module.exports = function (app) {
     });
 
     app.post('/api/addFlat', function (req, res) {
-        //console.log("Getting Flat Req Body..  ", req.body);
+        //console.log("Getting Flat Req Body..  ", req.body.flat);
         BuildingInfo.Flat.create({
             _id: req.body.flat.flatNumber,
             ownerName: req.body.flat.ownerName,
@@ -251,7 +251,8 @@ module.exports = function (app) {
                 if (err) {
                     res.send(err);
                 }
-                res.send(tenant);
+                console.log("asdf asdfj "+tenant);
+                //res.send(tenant);
             });
         }
     });
@@ -313,6 +314,28 @@ module.exports = function (app) {
                 res.send(tenant);
             }
         )
+    });
+
+    app.get('/api/flatsInfo', function(req, res){
+        BuildingInfo.FlatInfo.find(function (err, flatInfo) {
+            if (err) {
+                res.send(err);
+                console.log("The 'Tenant' collection doesn't exist. Creating it with sample data...");
+            }
+            res.json(flatInfo);
+        });
+    });
+
+    app.post('/api/addFlatsInfo', function(req, res){
+        BuildingInfo.FlatInfo.create({
+            _id: req.body.id,
+            flatNo: req.body.flatNo
+        }, function(err, flat){
+            if(err){
+                res.send(err);
+            }
+            res.send(flat);
+        })
     });
     /*app.create('/api/buildingMaintenance', function (req, res) {
 

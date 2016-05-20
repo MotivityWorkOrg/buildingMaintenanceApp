@@ -7,7 +7,7 @@ mongoose.set('debug', true);
 
 var UserSchema = new mongoose.Schema({
     userName: String,
-    password: { value : String, version: String, salt : String },
+    password: {value: String, version: String, salt: String},
     isAdmin: Boolean,
     loggedDate: Date
 });
@@ -19,15 +19,15 @@ var MonthsSchema = new mongoose.Schema({
 });
 
 var ExpensesSchema = new mongoose.Schema({
-    period:String,
+    period: String,
     paymentDate: Date,
     amount: String,
     description: String,
-    category:String,
-    createdBy:String,
-    updatedBy:String,
-    createdDate:Date,
-    updatedDate:Date
+    category: String,
+    createdBy: String,
+    updatedBy: String,
+    createdDate: Date,
+    updatedDate: Date
 });
 
 var IncomeSchema = new mongoose.Schema({
@@ -35,48 +35,53 @@ var IncomeSchema = new mongoose.Schema({
     paymentDate: Date,
     amount: String,
     description: String,
-    category:String,
-    flatNo:String,
-    createdBy:String,
-    updatedBy:String,
-    createdDate:Date,
-    updatedDate:Date
+    category: String,
+    flatNo: String,
+    createdBy: String,
+    updatedBy: String,
+    createdDate: Date,
+    updatedDate: Date
 });
 
 var flatSchema = new mongoose.Schema({
-    _id:String,
-    ownerName:String,
-    phoneNumber:Number,
-    altNumber:Number,
-    emailId:String,
-    isOccupied:Boolean,
-    tenant: {type: mongoose.Schema.Types.String, ref: 'TenantModel'},
-    createdBy:String,
-    updatedBy:String,
-    createdDate:Date,
-    updatedDate:Date
+    _id: Number,
+    ownerName: String,
+    phoneNumber: Number,
+    altNumber: Number,
+    emailId: String,
+    isOccupied: Boolean,
+    tenant: {type: mongoose.Schema.Types.Number, ref: 'TenantModel'},
+    createdBy: String,
+    updatedBy: String,
+    createdDate: Date,
+    updatedDate: Date
 });
 
 var TenantSchema = new mongoose.Schema({
-    _id:String,
-    tenantName:String,
-    phoneNumber:Number,
-    altNumber:Number,
-    emailId:String,
-    createdBy:String,
-    updatedBy:String,
-    createdDate:Date,
-    updatedDate:Date
+    _id: Number,
+    tenantName: String,
+    phoneNumber: Number,
+    altNumber: Number,
+    emailId: String,
+    createdBy: String,
+    updatedBy: String,
+    createdDate: Date,
+    updatedDate: Date
 });
 
 var expensesTypesSchema = new mongoose.Schema({
     _id: String,
-    type:String
+    type: String
 });
 
 var incomeTypesSchema = new mongoose.Schema({
     _id: String,
-    type:String
+    type: String
+});
+
+var flatsInfoSchema = new mongoose.Schema({
+    _id: Number,
+    flatNo: Number
 });
 
 //module.exports = mongoose.model('Maintenance', MaintenanceSchema);
@@ -88,6 +93,7 @@ var UsersModel = mongoose.model('Users', UserSchema);
 var MonthsModel = mongoose.model('Months', MonthsSchema);
 var ExpensesTypesModel = mongoose.model('ExpensesTypes', expensesTypesSchema);
 var IncomeTypesModel = mongoose.model('IncomeTypes', incomeTypesSchema);
+var FlatsInfoModel = mongoose.model('FlatInfo', flatsInfoSchema);
 //module.exports = monthsModel;
 
 module.exports = {
@@ -98,5 +104,6 @@ module.exports = {
     Users: UsersModel,
     Months: MonthsModel,
     IncomeTypes: IncomeTypesModel,
-    ExpensesTypes: ExpensesTypesModel
+    ExpensesTypes: ExpensesTypesModel,
+    FlatInfo: FlatsInfoModel
 };

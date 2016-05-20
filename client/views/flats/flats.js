@@ -1,5 +1,6 @@
 var flatModule = angular.module('flats', []);
 var flatId = '';
+var errorMessageString = '';
 flatModule.config(['$urlRouterProvider', '$stateProvider',
     function ($urlRouterProvider, $stateProvider) {
         $stateProvider.state('flats', {
@@ -16,21 +17,26 @@ flatModule.config(['$urlRouterProvider', '$stateProvider',
 var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Building, $rootScope) {
     $scope.flat = {};
     $scope.flats = [];
+    $scope.getAllFlats = [];
+    $scope.errorMessage = '';
     $scope.addFlat = function () {
         var flatDetail = {};
+        $scope.errorMessage = '';
         flatDetail.flat = $scope.flat;
         if (isValidForm(flatDetail.flat)) {
-            flatDetail.flat.ownerName = $scope.flat.firstName.trim() + " " + $scope.flat.lastName.trim();
+            flatDetail.flat.ownerName = $scope.flat.firstName + " " + $scope.flat.lastName;
             flatDetail.flat.firstName = flatDetail.flat.lastName = {};
             flatDetail.tenant = {};
             flatDetail.tenant.flatNumber = "";
+            var flatNumber = flatDetail.flat.flatNumber;
+            flatDetail.flat.flatNumber = $scope.getAllFlats[parseInt(flatNumber) - 1].flatNo;
             if (flatDetail.flat.isOccupied === undefined) {
-                flatDetail.tenant.flatNumber = flatDetail.flat.flatNumber;
+                flatDetail.tenant.flatNumber = $scope.getAllFlats[parseInt(flatNumber) - 1].flatNo;
                 flatDetail.tenant.tenantName = flatDetail.flat.ownerName;
                 flatDetail.tenant.phoneNumber = flatDetail.flat.phoneNumber;
                 flatDetail.tenant.altNumber = flatDetail.flat.altNumber;
                 flatDetail.tenant.emailId = flatDetail.flat.emailId;
-                flatDetail.flat.tenant = flatDetail.flat.flatNumber;
+                flatDetail.flat.tenant = $scope.getAllFlats[parseInt(flatNumber) - 1].flatNo;
                 flatDetail.flat.isOccupied = false;
                 if (flatId !== '') {
                     flatDetail.tenant.updatedBy = $rootScope.user.username;
@@ -81,7 +87,22 @@ var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Bui
                 });
             });
         }
+        else {
+            $scope.errorMessage = errorMessageString;
+        }
     };
+
+    Building.getAllFlatsNo().success(function (data) {
+        $scope.getAllFlats = data;
+        if (data.length === 0) {
+            var flats = getFlats();
+            flats.forEach(function (flat) {
+                Building.addFlatNos(flat).success(function (savedFlat) {
+                    $scope.getAllFlats.push(savedFlat);
+                })
+            })
+        }
+    });
 
     Building.getFlats().success(function (data) {
         data.forEach(function (entry) {
@@ -109,7 +130,7 @@ var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Bui
         $scope.flat.phoneNumber = Number(data.phoneNumber);
         $scope.flat.altNumber = Number(data.altNumber);
         $scope.flat.emailId = data.emailId;
-        $scope.flat.flatNumber = data._id;
+        $scope.flat.flatNumber = $scope.getAllFlats[findFlatInfo(data._id, $scope.getAllFlats)]._id;
     };
 
     $scope.reset = function () {
@@ -124,6 +145,32 @@ var FlatsController = ['$scope', 'Building', '$rootScope', function ($scope, Bui
 }];
 
 function isValidForm(flat) {
-    return flat.flatNumber !== undefined && flat.firstName !== undefined &&
-        flat.lastName !== undefined && flat.phoneNumber !== undefined;
+    if (flat.flatNumber === undefined || flat.flatNumber === null) {
+        errorMessageString = "Please select Flat number";
+        return false;
+    }
+    else if (flat.firstName === undefined || flat.firstName === '') {
+        errorMessageString = "Please enter owner first name";
+        return false;
+    }
+    else if (flat.lastName === undefined || flat.lastName === '') {
+        errorMessageString = "Please enter owner last name";
+        return false;
+    }
+    else if (flat.phoneNumber === undefined || flat.phoneNumber === '') {
+        errorMessageString = "Please enter phone number";
+        return false;
+    }
+    else {
+        errorMessageString = "";
+        return true;
+    }
+}
+
+function findFlatInfo(flatNo, list) {
+    for (var i = 0; i < list.length; i++) {
+        if (flatNo == list[i].flatNo) {
+            return i;
+        }
+    }
 }

@@ -68,7 +68,7 @@
             <label class="control-label col-sm-2" for="flat">Flat Number</label>
             <div class="col-sm-3">
                 <select class="form-control" name="repeatSelect" id="flat" ng-model="maintenance.flat"
-                        ng-options="value.id as value.flatNo for value in allFlats">
+                        ng-options="value._id as value.flatNo for value in getAllFlats">
                     <option value="">-- Select Flat --</option>
                 </select>
             </div>

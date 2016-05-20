@@ -1,10 +1,13 @@
 <div ng-show="isAdminView()">
-    <form class="form-horizontal" role="form">
+    <h4 class="error-message" ng-model="errorMessage" ng-show="errorMessage.length"> {{errorMessage}} </h4>
+    <form class="form-horizontal" role="form" autocomplete="off">
         <div class="form-group">
-            <label class="control-label col-sm-2" for="flatNumber">Flat Number :</label>
-            <div class="col-sm-2 col-sm-3">
-                <input type="text" class="form-control" id="flatNumber" placeholder="Enter Flat Number"
-                       ng-model="flat.flatNumber">
+            <label class="control-label col-sm-2" for="flat">Flat Number :</label>
+            <div class="col-sm-3">
+                <select class="form-control" name="repeatSelect" id="flat" ng-model="flat.flatNumber"
+                        ng-options="value._id as value.flatNo for value in getAllFlats">
+                    <option value="">-- Select Flat --</option>
+                </select>
             </div>
         </div>
         <div class="form-group">

@@ -83,6 +83,13 @@ angular.module('buildingService', [])
 
             deleteIncome: function (id) {
                 return $http.delete('/api/deleteIncome', {params: {itemId: id}});
+            },
+
+            getAllFlatsNo: function(){
+                return $http.get('/api/flatsInfo');
+            },
+            addFlatNos:function(flat){
+                return $http.post('/api/addFlatsInfo', flat);
             }
         }
     }]);

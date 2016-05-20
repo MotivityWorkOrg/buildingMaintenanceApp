@@ -42,9 +42,9 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
         $scope.maintenance.paymentDate = new Date();
         $scope.periodFormat = 'MMMM/yyyy';
         $scope.maintenance.period = new Date();
-        $scope.allFlats = getFlats();
         $scope.animationsEnabled = true;
         selectedPeriod = $scope.dateFilter(new Date(), 'MMMM/yyyy');
+        $scope.getAllFlats = [];
         $scope.errorMessage = '';
 
         $scope.datePicker = {
@@ -92,6 +92,18 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
             $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
         });
 
+        Building.getAllFlatsNo().success(function (data){
+            $scope.getAllFlats = data;
+            if(data.length === 0){
+                var flats = getFlats();
+                flats.forEach(function (flat) {
+                    Building.addFlatNos(flat).success(function (savedFlat) {
+                        $scope.getAllFlats.push(savedFlat);
+                    })
+                })
+            }
+        });
+
         $scope.loadTypeCategories = function () {
             $scope.typeOfMaintenance = [];
             if ($scope.maintenance.maintenanceType.type == "Expenses") {
@@ -108,8 +120,8 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
 
         $scope.addMonthlyIncomeOrExpenses = function () {
             var maintenanceInfo = $scope.maintenance;
+            $scope.errorMessage = "";
             if (isMaintenanceFormValid(maintenanceInfo)) {
-                $scope.errorMessage = "";
                 if ($scope.savedItemCanDelete) {
                     var selectedItemId = itemId;
                     itemId = '';
@@ -131,7 +143,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                 }
                 else {
                     maintenanceInfo.category = $scope.listOfIncomes[parseInt($scope.maintenance.category) - 1].type;
-                    maintenanceInfo.flatNo = $scope.allFlats[parseInt($scope.maintenance.flat) - 1].flatNo;
+                    maintenanceInfo.flatNo = $scope.getAllFlats[parseInt($scope.maintenance.flat) - 1].flatNo;
                     if (itemId !== '') {
                         maintenanceInfo.objectId = itemId;
                         maintenanceInfo.updatedBy = $rootScope.user.username;
@@ -217,7 +229,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
             else {
                 $scope.maintenance.maintenanceType = $scope.maintenanceType[1].id;
                 $scope.maintenance.category = $scope.listOfIncomes[findDropdownSelected(data.category, $scope.listOfIncomes)]._id;
-                $scope.maintenance.flat = $scope.allFlats[findFlatInfo(data.flatNo, $scope.allFlats)].id;
+                $scope.maintenance.flat = $scope.getAllFlats[findFlatInfo(data.flatNo, $scope.getAllFlats)]._id;
             }
         };
 
@@ -278,11 +290,11 @@ maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalIn
 ]);
 
 function isMaintenanceFormValid(form) {
-    if (form.period === undefined) {
+    if (form.period === undefined || form.period === '') {
         errorMessageString = "Select Maintenance period";
         return false;
     }
-    else if (form.paymentDate === undefined) {
+    else if (form.paymentDate === undefined || form.paymentDate === '') {
         errorMessageString = "Select payment date";
         return false;
     }
@@ -299,7 +311,7 @@ function isMaintenanceFormValid(form) {
             errorMessageString = "Select flat no";
             return false;
         }
-        else if (form.amount === undefined) {
+        else if (form.amount === undefined || form.amount === '') {
             errorMessageString = "Enter Amount";
             return false;
         }
@@ -346,67 +358,67 @@ function getFlats() {
     return [
         {
             id: 1,
-            flatNo: '101'
+            flatNo: 101
         },
         {
             id: 2,
-            flatNo: '102'
+            flatNo: 102
         },
         {
             id: 3,
-            flatNo: '103'
+            flatNo: 103
         },
         {
             id: 4,
-            flatNo: '104'
+            flatNo: 104
         },
         {
             id: 5,
-            flatNo: '201'
+            flatNo: 201
         },
         {
             id: 6,
-            flatNo: '202'
+            flatNo: 202
         },
         {
             id: 7,
-            flatNo: '203'
+            flatNo: 203
         },
         {
             id: 8,
-            flatNo: '204'
+            flatNo: 204
         },
         {
             id: 9,
-            flatNo: '301'
+            flatNo: 301
         },
         {
             id: 10,
-            flatNo: '302'
+            flatNo: 302
         },
         {
             id: 11,
-            flatNo: '303'
+            flatNo: 303
         },
         {
             id: 12,
-            flatNo: '304'
+            flatNo: 304
         },
         {
             id: 13,
-            flatNo: '401'
+            flatNo: 401
         },
         {
             id: 14,
-            flatNo: '402'
+            flatNo: 402
         },
         {
             id: 15,
-            flatNo: '403'
+            flatNo: 403
         },
         {
             id: 16,
-            flatNo: '404'
+            flatNo: 404
         }
     ]
 }
