@@ -1,61 +1,94 @@
-<div class="table-responsive">
-    <label>Expenses</label>
+<div class="form-group">
+    <label class="control-label col-sm-2">Period</label>
+    <div class="col-sm-3">
+        <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
+                   ng-model="maintenance.period"
+                   is-open="periodPicker.opened"
+                   close-text="Close"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="periodDatePickerOpen()"><i
+                                class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+        </p>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-default" ng-click="getUserSelectedMonthInfo()">Add</button>
+    </div>
+</div>
+
+<div>&nbsp;</div>
+<div>
+    <h2>
+        Total Expenditure of {{ dateFilter(maintenance.period, periodFormat) }}
+        <label class="pull-right {{spanColor}}">By Hand: <span>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</span></label>
+    </h2>
+</div>
+<div class="table-responsive income">
+    <h3>Income</h3>
     <table class="table table-hover table-bordered">
         <thead>
         <tr>
-            <th>Period</th>
             <th>Payment Date</th>
-            <th>Description</th>
+            <th>Flat</th>
             <th>Category</th>
             <th>Amount</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="expenses in expensesArr | orderBy : 'period'">
-            <td>{{ expenses.period }}</td>
-            <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
-            <td>{{ expenses.description }}</td>
-            <td>{{ expenses.category }}</td>
-            <td>{{ expenses.amount }}</td>
+        <tr ng-repeat="income in allIncomes | orderBy : 'flatNo'" ng-dblclick="modifyData(income, 'Incomes')">
+            <td>{{ dateFilter(income.paymentDate, format) }}</td>
+            <td>{{income.flatNo}}</td>
+            <td>
+                <div data-toggle="tooltip" data-original-title="{{income.description}}" tooltip-loader>
+                    {{ income.category }}
+                </div>
+            <td>{{ income.amount }}.00</td>
         </tr>
         </tbody>
         <tfoot>
         <tr>
-            <td text-align="right" colspan="4">Grand Total</td>
-            <td>{{ totalExpenses }}</td>
+            <td text-align="right" colspan="3">Total Income</td>
+            <td>{{ totalIncome }}.00</td>
         </tr>
         </tfoot>
     </table>
 </div>
+<div class="table-responsive expenses">
+    <h3>Expenses</h3>
+    <table id="expenses" class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Payment Date</th>
+            <th>Category</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="expenses in expensesArr" ng-dblclick="modifyData(expenses, 'Expenses')">
+            <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
+            <td>
+                <div data-toggle="tooltip" data-original-title="{{expenses.description}}" tooltip-loader>
+                    {{ expenses.category }}
+                </div>
 
-<div class="table-responsive">
-    <label>Incomes</label>
-    <div class="table-responsive">
-        <label>Incomes</label>
-        <table class="table table-hover table-bordered">
-            <thead>
-            <tr>
-                <th>Period</th>
-                <th>Payment Date</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Amount</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="income in allIncomes | orderBy : 'period'">
-                <td>{{ income.period }}</td>
-                <td>{{ dateFilter(income.paymentDate, format) }}</td>
-                <td>{{ income.description }}</td>
-                <td>{{ income.category }}</td>
-                <td>{{ income.amount }}</td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td text-align="right" colspan="4">Grand Total</td>
-                <td>{{ totalIncome }}</td>
-            </tr>
-            </tfoot>
-        </table>
+            </td>
+            <td>{{ expenses.amount }}.00</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td text-align="right" colspan="2">Total Expenses</td>
+            <td>{{ totalExpenses }}.00</td>
+        </tr>
+        <tr>
+            <td text-align="right" colspan="2">Total Income</td>
+            <td>{{ totalIncome }}.00</td>
+        </tr>
+        <tr>
+            <td colspan="2">Grand Total</td>
+            <td>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</td>
+        </tr>
+        </tfoot>
+    </table>
 </div>

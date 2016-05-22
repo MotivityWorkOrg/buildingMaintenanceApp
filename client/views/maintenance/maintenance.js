@@ -26,8 +26,8 @@ maintenanceModule.directive('tooltipLoader', function () {
     };
 });
 
-var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filter', '$uibModal',
-    function ($rootScope, $scope, $http, Building, $filter, $uibModal) {
+var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$uibModal',
+    function ($rootScope, $scope, Building, $filter, $uibModal) {
         $scope.appData = this;
         $scope.data = {};
         $scope.loading = true;
@@ -201,7 +201,7 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
 
         $scope.isUserView = function () {
             return $rootScope.user !== undefined && $rootScope.user.roles !== undefined &&
-                $rootScope.userInfo.roles.toUpperCase() == "USER";
+                $rootScope.user.roles.toUpperCase() == "USER";
         };
 
         $scope.datePickerOpen = function () {
@@ -263,6 +263,25 @@ var MaintenanceController = ['$rootScope', '$scope', '$http', 'Building', '$filt
                     $scope.savedItemCanDelete = false;
                 }
             }
+        };
+        $scope.getUserSelectedMonthInfo = function(){
+            selectedPeriod = $scope.dateFilter($scope.maintenance.period, 'MMMM/yyyy');
+            console.log("Selected Period is   ", selectedPeriod);
+            Building.getExpenses(selectedPeriod).success(function (data) {
+                $scope.expensesArr = {};
+                $scope.expensesArr = data;
+                $scope.totalExpenses = calculateTotal(data);
+                $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
+                $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
+            });
+
+            Building.getIncomes(selectedPeriod).success(function (data) {
+                $scope.allIncomes = {};
+                $scope.allIncomes = data;
+                $scope.totalIncome = calculateTotal(data);
+                $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
+                $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
+            });
         }
     }];
 

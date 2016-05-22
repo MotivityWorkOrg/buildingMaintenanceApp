@@ -1,7 +1,7 @@
 angular.module('authService', [])
     .factory('AuthService',
         ['$q', '$timeout', '$http','$rootScope',
-            function ($q, $timeout, $http, $rootScope) {
+            function ($q, $timeout, $http, $rootScope, PersistenceService) {
                 // create user variable
                 var user = null;
                 // return available functions for use in the controllers
@@ -42,7 +42,8 @@ angular.module('authService', [])
                                 $rootScope.user = data.user;
                                 window.sessionStorage["userInfo"] = JSON.stringify(data.user);
                                 $rootScope.userInfo = JSON.parse(window.sessionStorage["userInfo"]);
-                                deferred.resolve();
+                                window.sessionStorage["user"] = data.user;
+                                deferred.resolve(data.user);
                             } else {
                                 user = false;
                                 deferred.reject();

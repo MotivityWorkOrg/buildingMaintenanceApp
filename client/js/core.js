@@ -1,13 +1,13 @@
 buildingApp = angular.module('buildingMaintenanceApp',
     ['buildingService', 'ui.bootstrap', 'ui.bootstrap.tpls',
-        'authService', 'ui.router', 'users', 'main', 'flats', 'ngOnlyNumberApp']);
+        'authService', 'ui.router', 'users', 'main', 'flats',
+        'ngOnlyNumberApp', 'ngCookies']);
 
 buildingApp.directive('phoneMaxlength', function () {
     return {
         require: 'ngModel',
         link: function (scope, element, attrs, ngModelCtrl) {
             var maxLength = Number(attrs.phoneMaxlength);
-
             function fromUser(text) {
                 //console.log("Coming in fromUser Function", typeof text, text.toString());
                 var enterStr = text.toString();
@@ -20,37 +20,38 @@ buildingApp.directive('phoneMaxlength', function () {
                 }
                 return text;
             }
-
             ngModelCtrl.$parsers.push(fromUser);
         }
     };
 });
 
-buildingApp.config(function($urlRouterProvider, $httpProvider) {
+buildingApp.config(function ($urlRouterProvider, $httpProvider) {
     //session check and redirect to specific state
-    if(!window.sessionStorage["userInfo"]){
+    if (!window.sessionStorage["userInfo"]) {
         $urlRouterProvider.otherwise("/login");
-    }else{
+    } else {
         $urlRouterProvider.otherwise("/home");
     }
 });
 
 //Run phase
-buildingApp.run(function($rootScope, $state) {
+buildingApp.run(function ($rootScope, $state) {
     $rootScope.$state = $state; //Get state info in view
     $rootScope.dashboardClass = 'login-page';
-    if(window.sessionStorage["userInfo"]){
+    if (window.sessionStorage["userInfo"]) {
         $rootScope.userInfo = window.sessionStorage["userInfo"];
+        $rootScope.user = JSON.parse(window.sessionStorage["userInfo"]);
+        $rootScope.dashboardClass = 'inner-home';
     }
 
     //Check session and redirect to specific page
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-        if(toState && toState.data && toState.data.auth && !window.sessionStorage["userInfo"]){
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        if (toState && toState.data && toState.data.auth && !window.sessionStorage["userInfo"]) {
             event.preventDefault();
             window.location.href = "#login";
         }
 
-        if(!toState && !toState.data && !toState.data.auth && window.sessionStorage["userInfo"]){
+        if (!toState && !toState.data && !toState.data.auth && window.sessionStorage["userInfo"]) {
             event.preventDefault();
             window.location.href = "#home";
         }
