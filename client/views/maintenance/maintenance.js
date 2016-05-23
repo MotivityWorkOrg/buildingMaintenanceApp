@@ -46,6 +46,11 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         selectedPeriod = $scope.dateFilter(new Date(), 'MMMM/yyyy');
         $scope.getAllFlats = [];
         $scope.errorMessage = '';
+        $scope.dateOptions={
+            maxDate: new Date(),
+            minMode: 'month'
+        };
+
 
         $scope.datePicker = {
             opened: false

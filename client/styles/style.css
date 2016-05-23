@@ -1496,14 +1496,13 @@ tfoot td {
 .subnavbar-inner {
     height: 50px;
     background: transparent;
-    clear: both;
+    margin-top: 20px;
 }
 .subnavbar-inner {
-    border-color: transparent transparent #00a261;
+    border-color: transparent transparent #ffac1b;
     border-image: none;
     border-style: solid;
     border-width: 0px 0px 64px 64px;
-    margin-bottom: 54px;
 
 }
 .subnavbar-inner ul {
@@ -1518,7 +1517,7 @@ tfoot td {
 .subnavbar-inner ul li a {
     color: #fff;
     font-size: 16px;
-    border-right: 1px solid #32b480;
+    border-right: 1px solid #ffbe62;
     padding: 0px 20px;
 }
 .subnavbar-inner ul li:last-child a {
@@ -1543,4 +1542,13 @@ tfoot td {
 
 .error-message{
     color: #ff0000;
+}
+
+.control-label {
+    padding-top: 7px;
+    padding-right: 0px;
+    text-align: right;
+}
+.dropdown-menu {
+    padding: 5px;
 }

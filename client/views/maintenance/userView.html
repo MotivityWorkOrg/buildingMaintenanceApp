@@ -1,10 +1,14 @@
 <div class="form-group">
-    <label class="control-label col-sm-2">Period</label>
+    <label class="control-label col-sm-3">View Expenditure for the month of:</label>
     <div class="col-sm-3">
         <p class="input-group">
             <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
                    ng-model="maintenance.period"
                    is-open="periodPicker.opened"
+                   show-button-bar="false"
+                   max-date="maxDt"
+                   datepicker-options="dateOptions"
+                   datepicker-mode="'month'"
                    close-text="Close"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="periodDatePickerOpen()"><i
