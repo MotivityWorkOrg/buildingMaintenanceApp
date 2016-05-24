@@ -51,6 +51,10 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
             minMode: 'month'
         };
 
+        $scope.userDateOptions = {
+            maxDate: new Date(),
+            minMode: 'month'
+        };
         $scope.adminViewDateOptions = {
             maxDate: new Date(),
             showWeeks: false
