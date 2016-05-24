@@ -46,11 +46,15 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         selectedPeriod = $scope.dateFilter(new Date(), 'MMMM/yyyy');
         $scope.getAllFlats = [];
         $scope.errorMessage = '';
-        $scope.dateOptions={
+        $scope.dateOptions = {
             maxDate: new Date(),
             minMode: 'month'
         };
 
+        $scope.adminViewDateOptions = {
+            maxDate: new Date(),
+            showWeeks: false
+        };
 
         $scope.datePicker = {
             opened: false
@@ -97,9 +101,9 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
             $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
         });
 
-        Building.getAllFlatsNo().success(function (data){
+        Building.getAllFlatsNo().success(function (data) {
             $scope.getAllFlats = data;
-            if(data.length === 0){
+            if (data.length === 0) {
                 var flats = getFlats();
                 flats.forEach(function (flat) {
                     Building.addFlatNos(flat).success(function (savedFlat) {
@@ -269,7 +273,7 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
                 }
             }
         };
-        $scope.getUserSelectedMonthInfo = function(){
+        $scope.getUserSelectedMonthInfo = function () {
             selectedPeriod = $scope.dateFilter($scope.maintenance.period, 'MMMM/yyyy');
             console.log("Selected Period is   ", selectedPeriod);
             Building.getExpenses(selectedPeriod).success(function (data) {

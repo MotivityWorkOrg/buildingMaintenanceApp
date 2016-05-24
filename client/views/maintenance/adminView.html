@@ -10,6 +10,10 @@
                 <p class="input-group">
                     <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
                            ng-model="maintenance.period"
+                           show-button-bar="false"
+                           max-date="maxDt"
+                           datepicker-options="dateOptions"
+                           datepicker-mode="'month'"
                            is-open="periodPicker.opened"
                            close-text="Close"/>
                     <span class="input-group-btn">
@@ -26,7 +30,11 @@
                 <p class="input-group">
                     <input type="text" class="form-control" uib-datepicker-popup="{{format}}"
                            ng-model="maintenance.paymentDate"
+                           show-button-bar="false"
+                           show-weeks="'false'"
+                           max-date="maxDt"
                            is-open="datePicker.opened"
+                           datepicker-options="adminViewDateOptions"
                            close-text="Close"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="datePickerOpen()"><i
