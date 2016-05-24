@@ -1,0 +1,91 @@
+.login-page {
+     background: #00a261 url(../../../img/home-banner.jpg) no-repeat fixed bottom left;
+ }
+.inner-home {
+     background: url(../../../img/banner.jpg) no-repeat top left #e8eaee;
+    background-size:100% 120px;
+ }
+.navbar {
+    h1 {
+        float:left;
+        margin:0px;
+        a.brand {
+            background: url(../img/house-logo.png) no-repeat top left;
+            padding:23px 0px 0px 38px;
+        }
+        .brand {
+            color: #ffffff;
+
+        }
+        &:hover {
+             text-decoration: none;
+         }
+    }
+    .nav-collapse {
+        float:right;
+    }
+}
+
+.navbar h1 .brand:active, .navbar h1 .brand:focus, .navbar .nav-collapse a:active, .navbar .nav-collapse a:focus {
+     outline: none;
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    background: none;
+}
+.navbar-inner {
+    padding:30px 0px 20px;
+}
+.btn-success {
+    background-color: #00ba8b;
+    border-color: #00ba8b;
+}
+.header-nav li {
+    float: left;
+    fontp-size:14px;
+}
+.header-nav li li {
+    float: none;
+}
+.header-nav > li > a {
+    color: #fff;
+    font-size:14px;
+}
+.main-menu a {
+    font-size: 16px;
+    color: #fff;
+    margin-top: -10px;
+    padding: 5px 10px;
+}
+.main-menu a .icon-reorder {
+    font-size: 14px;
+    padding-left: 5px;
+}
+@media (max-width: 480px) {
+    h1 {
+        font-size:24px;
+        margin-top: 0px;
+    }
+    .navbar .nav-collapse {
+        clear: none;
+        overflow: hidden;
+        height: auto;
+    }
+    .navbar .nav-collapse a {
+        color: #ffffff;
+    }
+    .navbar .nav {
+        margin-bottom: 0px;
+    }
+
+}
+@media (max-width: 979px) {
+    .navbar .nav-collapse {
+        clear: none;
+        height: auto;
+    }
+    .navbar .nav > li > a:hover {
+        background: none;
+    }
+}
+
+
