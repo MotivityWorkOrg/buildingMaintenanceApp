@@ -84,6 +84,13 @@ var flatsInfoSchema = new mongoose.Schema({
     flatNo: Number
 });
 
+var monthlyDetailsSchema = new mongoose.Schema({
+    totalIncome: Number,
+    totalExpenditure: Number,
+    total: Number,
+    date: Date
+});
+
 //module.exports = mongoose.model('Maintenance', MaintenanceSchema);
 var FlatModel = mongoose.model('Flat', flatSchema);
 var TenantModel = mongoose.model('Tenant', TenantSchema);
@@ -94,6 +101,7 @@ var MonthsModel = mongoose.model('Months', MonthsSchema);
 var ExpensesTypesModel = mongoose.model('ExpensesTypes', expensesTypesSchema);
 var IncomeTypesModel = mongoose.model('IncomeTypes', incomeTypesSchema);
 var FlatsInfoModel = mongoose.model('FlatInfo', flatsInfoSchema);
+var monthlyDetailsModel = mongoose.model('MonthlyDetail', monthlyDetailsSchema);
 //module.exports = monthsModel;
 
 module.exports = {
@@ -105,5 +113,6 @@ module.exports = {
     Months: MonthsModel,
     IncomeTypes: IncomeTypesModel,
     ExpensesTypes: ExpensesTypesModel,
-    FlatInfo: FlatsInfoModel
+    FlatInfo: FlatsInfoModel,
+    MonthlyDetail: monthlyDetailsModel
 };

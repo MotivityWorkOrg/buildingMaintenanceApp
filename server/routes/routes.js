@@ -1,6 +1,7 @@
 var BuildingInfo = require('./models/building');
 var mongoose = require('mongoose');
 
+
 function getPopulateExpenses(res) {
     BuildingInfo.Expenses.find(function (err, expenses) {
         // if there is an error retrieving, send the error. nothing after res.send(err) will execute
@@ -251,7 +252,7 @@ module.exports = function (app) {
                 if (err) {
                     res.send(err);
                 }
-                console.log("asdf asdfj "+tenant);
+                console.log("asdf asdfj " + tenant);
                 //res.send(tenant);
             });
         }
@@ -316,7 +317,7 @@ module.exports = function (app) {
         )
     });
 
-    app.get('/api/flatsInfo', function(req, res){
+    app.get('/api/flatsInfo', function (req, res) {
         BuildingInfo.FlatInfo.find(function (err, flatInfo) {
             if (err) {
                 res.send(err);
@@ -326,30 +327,92 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/api/addFlatsInfo', function(req, res){
+    app.post('/api/addFlatsInfo', function (req, res) {
         BuildingInfo.FlatInfo.create({
             _id: req.body.id,
             flatNo: req.body.flatNo
-        }, function(err, flat){
-            if(err){
+        }, function (err, flat) {
+            if (err) {
                 res.send(err);
             }
             res.send(flat);
         })
     });
-    /*app.create('/api/buildingMaintenance', function (req, res) {
-
-     });
-
-     app.update('/api/buildingMaintenance', function (req, res) {
-
-     });
-
-     app.delete('/api/buildingMaintenance/:flatId', function (req, res) {
-
-     })*/
 };
 
+/**
+ * Cron job to calculate total expenditure and total incomes for last month.
+ * @type {*|CronJob}
+ */
+var CronJob = require('cron').CronJob;
+var job = new CronJob('00 01 04 1 * *', function () {
+    callMonthlyInfo()
+}, null, true);
+job.start();
+//rule = '0 0/2 * 1/1 * ? *';
+//
+
+function callMonthlyInfo() {
+    var period = dateFormat(new Date());
+    console.log("Month Period  ", period, " < --- >  ", dateFormat(new Date()));
+    var query = BuildingInfo.Income.find({'period': period});
+    query.exec(function (err, incomes) {
+        if (err) {
+            res.send(err);
+            console.log("The 'incomes' collection doesn't exist. Creating it with sample data...");
+        }
+        //console.log("incomes .. ", incomes);
+        var totalIncome = calculateTotal(incomes);
+        console.log("Total Income is ::: ", totalIncome);
+        callMonthlyExpenditure(totalIncome, period);
+    });
+}
+
+function callMonthlyExpenditure(totalIncome, period){
+    var query = BuildingInfo.Expenses.find({'period': period});
+    query.exec(function (err, expenses) {
+        if (err) {
+            console.log("The 'expenses' collection doesn't exist. Creating it with sample data...");
+            if (res.status == 404) {
+                return res.status(404).send('fancy server side error message!');
+            }
+            res.send(err);
+        }
+        //console.log("expenses .. ", expenses);
+        var totalExpenditure = calculateTotal(expenses);
+        fillMonthlyReport(totalIncome, totalExpenditure);
+    });
+}
+
+function fillMonthlyReport(totalIncome, totalExpenditure){
+    var totalOverFlowAmount = totalIncome - totalExpenditure;
+    BuildingInfo.MonthlyDetail.create({
+        totalIncome: totalIncome,
+        totalExpenditure: totalExpenditure,
+        total: totalOverFlowAmount,
+        date: new Date()
+    })
+}
+/**
+ * Scheduler Will call every month 1 day, we required last month
+ * income and expenditure info
+ * @param date
+ * @returns {string}
+ */
+function dateFormat(date) {
+    var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var monthIndex = date.getMonth() - 1;
+    var year = date.getFullYear();
+    return monthNames[monthIndex] + '/' + year;
+}
+
+function calculateTotal(data) {
+    var total = 0.0;
+    data.forEach(function (entry) {
+        total += Number(entry.amount);
+    });
+    return total;
+}
 /**
  * -----------------------------------------------------------------------------------------------
  * Populate database with sample data -- Only used once: the first time the application is started.
