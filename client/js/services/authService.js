@@ -11,7 +11,8 @@ angular.module('authService', [])
                     login: login,
                     logout: logout,
                     register: register,
-                    getRegUsers: getRegUsers
+                    getRegUsers: getRegUsers,
+                    deleteUser: deleteUser
                 });
 
                 function isLoggedIn() {
@@ -117,6 +118,24 @@ angular.module('authService', [])
                         });
                     // return promise object
                     return deferred.promise;
+                }
+
+                function deleteUser(id) {
+                    var deferred = $q.defer();
+                    $http.delete('/user/deleteUser', {params: {username: id}})
+                        .success(function (data, status) {
+                            if (status === 200) {
+                                $rootScope.regUsers = data;
+                                deferred.resolve();
+                            }
+                            else {
+                                deferred.reject();
+                            }
+                        })
+                        // handle error
+                        .error(function () {
+                            deferred.reject();
+                        });
                 }
             }
         ]

@@ -1,4 +1,4 @@
-<div> hi this is Users Viewa</div>
+<div class="ng-value-red" ng-show="error"> {{errorMessage}}</div>
 
 <div class="table-responsive income">
     <h3>Income</h3>
@@ -15,6 +15,11 @@
             <td>{{ user.username }}</td>
             <td>{{user.phoneNumber}}</td>
             <td>{{ user.roles }}</td>
+            <td>
+                <div>
+                    <button class="btn btn-danger" ng-click="deleteUser(user)"></button>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
