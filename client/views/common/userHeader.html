@@ -12,8 +12,8 @@
                 <li ng-class="{active: $state.includes('flats')}">
                     <a ui-sref="flats">About Us</a>
                 </li>
-                <li ng-class="{active: $state.includes('flats')}">
-                    <a ui-sref="flats">Meet Me</a>
+                <li ng-show="user.roles === 'ADMIN'" ng-class="{active: $state.includes('users')}">
+                    <a ui-sref="users">Users</a>
                 </li>
                 <li><a href="javascript:;">Profile</a></li>
                 <li><a ui-sref="logout" ng-click="">Logout</a></li>

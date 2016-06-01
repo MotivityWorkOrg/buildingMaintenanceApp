@@ -1,6 +1,6 @@
 angular.module('authService', [])
     .factory('AuthService',
-        ['$q', '$timeout', '$http','$rootScope',
+        ['$q', '$timeout', '$http', '$rootScope',
             function ($q, $timeout, $http, $rootScope, PersistenceService) {
                 // create user variable
                 var user = null;
@@ -10,7 +10,8 @@ angular.module('authService', [])
                     getUserStatus: getUserStatus,
                     login: login,
                     logout: logout,
-                    register: register
+                    register: register,
+                    getRegUsers: getRegUsers
                 });
 
                 function isLoggedIn() {
@@ -97,4 +98,26 @@ angular.module('authService', [])
                     // return promise object
                     return deferred.promise;
                 }
-            }]);
+
+                function getRegUsers() {
+                    var deferred = $q.defer();
+                    $http.get('/user/allUsers')
+                        .success(function (data, status) {
+                            if (status === 200) {
+                                $rootScope.regUsers = data;
+                                deferred.resolve();
+                            }
+                            else {
+                                deferred.reject();
+                            }
+                        })
+                        // handle error
+                        .error(function () {
+                            deferred.reject();
+                        });
+                    // return promise object
+                    return deferred.promise;
+                }
+            }
+        ]
+    );

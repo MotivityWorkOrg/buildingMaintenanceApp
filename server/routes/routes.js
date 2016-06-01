@@ -158,7 +158,8 @@ module.exports = function (app) {
                     res.send(err);
                 //console.log("Inserted Expense is+++ ",income);
                 res.send(income);
-            });
+            }
+        );
     });
 
     app.get('/api/incomes', function (req, res) {
@@ -345,7 +346,7 @@ module.exports = function (app) {
  * @type {*|CronJob}
  */
 var CronJob = require('cron').CronJob;
-var job = new CronJob('00 01 04 1 * *', function () {
+var job = new CronJob('00 00 12 1 * *', function () {
     callMonthlyInfo()
 }, null, true);
 job.start();
@@ -368,7 +369,7 @@ function callMonthlyInfo() {
     });
 }
 
-function callMonthlyExpenditure(totalIncome, period){
+function callMonthlyExpenditure(totalIncome, period) {
     var query = BuildingInfo.Expenses.find({'period': period});
     query.exec(function (err, expenses) {
         if (err) {
@@ -384,7 +385,7 @@ function callMonthlyExpenditure(totalIncome, period){
     });
 }
 
-function fillMonthlyReport(totalIncome, totalExpenditure){
+function fillMonthlyReport(totalIncome, totalExpenditure) {
     var totalOverFlowAmount = totalIncome - totalExpenditure;
     BuildingInfo.MonthlyDetail.create({
         totalIncome: totalIncome,

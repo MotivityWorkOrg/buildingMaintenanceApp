@@ -39,7 +39,6 @@ var UserController = ['$scope', '$location', 'AuthService', '$rootScope',
                 $scope.signup.createDate = new Date();
                 // call register from service
                 $scope.signup.roles = $scope.selectedRole;
-                console.log("Signup resg form   ", $scope.signup);
                 AuthService.register($scope.signup)
                     // handle success
                     .then(function () {
