@@ -86,18 +86,13 @@ module.exports = function (passport) {
     });
 
     router.delete('/deleteUser', function (req, res) {
-        if (req.isAuthenticated()) {
-            res.send('User is logged in choose Another user')
-        } else {
-            var query = User.user.findByIdAndRemove({_id: req.query['username']});
-            query.exec(function (err, user) {
-                    if (err) {
-                        res.send(err);
-                    }
-                    res.send(user);
-                }
-            )
-        }
+        var query = User.user.findByIdAndRemove({_id: req.query['id']});
+        query.exec(function (err, user) {
+            if (err) {
+                res.send(err);
+            }
+            res.send(user);
+        })
     });
     return router;
 };

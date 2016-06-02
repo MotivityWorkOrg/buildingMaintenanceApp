@@ -10,12 +10,14 @@
                     <a ui-sref="main">Home</a>
                 </li>
                 <li ng-class="{active: $state.includes('flats')}">
-                    <a ui-sref="flats">About Us</a>
+                    <a ui-sref="flats">Flats</a>
                 </li>
                 <li ng-show="user.roles === 'ADMIN'" ng-class="{active: $state.includes('users')}">
                     <a ui-sref="users">Users</a>
                 </li>
-                <li><a href="javascript:;">Profile</a></li>
+                <li ng-show="user.roles === 'ADMIN'" ng-class="{active: $state.includes('register')}">
+                    <a ui-sref="register">Register</a>
+                </li>
                 <li><a ui-sref="logout" ng-click="">Logout</a></li>
             </ul>
         </div>

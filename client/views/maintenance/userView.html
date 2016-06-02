@@ -9,7 +9,6 @@
                    max-date="maxDt"
                    datepicker-options="userDateOptions"
                    datepicker-mode="'month'"
-                   ng-change="getUserSelectedMonthInfo()"
                    close-text="Close"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="periodDatePickerOpen()"><i
@@ -17,6 +16,11 @@
                     </span>
         </p>
     </div>
+    <div class="form-control">
+        <input type="text" placeholder="Enter year" ng-model="maintenance.currentYear"
+               data-max-length="4" ng-only-number>
+    </div>
+    <button class="btn btn-success" ng-click="getUserSelectedMonthInfo()">View</button>
 </div>
 <div class="clr">&nbsp;</div>
 <div>

@@ -278,8 +278,14 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
             }
         };
         $scope.getUserSelectedMonthInfo = function () {
-            selectedPeriod = $scope.dateFilter($scope.maintenance.period, 'MMMM/yyyy');
-            console.log("Selected Period is   ", selectedPeriod);
+            var date = new Date();
+            if ($scope.maintenance.currentYear !== "" && $scope.maintenance.currentYear <= date.getFullYear()) {
+                selectedPeriod = $scope.maintenance.currentYear;
+            }
+            else {
+                selectedPeriod = $scope.dateFilter($scope.maintenance.period, 'MMMM/yyyy');
+            }
+
             Building.getExpenses(selectedPeriod).success(function (data) {
                 $scope.expensesArr = {};
                 $scope.expensesArr = data;

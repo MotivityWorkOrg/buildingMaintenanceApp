@@ -163,7 +163,19 @@ module.exports = function (app) {
     });
 
     app.get('/api/incomes', function (req, res) {
-        var query = BuildingInfo.Income.find({'period': req.query['period']});
+        var period = req.query['period'];
+        var query;
+        if (period.length === 4) {
+            query = BuildingInfo.Expenses.find({
+                'paymentDate': {
+                    $gte: new Date(period, 1, 1),
+                    $lte: new Date(period, 12, 31)
+                }
+            });
+        }
+        else {
+            query = BuildingInfo.Expenses.find({'period': req.query['period']});
+        }
         query.exec(function (err, incomes) {
             if (err) {
                 res.send(err);
@@ -175,7 +187,20 @@ module.exports = function (app) {
     });
 
     app.get('/api/expenses', function (req, res) {
-        var query = BuildingInfo.Expenses.find({'period': req.query['period']});
+        var period = req.query['period'];
+        var query;
+        if (period.length === 4) {
+            query = BuildingInfo.Expenses.find({
+                'paymentDate': {
+                    $gte: new Date(period, 1, 1),
+                    $lte: new Date(period, 12, 31)
+                }
+            });
+        }
+        else {
+            query = BuildingInfo.Expenses.find({'period': req.query['period']});
+        }
+
         query.exec(function (err, expenses) {
             if (err) {
                 console.log("The 'expenses' collection doesn't exist. Creating it with sample data...");
@@ -346,7 +371,7 @@ module.exports = function (app) {
  * @type {*|CronJob}
  */
 var CronJob = require('cron').CronJob;
-var job = new CronJob('00 30 12 1 * *', function () {
+var job = new CronJob('00 00 5 1 * *', function () {
     callMonthlyInfo()
 }, null, true, "Asia/Kolkata");
 job.start();
@@ -355,16 +380,13 @@ job.start();
 
 function callMonthlyInfo() {
     var period = dateFormat(new Date());
-    console.log("Month Period  ", period, " < --- >  ", dateFormat(new Date()));
     var query = BuildingInfo.Income.find({'period': period});
     query.exec(function (err, incomes) {
         if (err) {
             res.send(err);
-            console.log("The 'incomes' collection doesn't exist. Creating it with sample data...");
         }
         //console.log("incomes .. ", incomes);
         var totalIncome = calculateTotal(incomes);
-        console.log("Total Income is ::: ", totalIncome);
         callMonthlyExpenditure(totalIncome, period);
     });
 }

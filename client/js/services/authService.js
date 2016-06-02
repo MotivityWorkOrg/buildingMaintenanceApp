@@ -125,17 +125,14 @@ angular.module('authService', [])
                     $http.delete('/user/deleteUser', {params: {username: id}})
                         .success(function (data, status) {
                             if (status === 200) {
-                                $rootScope.regUsers = data;
                                 deferred.resolve();
-                            }
-                            else {
-                                deferred.reject();
                             }
                         })
                         // handle error
                         .error(function () {
                             deferred.reject();
                         });
+                    return deferred.promise;
                 }
             }
         ]

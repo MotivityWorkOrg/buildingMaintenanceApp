@@ -8,16 +8,19 @@
             <th>User Name</th>
             <th>Phone Number</th>
             <th>Role</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in loggedUsers | orderBy : 'username'">
+        <tr ng-repeat="user in allUsers | orderBy : 'username'">
             <td>{{ user.username }}</td>
-            <td>{{user.phoneNumber}}</td>
+            <td>{{ user.phoneNumber }}</td>
             <td>{{ user.roles }}</td>
             <td>
                 <div>
-                    <button class="btn btn-danger" ng-click="deleteUser(user)">Delete</button>
+                    <button class="btn btn-danger" ng-show="loggedUser.username !== user.username"
+                            ng-click="deleteSelectedUser(user)">Delete
+                    </button>
                 </div>
             </td>
         </tr>

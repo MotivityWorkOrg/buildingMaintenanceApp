@@ -12,7 +12,10 @@ userModule.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('register', {
         url: "/register",
         templateUrl: 'views/login/register.html',
-        controller: UserController
+        controller: UserController,
+        data: {
+            auth: true
+        }
     });
 
     //Logout

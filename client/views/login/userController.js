@@ -2,7 +2,8 @@ var UserController = ['$scope', '$location', 'AuthService', '$rootScope',
     function ($scope, $location, AuthService, $rootScope) {
         $scope.signup = {};
         $scope.login = {};
-        $scope.validRoles = ['- Select Role -', 'ADMIN', 'USER'];
+        $scope.validRoles = ['- Role -', 'ADMIN', 'USER'];
+        $rootScope.userSuccessFullyCreated = "";
         $scope.selectedRole = $scope.validRoles[0];
         //console.log("$scope.releSelected    ", $scope.releSelected)
         $scope.doLogin = function () {
@@ -31,8 +32,7 @@ var UserController = ['$scope', '$location', 'AuthService', '$rootScope',
         };
 
         $scope.doRegister = function (isValid) {
-            if(isValid && $scope.selectedRole !== '- Select Role -')
-            {
+            if (isValid && $scope.selectedRole !== '- Role -') {
                 // initial values
                 $scope.error = false;
                 $scope.disabled = true;
@@ -42,9 +42,12 @@ var UserController = ['$scope', '$location', 'AuthService', '$rootScope',
                 AuthService.register($scope.signup)
                     // handle success
                     .then(function () {
-                        $location.path('/login');
+                        $rootScope.userSuccessFullyCreated = 'User Successfully created, logout and login';
+                        $location.path('/main');
                         $scope.disabled = false;
                         $scope.signup = {};
+                        $scope.selectedRole = $scope.validRoles[0];
+                        $scope.password_c = "";
                     })
                     // handle error
                     .catch(function () {
@@ -61,7 +64,7 @@ var UserController = ['$scope', '$location', 'AuthService', '$rootScope',
             $scope.login = {};
         };
 
-        $scope.rolesDropdownSelected = function(item){
+        $scope.rolesDropdownSelected = function (item) {
             $scope.selectedRole = item;
             console.log(" Dropdwon selected item is  ", $scope.signup, item)
         }

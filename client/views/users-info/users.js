@@ -15,29 +15,34 @@ RegUsers.config(['$urlRouterProvider', '$stateProvider',
 
 var UsersController = ["$scope", "$rootScope", "AuthService",
     function ($scope, $rootScope, AuthService) {
-        $scope.loggedUsers = [];
+        $scope.allUsers = [];
+        $scope.loggedUser = $rootScope.user;
 
-        AuthService.getRegUsers()
-            .then(function () {
-                $scope.loggedUsers = $rootScope.regUsers;
-                $scope.error = false;
-            })
-            // handle error
-            .catch(function () {
-                $scope.error = true;
-                $scope.errorMessage = "no users found";
-            });
-
-        $scope.deleteUser = function (user) {
-            AuthService.deleteUser(user.username)
+        $scope.deleteSelectedUser = function (user) {
+            AuthService.deleteUser(user._id)
                 .then(function () {
-                    $scope.error = false;
+                    $scope.getAllUser();
                 })
                 .catch(function () {
                     $scope.error = true;
-                    $scope.errorMessage = "User logged in, please choose another User";
+                    $scope.errorMessage = $rootScope.deleteErrorMessage;
                 })
-        }
+        };
+
+        $scope.getAllUser = function () {
+            AuthService.getRegUsers()
+                .then(function () {
+                    $scope.allUsers = $rootScope.regUsers;
+                    $scope.error = false;
+                })
+                // handle error
+                .catch(function () {
+                    $scope.error = true;
+                    $scope.errorMessage = "no users found";
+                });
+        };
+
+        $scope.getAllUser();
     }
 ];
 
