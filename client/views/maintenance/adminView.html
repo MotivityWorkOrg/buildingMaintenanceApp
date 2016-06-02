@@ -87,6 +87,14 @@
                        data-max-length="4" ng-only-number>
             </div>
         </div>
+
+        <div class="form-group" ng-show="maintenance.maintenanceType === 1">
+            <label class="control-label col-sm-2" for="id">Bill</label>
+            <div class="col-sm-3">
+                <input type="text" id="attachmentLink" placeholder="Paste attachment url" ng-model="maintenance.attachmentUrl">
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="control-label col-sm-2" for="id">Comments</label>
             <div class="col-sm-3">
@@ -145,6 +153,7 @@
                 <th>Payment Date</th>
                 <th>Category</th>
                 <th>Amount</th>
+                <th>Bill</th>
             </tr>
             </thead>
             <tbody>
@@ -156,20 +165,21 @@
                     </div>
 
                 </td>
+                <td ng-show="expenses.bill.length"><a href="{{ expenses.bill }}" target="_blank">Bill</a></td>
                 <td>{{ expenses.amount }}.00</td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td text-align="right" colspan="2">Total Expenses</td>
+                <td text-align="right" colspan="3">Total Expenses</td>
                 <td>{{ totalExpenses }}.00</td>
             </tr>
             <tr>
-                <td text-align="right" colspan="2">Total Income</td>
+                <td text-align="right" colspan="3">Total Income</td>
                 <td>{{ totalIncome }}.00</td>
             </tr>
             <tr>
-                <td colspan="2">Grand Total</td>
+                <td colspan="3">Grand Total</td>
                 <td>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</td>
             </tr>
             </tfoot>

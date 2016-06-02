@@ -106,6 +106,7 @@ module.exports = function (app) {
         BuildingInfo.Expenses.create({
             paymentDate: req.body.paymentDate,
             amount: req.body.amount,
+            bill: req.body.attachmentUrl,
             description: req.body.description,
             category: req.body.category,
             period: req.body.period,

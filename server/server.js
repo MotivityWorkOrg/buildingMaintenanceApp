@@ -7,11 +7,6 @@ var methodOverride = require('method-override');
 var database = require('./config/database');
 var mongoose = require('mongoose');
 var dbUrl = process.env.DB_URL || database.localUrl;
-// Connect to Local DB
-//mongoose.connect(database.localUrl);
-// to Connect Remote DB
-//mongoose.connect(database.remoteUrl);
-// to Connect Prod DB
 mongoose.connect(dbUrl);
 var app = express();
 app.set('port', process.env.PORT || 3001);

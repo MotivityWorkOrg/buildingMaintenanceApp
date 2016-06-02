@@ -66,6 +66,7 @@
         <tr>
             <th>Payment Date</th>
             <th>Category</th>
+            <th>Bill</th>
             <th>Amount</th>
         </tr>
         </thead>
@@ -78,20 +79,21 @@
                 </div>
 
             </td>
+            <td><a href="{{ expenses.bill }}" target="_blank" ng-show="expenses.bill.length">Bill</a></td>
             <td>{{ expenses.amount }}.00</td>
         </tr>
         </tbody>
         <tfoot>
         <tr>
-            <td text-align="right" colspan="2">Total Expenses</td>
+            <td text-align="right" colspan="3">Total Expenses</td>
             <td>{{ totalExpenses }}.00</td>
         </tr>
         <tr>
-            <td text-align="right" colspan="2">Total Income</td>
+            <td text-align="right" colspan="3">Total Income</td>
             <td>{{ totalIncome }}.00</td>
         </tr>
         <tr>
-            <td colspan="2">Grand Total</td>
+            <td colspan="3">Grand Total</td>
             <td>{{getActualResult === isNaN(getActualResult) ? 0 : getActualResult}}.00</td>
         </tr>
         </tfoot>

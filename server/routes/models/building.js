@@ -22,6 +22,7 @@ var ExpensesSchema = new mongoose.Schema({
     period: String,
     paymentDate: Date,
     amount: String,
+    bill: String,
     description: String,
     category: String,
     createdBy: String,
