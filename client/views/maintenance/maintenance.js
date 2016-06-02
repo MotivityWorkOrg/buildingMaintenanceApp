@@ -404,59 +404,27 @@ function getFlats() {
         },
         {
             id: 3,
-            flatNo: 103
-        },
-        {
-            id: 4,
-            flatNo: 104
-        },
-        {
-            id: 5,
             flatNo: 201
         },
         {
-            id: 6,
+            id: 4,
             flatNo: 202
         },
         {
-            id: 7,
-            flatNo: 203
-        },
-        {
-            id: 8,
-            flatNo: 204
-        },
-        {
-            id: 9,
+            id: 5,
             flatNo: 301
         },
         {
-            id: 10,
+            id: 6,
             flatNo: 302
         },
         {
-            id: 11,
-            flatNo: 303
-        },
-        {
-            id: 12,
-            flatNo: 304
-        },
-        {
-            id: 13,
+            id: 7,
             flatNo: 401
         },
         {
-            id: 14,
+            id: 8,
             flatNo: 402
-        },
-        {
-            id: 15,
-            flatNo: 403
-        },
-        {
-            id: 16,
-            flatNo: 404
         }
     ]
 }

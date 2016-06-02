@@ -9,7 +9,9 @@ var mongoose = require('mongoose');
 // Connect to Local DB
 //mongoose.connect(database.localUrl);
 // to Connect Remote DB
-mongoose.connect(database.remoteUrl);
+//mongoose.connect(database.remoteUrl);
+// to Connect Prod DB
+mongoose.connect(database.prodUrl);
 var app = express();
 app.set('port', process.env.PORT || 3001);
 
@@ -50,7 +52,7 @@ initPassport(passport);
 
 var routes = require('./routes/index')(passport);
 app.use('/user/', routes);
-
+//console.log(" asfjlkj asdfj ---------->    ", routes.isAuthenticated);
 // building routes ======================================================================
 require('./routes/routes.js')(app);
 
