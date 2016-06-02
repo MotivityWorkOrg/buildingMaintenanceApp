@@ -23,7 +23,8 @@
     "mongoose": "*",
     "morgan": "*",
     "passport": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "serve-favicon": "*"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
