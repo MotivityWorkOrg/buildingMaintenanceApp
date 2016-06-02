@@ -167,7 +167,7 @@ module.exports = function (app) {
         var period = req.query['period'];
         var query;
         if (period.length === 4) {
-            query = BuildingInfo.Expenses.find({
+            query = BuildingInfo.Income.find({
                 'paymentDate': {
                     $gte: new Date(period, 1, 1),
                     $lte: new Date(period, 12, 31)
@@ -175,7 +175,7 @@ module.exports = function (app) {
             });
         }
         else {
-            query = BuildingInfo.Expenses.find({'period': req.query['period']});
+            query = BuildingInfo.Income.find({'period': req.query['period']});
         }
         query.exec(function (err, incomes) {
             if (err) {
