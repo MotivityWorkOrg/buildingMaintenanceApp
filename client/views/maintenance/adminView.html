@@ -1,6 +1,6 @@
 <!-------------------->
 <div class="admin-form">
-
+    <data-ng-include src="'views/maintenance/partials/show-data-component.html'"></data-ng-include>
     <form class="form-horizontal" role="form" autocomplete="off">
         <h3>Monthly Entries</h3>
         <h4 class="error-message" ng-model="errorMessage" ng-show="errorMessage.length"> {{errorMessage}} </h4>
@@ -91,7 +91,8 @@
         <div class="form-group" ng-show="maintenance.maintenanceType === 1">
             <label class="control-label col-sm-2" for="id">Bill</label>
             <div class="col-sm-3">
-                <input type="text" id="attachmentLink" placeholder="Paste attachment url" ng-model="maintenance.attachmentUrl">
+                <input type="text" id="attachmentLink" placeholder="Paste attachment url"
+                       ng-model="maintenance.attachmentUrl">
             </div>
         </div>
 

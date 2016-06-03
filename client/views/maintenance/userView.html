@@ -1,26 +1,6 @@
 <div class="form-group">
     <label class="control-label col-sm-3">View Expenditure for the month of:</label>
-    <div class="col-sm-3">
-        <p class="input-group">
-            <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
-                   ng-model="maintenance.period"
-                   is-open="periodPicker.opened"
-                   show-button-bar="false"
-                   max-date="maxDt"
-                   datepicker-options="userDateOptions"
-                   datepicker-mode="'month'"
-                   close-text="Close"/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="periodDatePickerOpen()"><i
-                                class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-        </p>
-    </div>
-    <div class="form-control">
-        <input type="text" placeholder="Enter year" ng-model="maintenance.currentYear"
-               data-max-length="4" ng-only-number>
-    </div>
-    <button class="btn btn-success" ng-click="getUserSelectedMonthInfo()">View</button>
+    <data-ng-include src="'views/maintenance/partials/show-data-component.html'"></data-ng-include>
 </div>
 <div class="clr">&nbsp;</div>
 <div>

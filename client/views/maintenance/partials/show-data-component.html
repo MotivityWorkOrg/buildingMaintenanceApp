@@ -1,0 +1,21 @@
+<div class="pull-left">
+    <div class="col-sm-3">
+        <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
+                   ng-model="componentDatePicker.period"
+                   is-open="componentDatePicker.opened"
+                   show-button-bar="false"
+                   max-date="maxDt"
+                   datepicker-options="userDateOptions"
+                   datepicker-mode="'month'"
+                   close-text="Close"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="componentDatePickerOpen()"><i
+                                class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+        </p>
+    </div>
+    <input type="text" placeholder="Enter year" ng-model="maintenance.currentYear"
+           data-max-length="4" ng-only-number>
+    <button class="btn btn-success" ng-click="getUserSelectedMonthInfo()">View</button>
+</div>

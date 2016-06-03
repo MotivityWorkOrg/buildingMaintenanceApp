@@ -64,6 +64,10 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
             opened: false
         };
 
+        $scope.componentDatePicker = {
+            opened: false
+        };
+
         $scope.periodPicker = {
             opened: false
         };
@@ -225,6 +229,13 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
             $scope.periodPicker.opened = true;
         };
 
+        $scope.componentDatePickerOpen = function(){
+            $scope.componentDatePicker = {
+                opened: true
+            };
+        };
+
+
         $scope.modifyData = function (data, currentId) {
             $scope.errorMessage = "";
             currentCategory = currentId;
@@ -283,7 +294,8 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
                 selectedPeriod = $scope.maintenance.currentYear;
             }
             else {
-                selectedPeriod = $scope.dateFilter($scope.maintenance.period, 'MMMM/yyyy');
+                selectedPeriod = $scope.dateFilter($scope.componentDatePicker.period, 'MMMM/yyyy');
+                $scope.maintenance.period = selectedPeriod;
             }
 
             Building.getExpenses(selectedPeriod).success(function (data) {
