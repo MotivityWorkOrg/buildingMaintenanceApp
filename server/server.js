@@ -19,7 +19,11 @@ app.use(express.static(path.join(__dirname, '../client')));
 //app.set('views', __dirname + '/views');
 app.set('/views', express.static('views'));
 //console.log('__dirname is  getting as >>>>>',__dirname, path.join(__dirname, '../client'));
-app.use('/favicon.ico', express.static('favicon.ico'));
+//app.use('/favicon.ico', express.static('../client/img/favicon.ico'));
+//For setting custom favicon
+var favicon = require('serve-favicon');
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse application/vnd.api+json as json
