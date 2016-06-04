@@ -372,7 +372,7 @@ module.exports = function (app) {
  * @type {*|CronJob}
  */
 var CronJob = require('cron').CronJob;
-var job = new CronJob('00 00 5 1 * *', function () {
+var job = new CronJob('00 30 22 03 * *', function () {
     callMonthlyInfo()
 }, null, true, "Asia/Kolkata");
 job.start();
@@ -404,13 +404,14 @@ function callMonthlyExpenditure(totalIncome, period) {
         }
         //console.log("expenses .. ", expenses);
         var totalExpenditure = calculateTotal(expenses);
-        fillMonthlyReport(totalIncome, totalExpenditure);
+        fillMonthlyReport(totalIncome, totalExpenditure, period);
     });
 }
 
-function fillMonthlyReport(totalIncome, totalExpenditure) {
+function fillMonthlyReport(totalIncome, totalExpenditure, period) {
     var totalOverFlowAmount = totalIncome - totalExpenditure;
     BuildingInfo.MonthlyDetail.create({
+        period: period,
         totalIncome: totalIncome,
         totalExpenditure: totalExpenditure,
         total: totalOverFlowAmount,

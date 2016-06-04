@@ -1,0 +1,84 @@
+
+<uib-accordion close-others="false">
+    <uib-accordion-group is-open="isOpen"
+                         ng-repeat="item in getAllAccordionItems">
+        <uib-accordion-heading>
+            {{item.fullMonth}} - Income {{item.monthTotalIncome}} - Expenses {{item.monthTotalExpenses}} - Total
+            {{item.total}}
+            <i class="pull-left glyphicon"
+               ng-class="{'glyphicon-minus': isOpen, 'glyphicon-plus': !isOpen}"></i>
+        </uib-accordion-heading>
+        <!--<div ng-include="group.templateUrl"></div>-->
+        <!--<div ng-repeat="subitem in item.subitems">{{subitem.desc}}</div>-->
+        <div class="table-responsive income">
+            <h3>Income</h3>
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>Payment Date</th>
+                    <th>Flat</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="income in item.incomeItems | orderBy : 'flatNo'" ng-dblclick="modifyData(income, 'Incomes')">
+                    <td>{{ dateFilter(income.paymentDate, format) }}</td>
+                    <td>{{income.flatNo}}</td>
+                    <td>
+                        <div data-toggle="tooltip" data-original-title="{{income.description}}" tooltip-loader>
+                            {{ income.category }}
+                        </div>
+                    <td>{{ income.amount }}.00</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td text-align="right" colspan="3">Total Income</td>
+                    <td>{{ item.monthTotalIncome }}.00</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="table-responsive expenses">
+            <h3>Expenses</h3>
+            <table id="expenses" class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>Payment Date</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <!--<th>Bill</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="expenses in item.expensesItems" ng-dblclick="modifyData(expenses, 'Expenses')">
+                    <td>{{ dateFilter(expenses.paymentDate, format) }}</td>
+                    <td>
+                        <div data-toggle="tooltip" data-original-title="{{expenses.description}}" tooltip-loader>
+                            {{ expenses.category }}
+                        </div>
+
+                    </td>
+                    <!--<td ng-show="expenses.bill.length"><a href="{{ expenses.bill }}" target="_blank">Bill</a></td>-->
+                    <td>{{ expenses.amount }}.00</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td text-align="right" colspan="2">Total Expenses</td>
+                    <td>{{ item.monthTotalExpenses }}.00</td>
+                </tr>
+                <tr>
+                    <td text-align="right" colspan="2">Total Income</td>
+                    <td>{{ item.monthTotalIncome }}.00</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Grand Total</td>
+                    <td>{{item.total === isNaN(item.total) ? 0 : item.total}}.00</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </uib-accordion-group>
+</uib-accordion>

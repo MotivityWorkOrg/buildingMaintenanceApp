@@ -3,6 +3,8 @@ var itemId = '';
 var currentCategory = '';
 var selectedPeriod = '';
 var errorMessageString = '';
+var yearExpenses = [];
+var yearIncomes = [];
 maintenanceModule.config(['$urlRouterProvider', '$stateProvider',
     function ($urlRouterProvider, $stateProvider) {
         $stateProvider.state('main', {
@@ -46,6 +48,8 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         selectedPeriod = $scope.dateFilter(new Date(), 'MMMM/yyyy');
         $scope.getAllFlats = [];
         $scope.errorMessage = '';
+        $scope.showMonthView = true;
+        $scope.showYearView = false;
         $scope.dateOptions = {
             maxDate: new Date(),
             minMode: 'month'
@@ -71,7 +75,9 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         $scope.periodPicker = {
             opened: false
         };
-        //$scope.isAdminLogged =
+
+        $scope.componentDatePicker.period = new Date();
+
         //console.log($rootScope.user, $scope.isAdminLogged);
         Building.getExpensesTypes().success(function (data) {
             $scope.listOfExpenses = data;
@@ -229,12 +235,11 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
             $scope.periodPicker.opened = true;
         };
 
-        $scope.componentDatePickerOpen = function(){
+        $scope.componentDatePickerOpen = function () {
             $scope.componentDatePicker = {
                 opened: true
             };
         };
-
 
         $scope.modifyData = function (data, currentId) {
             $scope.errorMessage = "";
@@ -290,31 +295,136 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         };
         $scope.getUserSelectedMonthInfo = function () {
             var date = new Date();
-            if ($scope.maintenance.currentYear !== "" && $scope.maintenance.currentYear <= date.getFullYear()) {
-                selectedPeriod = $scope.maintenance.currentYear;
+            var minYear = 2010;
+            var maintenanceYear = $scope.maintenance.currentYear;
+            if (maintenanceYear !== undefined && maintenanceYear !== "") {
+                if (minYear > maintenanceYear || maintenanceYear > date.getFullYear()) {
+                    alert("Enter a valid year between 2010 and " + date.getFullYear());
+                }
+                else {
+                    selectedPeriod = maintenanceYear;
+                    $scope.showMonthView = false;
+                    $scope.showYearView = true;
+                    $scope.getAllYearExpenses(maintenanceYear);
+                }
             }
             else {
                 selectedPeriod = $scope.dateFilter($scope.componentDatePicker.period, 'MMMM/yyyy');
                 $scope.maintenance.period = selectedPeriod;
+                $scope.showYearView = false;
+                $scope.showMonthView = true;
+                $scope.getAllExpenses(selectedPeriod);
+                $scope.getAllIncomes(selectedPeriod);
             }
+        };
 
-            Building.getExpenses(selectedPeriod).success(function (data) {
+        $scope.getAllExpenses = function (period) {
+            Building.getExpenses(period).success(function (data) {
                 $scope.expensesArr = {};
                 $scope.expensesArr = data;
                 $scope.totalExpenses = calculateTotal(data);
                 $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
                 $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
             });
+        };
 
-            Building.getIncomes(selectedPeriod).success(function (data) {
+        $scope.getAllIncomes = function (period) {
+            Building.getIncomes(period).success(function (data) {
                 $scope.allIncomes = {};
                 $scope.allIncomes = data;
                 $scope.totalIncome = calculateTotal(data);
                 $scope.getActualResult = getActualResult($scope.totalIncome, $scope.totalExpenses);
                 $scope.spanColor = Number($scope.getActualResult) < 0 ? 'ng-value-red' : 'ng-value-green';
             });
-        }
-    }];
+        };
+
+        $scope.getAllYearExpenses = function (year) {
+            Building.getExpenses(year).success(function (data) {
+                yearExpenses = data;
+                $scope.getAllYearIncomes(year);
+            });
+        };
+
+        $scope.getAllYearIncomes = function (year) {
+            Building.getIncomes(year).success(function (data) {
+                yearIncomes = data;
+                console.log("Year Incomes At Function Level   ", yearIncomes);
+                $scope.yearInfoAccordion(year);
+            });
+        };
+
+        $scope.getPreviousMonthInfo = function () {
+
+        };
+
+        $scope.yearInfoAccordion = function (year) {
+            //$scope.getAllMonths = AppConst.getMonthsLong;
+            var yearExpensesMap = new Map();
+            var yearIncomesMap = new Map();
+            //yearMap.keys = AppConst.getMonthsLong;
+            var expensesArr = [];
+            var incomeArr = [];
+            $scope.getAllAccordionItems = [];
+            /*$scope.getAllAccordionItems.headerObject = {};
+             $scope.getAllAccordionItems.headerObject.subItems = [];*/
+            AppConst.getMonthsLong.forEach(function (month) {
+                var shortMonth = month.substr(0, 3);
+                var period = shortMonth + '/' + year;
+                yearExpenses.forEach(function (obj) {
+                    if (period === obj.period) {
+                        var expense = obj;
+                        expense.month = month;
+                        expensesArr.push(expense);
+                        yearExpensesMap.set(month, expensesArr);
+                    }
+                });
+                yearIncomes.forEach(function (incomeObj) {
+                    if (period === incomeObj.period) {
+                        var income = incomeObj;
+                        income.month = month;
+                        incomeArr.push(income);
+                        yearIncomesMap.set(month, incomeArr);
+                        console.log("Income Map    ", yearIncomesMap, " INcomes Array   ", incomeArr);
+                    }
+                })
+            });
+            // getting key as list of values and value as key need to find out why??
+            AppConst.getMonthsLong.forEach(function (month) {
+                var header = {};
+                yearIncomesMap.forEach((value, key) => {
+                    if (key === month) {
+                        header.monthTotalIncome = calculateTotal(value);
+                        header.incomeItems = value;
+                    }
+                    else {
+                        header.monthTotalIncome = 0;
+                        header.incomeItems = [];
+                    }
+                });
+
+                yearExpensesMap.forEach((value, key) => {
+                    if (key === month) {
+                        header.monthTotalExpenses = calculateTotal(value);
+                        header.expensesItems = value;
+                    }
+                    else {
+                        header.monthTotalExpenses = 0;
+                        header.expensesItems = [];
+                    }
+                });
+                header.fullMonth = month;
+                header.total = header.monthTotalIncome - header.monthTotalExpenses;
+                $scope.getAllAccordionItems.push(header);
+            });
+            //$scope.getAllMonths = yearExpensesMap.keys();
+
+            console.log("Year Map", $scope.getAllAccordionItems);
+        };
+
+        $scope.getPreviousMonthInfo();
+
+    }
+];
 
 maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalInstance',
     function ($scope, $uibModalInstance) {
@@ -338,6 +448,7 @@ maintenanceModule.controller('changeCategoryController', ['$scope', '$uibModalIn
         }
     }
 ]);
+
 
 function isMaintenanceFormValid(form) {
     if (form.period === undefined || form.period === '') {
