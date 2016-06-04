@@ -5,6 +5,7 @@ var selectedPeriod = '';
 var errorMessageString = '';
 var yearExpenses = [];
 var yearIncomes = [];
+var isMonthChanged = false;
 maintenanceModule.config(['$urlRouterProvider', '$stateProvider',
     function ($urlRouterProvider, $stateProvider) {
         $stateProvider.state('main', {
@@ -78,7 +79,6 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
 
         $scope.componentDatePicker.period = new Date();
 
-        //console.log($rootScope.user, $scope.isAdminLogged);
         Building.getExpensesTypes().success(function (data) {
             $scope.listOfExpenses = data;
             if (data.length == 0) {
@@ -348,7 +348,6 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         $scope.getAllYearIncomes = function (year) {
             Building.getIncomes(year).success(function (data) {
                 yearIncomes = data;
-                console.log("Year Incomes At Function Level   ", yearIncomes);
                 $scope.yearInfoAccordion(year);
             });
         };
@@ -384,7 +383,6 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
                         income.month = month;
                         incomeArr.push(income);
                         yearIncomesMap.set(month, incomeArr);
-                        console.log("Income Map    ", yearIncomesMap, " INcomes Array   ", incomeArr);
                     }
                 })
             });
@@ -416,13 +414,14 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
                 header.total = header.monthTotalIncome - header.monthTotalExpenses;
                 $scope.getAllAccordionItems.push(header);
             });
-            //$scope.getAllMonths = yearExpensesMap.keys();
+        };
 
-            console.log("Year Map", $scope.getAllAccordionItems);
+        $scope.adminViewMonthChange = function () {
+            isMonthChanged = true;
+            $scope.maintenance.paymentDate = $scope.maintenance.period;
         };
 
         $scope.getPreviousMonthInfo();
-
     }
 ];
 

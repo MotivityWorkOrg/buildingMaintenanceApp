@@ -89,8 +89,10 @@ var monthlyDetailsSchema = new mongoose.Schema({
     totalIncome: Number,
     totalExpenditure: Number,
     total: Number,
+    description:String,
     period: String,
-    date: Date
+    createdDate: Date,
+    updatedDate: Date
 });
 
 //module.exports = mongoose.model('Maintenance', MaintenanceSchema);

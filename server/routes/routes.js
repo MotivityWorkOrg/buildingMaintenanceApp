@@ -372,7 +372,7 @@ module.exports = function (app) {
  * @type {*|CronJob}
  */
 var CronJob = require('cron').CronJob;
-var job = new CronJob('00 30 22 03 * *', function () {
+var job = new CronJob('00 00 05 * * *', function () {
     callMonthlyInfo()
 }, null, true, "Asia/Kolkata");
 job.start();
@@ -410,13 +410,116 @@ function callMonthlyExpenditure(totalIncome, period) {
 
 function fillMonthlyReport(totalIncome, totalExpenditure, period) {
     var totalOverFlowAmount = totalIncome - totalExpenditure;
-    BuildingInfo.MonthlyDetail.create({
-        period: period,
-        totalIncome: totalIncome,
-        totalExpenditure: totalExpenditure,
-        total: totalOverFlowAmount,
-        date: new Date()
+    var query = BuildingInfo.MonthlyDetail.find({'period': period});
+    var monthlyDetailId;
+    query.exec(function (err, detail) {
+        if (err) {
+            console.log(" Error Getting in Monthly details");
+        }
+        detail.forEach(function (entry) {
+            if (entry.period === period) {
+                monthlyDetailId = entry._id;
+            }
+        });
+        console.log(" Object id Inside ", monthlyDetailId);
+        if (monthlyDetailId !== undefined) {
+            createOrUpdateMonthlyDetails(totalIncome, totalExpenditure, totalOverFlowAmount, true, monthlyDetailId);
+        }
+        else {
+            createOrUpdateMonthlyDetails(totalIncome, totalExpenditure, totalOverFlowAmount, false)
+        }
+    });
+}
+function createOrUpdateMonthlyDetails(income, expenses, total, isUpdate, id) {
+    if (isUpdate) {
+        var monthlyDetails = {};
+        monthlyDetails.period = dateFormat(new Date());
+        monthlyDetails.totalIncome = income;
+        monthlyDetails.totalExpenditure = expenses;
+        monthlyDetails.description = 'Excess Amount of ' + dateFormat(new Date());
+        monthlyDetails.total = total;
+        monthlyDetails.updatedDate = new Date();
+        BuildingInfo.MonthlyDetail.findOneAndUpdate({_id: id},
+            monthlyDetails,
+            function (err) {
+                if (err) {
+                    console.log(" Error Getting an update MonthlyDetail")
+                }
+            }
+        )
+    }
+    else {
+        BuildingInfo.MonthlyDetail.create({
+            period: period,
+            totalIncome: totalIncome,
+            totalExpenditure: totalExpenditure,
+            description: ' Excess Amount of ' + period,
+            total: total,
+            createdDate: new Date()
+        });
+    }
+    callToGetIncome(total)
+}
+
+function callToGetIncome(total) {
+    var currentPeriod = getCurrentDatePeriod(new Date());
+    var query = BuildingInfo.Income.find({'period': currentPeriod});
+    var incomeObjId;
+    query.exec(function (err, incomes) {
+        if (err) {
+            console.log("Error getting in Income Table cron Job")
+        }
+        incomes.forEach(function (income) {
+            var desc = 'Excess Amount of ' + dateFormat(new Date());
+            console.log("Description", desc, "Income Desc", income.description);
+            if (income.description === desc && income.period === currentPeriod) {
+                incomeObjId = income._id;
+                console.log()
+            }
+        });
+
+        if (incomeObjId !== undefined) {
+            callToAddOrUpdateIncome(total, true, currentPeriod, incomeObjId)
+        }
+        else {
+            callToAddOrUpdateIncome(total, false, currentPeriod)
+        }
     })
+}
+
+function callToAddOrUpdateIncome(total, isUpdate, currentPeriod, id) {
+    var previousPeriod = dateFormat(new Date());
+    if (isUpdate && id !== undefined) {
+        var updateIncome = {};
+        updateIncome.paymentDate = new Date();
+        updateIncome.amount = total;
+        updateIncome.description = 'Excess Amount of ' + previousPeriod;
+        updateIncome.period = currentPeriod;
+        updateIncome.category = 'Excess Amount';
+        updateIncome.flatNo = 0;
+        updateIncome.updatedDate = new Date();
+        updateIncome.updatedBy = "CronJob";
+        BuildingInfo.MonthlyDetail.findOneAndUpdate({_id: id},
+            updateIncome,
+            function (err) {
+                if (err) {
+                    console.log(" Error Getting an update Income")
+                }
+            }
+        )
+    }
+    else {
+        BuildingInfo.Income.create({
+            paymentDate: new Date(),
+            amount: total,
+            description: 'Excess Amount of ' + previousPeriod,
+            category: 'Excess Amount',
+            period: currentPeriod,
+            createdDate: new Date(),
+            flatNo: 0,
+            createdBy: 'CronJob'
+        });
+    }
 }
 /**
  * Scheduler Will call every month 1 day, we required last month
@@ -427,6 +530,13 @@ function fillMonthlyReport(totalIncome, totalExpenditure, period) {
 function dateFormat(date) {
     var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var monthIndex = date.getMonth() - 1;
+    var year = date.getFullYear();
+    return monthNames[monthIndex] + '/' + year;
+}
+
+function getCurrentDatePeriod(date) {
+    var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var monthIndex = date.getMonth();
     var year = date.getFullYear();
     return monthNames[monthIndex] + '/' + year;
 }
