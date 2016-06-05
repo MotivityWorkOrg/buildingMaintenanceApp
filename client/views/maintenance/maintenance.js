@@ -44,6 +44,7 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         $scope.dateFilter = $filter('date');
         $scope.maintenance.paymentDate = new Date();
         $scope.periodFormat = 'MMMM/yyyy';
+        $scope.userPeriodFormat = 'MMMM/yyyy';
         $scope.maintenance.period = new Date();
         $scope.animationsEnabled = true;
         selectedPeriod = $scope.dateFilter(new Date(), 'MMMM/yyyy');
@@ -355,14 +356,14 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
                 console.log("User selected ::" + selectedExpValue);
                 switch(selectedExpValue){
                     case 0:
-                        $scope.datePicker = 'month';
-                        $scope.periodFormat = 'MMMM/yyyy';
-                        $scope.dateOptions = {minMode: 'month', datepickerMode: 'month', maxDate: new Date()};
+                        $scope.userDatePicker = 'month';
+                        $scope.userPeriodFormat = 'MMMM/yyyy';
+                        $scope.userDateOptions = {minMode: 'month', datepickerMode: 'month', maxDate: new Date()};
                         break;
                     case 1:
-                        $scope.datePicker = 'year';
-                        $scope.periodFormat = 'yyyy';
-                        $scope.dateOptions = {minMode : 'year', datepickerMode: 'year', maxDate: new Date()};
+                        $scope.userDatePicker = 'year';
+                        $scope.userPeriodFormat = 'yyyy';
+                        $scope.userDateOptions = {minMode : 'year', datepickerMode: 'year', maxDate: new Date()};
                         break;
                 }
             }

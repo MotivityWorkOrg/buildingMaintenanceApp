@@ -8,13 +8,13 @@
     </div>
     <div class="col-sm-3">
         <p class="input-group">
-            <input type="text" class="form-control" uib-datepicker-popup="{{periodFormat}}"
+            <input type="text" class="form-control" uib-datepicker-popup="{{userPeriodFormat}}"
                    ng-model="componentDatePicker.period"
                    is-open="componentDatePicker.opened"
                    show-button-bar="false"
                    max-date="maxDt"
-                   datepicker-options="dateOptions"
-                   datepicker-mode="datePicker"
+                   datepicker-options="userDateOptions"
+                   datepicker-mode="userDatePicker"
                    close-text="Close"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="componentDatePickerOpen()"><i
