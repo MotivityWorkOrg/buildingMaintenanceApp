@@ -49,6 +49,7 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         selectedPeriod = $scope.dateFilter(new Date(), 'MMMM/yyyy');
         $scope.getAllFlats = [];
         $scope.errorMessage = '';
+        $scope.monthOrYear = [{id:1,type:'Month'},{id:2, type:'Year'}];
         $scope.showMonthView = true;
         $scope.showYearView = false;
         $scope.dateOptions = {
@@ -296,8 +297,10 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
         $scope.getUserSelectedMonthInfo = function () {
             var date = new Date();
             var minYear = 2010;
-            var maintenanceYear = $scope.maintenance.currentYear;
-            if (maintenanceYear !== undefined && maintenanceYear !== "") {
+            var selectedMonthOrYear = parseInt($scope.maintenance.monthOrYear) - 1;
+            console.log(selectedMonthOrYear);
+            if (selectedMonthOrYear === 1) {
+                var maintenanceYear = $scope.dateFilter($scope.componentDatePicker.period, 'yyyy');//$scope.maintenance.currentYear;
                 if (minYear > maintenanceYear || maintenanceYear > date.getFullYear()) {
                     alert("Enter a valid year between 2010 and " + date.getFullYear());
                 }
@@ -344,6 +347,26 @@ var MaintenanceController = ['$rootScope', '$scope', 'Building', '$filter', '$ui
                 $scope.getAllYearIncomes(year);
             });
         };
+
+        //On Change of view expenditure selection.
+        $scope.onChangeExpSelection = function(){
+            if ($scope.maintenance.monthOrYear !== null) {
+                var selectedExpValue = parseInt($scope.maintenance.monthOrYear) - 1;
+                console.log("User selected ::" + selectedExpValue);
+                switch(selectedExpValue){
+                    case 0:
+                        $scope.datePicker = 'month';
+                        $scope.periodFormat = 'MMMM/yyyy';
+                        $scope.dateOptions = {minMode: 'month', datepickerMode: 'month', maxDate: new Date()};
+                        break;
+                    case 1:
+                        $scope.datePicker = 'year';
+                        $scope.periodFormat = 'yyyy';
+                        $scope.dateOptions = {minMode : 'year', datepickerMode: 'year', maxDate: new Date()};
+                        break;
+                }
+            }
+        }
 
         $scope.getAllYearIncomes = function (year) {
             Building.getIncomes(year).success(function (data) {
