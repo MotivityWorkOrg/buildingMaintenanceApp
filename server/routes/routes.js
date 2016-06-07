@@ -372,7 +372,7 @@ module.exports = function (app) {
  * @type {*|CronJob}
  */
 var CronJob = require('cron').CronJob;
-var job = new CronJob('00 00 05 * * *', function () {
+var job = new CronJob('00 5 * * *', function () {
     callMonthlyInfo()
 }, null, true, "Asia/Kolkata");
 job.start();
@@ -521,6 +521,10 @@ function callToAddOrUpdateIncome(total, isUpdate, currentPeriod, id) {
         });
     }
 }
+
+var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+    'September', 'October', 'November', 'December'];
+
 /**
  * Scheduler Will call every month 1 day, we required last month
  * income and expenditure info
@@ -528,14 +532,12 @@ function callToAddOrUpdateIncome(total, isUpdate, currentPeriod, id) {
  * @returns {string}
  */
 function dateFormat(date) {
-    var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var monthIndex = date.getMonth() - 1;
     var year = date.getFullYear();
     return monthNames[monthIndex] + '/' + year;
 }
 
 function getCurrentDatePeriod(date) {
-    var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var monthIndex = date.getMonth();
     var year = date.getFullYear();
     return monthNames[monthIndex] + '/' + year;
