@@ -83,10 +83,10 @@
                         } catch (err) {
                         }
                     };
-                    $(elem).on("keypress", function () {
+                    $(elem).on("keypress", function (event) {
                         return checkPositive(elem, event);
                     });
-                    $(elem).on("input", function () {
+                    $(elem).on("input", function (event) {
                         return change_maxlength(elem, event);
                     })
                 }
