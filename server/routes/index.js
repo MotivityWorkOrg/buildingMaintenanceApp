@@ -30,6 +30,7 @@ module.exports = function (passport) {
                     err: info
                 });
             }
+            delete user.password;
             req.logIn(user, function (err) {
                 if (err) {
                     return res.status(500).json({

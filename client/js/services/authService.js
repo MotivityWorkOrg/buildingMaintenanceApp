@@ -1,7 +1,7 @@
 angular.module('authService', [])
     .factory('AuthService',
         ['$q', '$timeout', '$http', '$rootScope',
-            function ($q, $timeout, $http, $rootScope, PersistenceService) {
+            function ($q, $timeout, $http, $rootScope) {
                 // create user variable
                 var user = null;
                 // return available functions for use in the controllers
