@@ -372,9 +372,9 @@ module.exports = function (app) {
  * @type {*|CronJob}
  */
 var CronJob = require('cron').CronJob;
-var job = new CronJob('52 03 * * *', function () {
+var job = new CronJob('00 05 * * 5', function () {
     callMonthlyInfo()
-}, null, true);
+}, null, true, "Asia/Kolkata");
 job.start();
 //rule = '0 0/2 * 1/1 * ? *';
 //
