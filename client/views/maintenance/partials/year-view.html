@@ -1,5 +1,5 @@
 <uib-accordion close-others="false">
-    <uib-accordion-group is-open="isOpen"
+    <div uib-accordion-group is-open="isOpen"
                          ng-repeat="item in getAllAccordionItems">
         <uib-accordion-heading>
             {{item.fullMonth}} - Income {{item.monthTotalIncome}} - Expenses {{item.monthTotalExpenses}} - Total
@@ -80,5 +80,5 @@
                 </tfoot>
             </table>
         </div>
-    </uib-accordion-group>
+    </div>
 </uib-accordion>
