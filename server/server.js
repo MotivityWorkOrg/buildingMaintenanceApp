@@ -41,6 +41,13 @@ var passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.all('/*', function (request, response, next) {
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Access-Control-Allow-Headers", "X-Requested-With");
+    response.header("Access-Control-Allow-Methods", "GET, POST", "PUT", "DELETE");
+    next();
+});
+
 // Using the flash middleware provided by connect-flash to store messages in session
 // and displaying in templates
 var flash = require('connect-flash');

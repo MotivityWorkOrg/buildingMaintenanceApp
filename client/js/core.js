@@ -8,6 +8,7 @@ buildingApp.directive('phoneMaxlength', function () {
         require: 'ngModel',
         link: function (scope, element, attrs, ngModelCtrl) {
             var maxLength = Number(attrs.phoneMaxlength);
+
             function fromUser(text) {
                 //console.log("Coming in fromUser Function", typeof text, text.toString());
                 var enterStr = text.toString();
@@ -20,12 +21,16 @@ buildingApp.directive('phoneMaxlength', function () {
                 }
                 return text;
             }
+
             ngModelCtrl.$parsers.push(fromUser);
         }
     };
 });
 
 buildingApp.config(function ($urlRouterProvider, $httpProvider) {
+    //Configure to http provider.
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
     //session check and redirect to specific state
     if (!window.sessionStorage["userInfo"]) {
         $urlRouterProvider.otherwise("/login");
